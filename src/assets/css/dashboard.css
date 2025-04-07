@@ -1,0 +1,267 @@
+.dashboard-page {
+  background-color: #f0f5f9;
+}
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+
+}
+
+.sidebar-container {
+  width: 100%;
+  height: 100%;
+  background-color: #ffff;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 16px;
+  background: linear-gradient(90deg, #0C3EF2 0%, #01B4FF 100%);
+
+}
+
+.sidebar .sidebar-container .logo-link img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.sidebar .sidebar-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar .sidebar-container ul li {
+  margin: 10px 0;
+}
+
+.sidebar-container ul li a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.main-content {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+
+.header-row {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  border-radius: 16px;
+}
+
+.content-section {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .main-content {
+    margin-left: 200px;
+    width: calc(100% - 200px);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+.coupon-sub-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 20px;
+}
+
+.event-details-modal {
+  width: 100%;
+}
+
+.event-details-modal h5 {
+  color: rgb(39, 38, 102);
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.event-details-modal .event-des {
+  background-color: #f6f6f6;
+}
+
+.event-details-modal .event-des .detail-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+
+.event-des .detail-row h6 {
+  color: #191a15;
+  font-weight: 500;
+  font-size: 25px;
+}
+
+.event-des .detail-row .label {
+  color: rgb(39, 38, 102);
+  text-align: left;
+  width: 90px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.event-des .detail-row .text {
+  color: #191a15;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.event-des .border-t {
+  border-top: 1px solid rgb(39, 38, 102, 0.5);
+}
+
+.checkbox:disabled {
+  cursor: not-allowed;
+  background-color: #f0f0f0;
+  border-color: #d6d6d6;
+  opacity: 0.6;
+}
+
+.disabled-text {
+  color: #d3d3d3;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Leader Board Page Start */
+.leader_board_table_container {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+  /* .leader_board_table_container .table th {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    white-space: nowrap;
+  } */
+
+.leader_board_table_container .table td {
+  font-size: 16px;
+  font-weight: 400;
+  color: #000000;
+}
+
+.leader_board_table_container .table .field_input {
+  padding: 3px;
+  border: 0;
+  border-bottom: 2px solid gray;
+  outline: 0;
+  font-size: 1rem;
+  color: #000000;
+  background: #edf5ff;
+  transition: border-color 0.2s;
+}
+
+.leader_board_table_container th .add_btn {
+  border: 1px solid #cbd5e1;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.leader_board_table_container .error-border {
+  border: 2px solid red !important;
+}
+
+@media screen and (max-width: 1300px) {
+  .leader_board_table_container {
+    max-width: 1300px;
+  }
+}
+
+.leader-del-modal .modal-content {
+  width: 300px !important;
+}
+/* Sidebar styles */
+.sidebar ul li {
+  list-style: none;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #fff;
+  padding: 8px 12px;
+  display: block;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.sidebar ul li a svg{
+  font-size:20px
+}
+
+.sidebar ul li a.active-link {
+  background: #0000004D; 
+  color: #fff;
+}
+
+/* Leader Board Page End */
+
+
+/* 27-02-2025 dashboard styling */
+.add-btn {
+  border: 1px solid #007bff;
+  padding: 0.5rem 1rem;
+  color: #007bff; 
+  cursor: pointer;
+  border-radius: 10px;
+  background: #007bff;
+  color: #fff;
+
+
+}
+.logout-button{
+     background: #0000004D;
+    color: #fff;
+    width: 100%;
+}
+.logout-button:hover{
+  background: #0000004D;
+  color: #fff;
+}
+.sidebar-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 112px);
+  overflow: auto;
+}

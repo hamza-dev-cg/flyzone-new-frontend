@@ -1,0 +1,13 @@
+.dropdown-menu {
+    border: none;
+    box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.06);
+    border: 0.5px solid #EFEFEF;
+    border-radius: 4px;
+  }
+
+  .dropdown-menu .dropdown-item:hover  {
+    background-color: #0682FA; 
+    color: white;            
+  }
+  
+  

@@ -1,0 +1,36 @@
+.carousel-indicators button {
+    height: 7px;
+    border: none;
+    background-color: rgb(178, 177, 177) !important;
+}
+
+.carousel-indicators .active {
+    background-color: #0771EF !important;
+}
+
+.upcoming-event-head {
+    font-weight: bold;
+    text-align: center;
+}
+
+.upcoming-event-head span {
+    background: linear-gradient(90deg, #0c3df2 0%, #01b5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.upcoming-image {
+    margin-top: -2rem;
+    /* width: 50%; */
+    /* max-width: 30rem; */
+    /* max-height: 400px; */
+}
+.hero-left{
+    padding: 3rem;
+    /* height: 70vh; */
+}
+.carousel-indicators button {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 100%;
+}

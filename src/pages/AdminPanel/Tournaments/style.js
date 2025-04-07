@@ -1,0 +1,47 @@
+import Styled from "styled-components";
+const TournamentsWrapper = Styled.div`
+    .caption{
+      font-size:16px;
+      color:#475467;
+      margin-bottom:24px;
+      display: inline-block;
+    }
+    .tournament-box{
+      background-color:#F7FAFE;
+      padding:16px;
+      border:1px solid #E5E5E5;
+      border-radius:12px;
+      img{
+        width:100%;
+        max-width:100%
+      }
+      h2{
+        font-size:20px;
+        margin-top:16px;
+        margin-bottom:16px;
+        color:#1E1D1D;
+      }
+      p{
+        font-size:14px;
+        color:#403E3E;
+        margin-bottom:16px;
+      }
+      button{
+        width:100%;
+      }
+    }
+    .trash-icon{
+      width: 40px;
+      height:40px;
+      border:1px solid #E5E5E5;
+      border-radius:8px;
+      padding:8px;
+      display: flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer
+    }
+
+  `
+
+export default TournamentsWrapper;

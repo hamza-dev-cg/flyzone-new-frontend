@@ -1,0 +1,98 @@
+/* .modal-container3 {
+  border-radius: 11px;
+  border: 1px solid #01B4FF;
+  background: #FFF;
+  padding: 2rem;
+} */
+
+.event-model-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.event-model-card {
+  border-radius: 11px;
+  border: 0.5px solid #0771EF;
+  background: #FFF;
+  box-shadow: 7px 11px 16.7px 0px rgba(0, 0, 0, 0.11);
+  padding: 1rem;
+  width: 300px;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.event-model-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+
+
+.btn-learn-more,
+.btn-register  , .disabled-new {
+  border-radius: 4px;
+  background: linear-gradient(100deg, #0C3EF2 0%, #01B4FF 100%);
+  color: white;
+  padding: 0.4rem;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btn-register {
+  background: #000;
+}
+
+.btn-register:hover {
+  background: white;
+  color: black;
+  border: 1px solid black;
+}
+.disabled-new {
+  background: #b0b0b0 ; 
+  border: 1px solid #999 ; 
+  pointer-events: none; 
+  cursor: not-allowed; 
+
+}
+
+
+.btn-learn-more:hover {
+  background: white;
+  color: #0C3EF2;
+  border: 1px solid #0C3EF2;
+}
+
+.card-text {
+  font-size: 12px;
+  margin-top: 1rem;
+}
+
+.modal-img {
+  width: 100%;
+  text-align: center;
+}
+
+.card-img-top {
+  width: 60%;
+}
+
+.textHeading-1 {
+  text-align: center;
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #0C3DF2 0%, #01B5FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 800px) {
+  .event-model-card {
+    width: 100%;
+  }
+}
