@@ -18,8 +18,8 @@ export const getValidationSchema = (formType) => {
 
       case "register":
         return yup.object({
-          name: yup.string().trim().required("First Name is required"),
-          last_name: yup.string().trim().required("Last Name is required"),
+          firstName: yup.string().trim().required("First Name is required"),
+          lastName: yup.string().trim().required("Last Name is required"),
           email: yup
             .string()
             .trim()

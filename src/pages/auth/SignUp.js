@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { convertToFormData } from "../../utils/helpers";
 import { useRegisterUserMutation } from "../../features/user/api";
 import FlyZoneWhiteLogo from "../../assets/images/flyzone-white.svg";
 import { getValidationSchema } from "../../utils/validationSchema";
@@ -30,15 +29,14 @@ export default function SignUp() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const formData = convertToFormData(data);
-      const response = await createUser(formData).unwrap();
+      const response = await createUser(data).unwrap();
       if (response.success) {
-        toast.success(response?.messages[0]);
+        toast.success(response?.message);
         setTimeout(() => {
-          navigate("/verify/otp", { state: { userId: response?.data?.id } });
+          navigate("/verify/otp", { state: { token: response?.token } });
         }, 1000);
       } else {
-        toast.error(response?.messages[0]);
+        toast.error(response?.message);
       }
     } catch (error) {
       toast.error(error?.message || "Something went wrong");
@@ -87,10 +85,10 @@ export default function SignUp() {
                       className={`login-input ${
                         errors.name ? "input-error" : ""
                       }`}
-                      {...register("name")}
+                      {...register("firstName")}
                     />
-                    {errors.name && (
-                      <span className="error-text">{errors.name.message}</span>
+                    {errors.firstName && (
+                      <span className="error-text">{errors.firstName.message}</span>
                     )}
                   </div>
 
@@ -102,13 +100,13 @@ export default function SignUp() {
                     <input
                       type="text"
                       className={`login-input ${
-                        errors.last_name ? "input-error" : ""
+                        errors.lastName ? "input-error" : ""
                       }`}
-                      {...register("last_name")}
+                      {...register("lastName")}
                     />
-                    {errors.last_name && (
+                    {errors.lastName && (
                       <span className="error-text">
-                        {errors.last_name.message}
+                        {errors.lastName.message}
                       </span>
                     )}
                   </div>
@@ -196,13 +194,13 @@ export default function SignUp() {
                     <input
                       type="text"
                       className={`login-input ${
-                        errors.boat_name ? "input-error" : ""
+                        errors.boatName ? "input-error" : ""
                       }`}
-                      {...register("boat_name")}
+                      {...register("boatName")}
                     />
-                    {errors.boat_name && (
+                    {errors.boatName && (
                       <span className="error-text">
-                        {errors.boat_name.message}
+                        {errors.boatName.message}
                       </span>
                     )}
                   </div>
@@ -215,12 +213,12 @@ export default function SignUp() {
                     <input
                       type="text"
                       className={`login-input ${
-                        errors.phone ? "input-error" : ""
+                        errors.phoneNo ? "input-error" : ""
                       }`}
-                      {...register("phone")}
+                      {...register("phoneNo")}
                     />
-                    {errors.phone && (
-                      <span className="error-text">{errors.phone.message}</span>
+                    {errors.phoneNo && (
+                      <span className="error-text">{errors.phoneNo.message}</span>
                     )}
                   </div>
                 </div>
@@ -280,12 +278,12 @@ export default function SignUp() {
                     <input
                       type="text"
                       className={`login-input ${
-                        errors.zip ? "input-error" : ""
+                        errors.zipCode ? "input-error" : ""
                       }`}
-                      {...register("zip")}
+                      {...register("zipCode")}
                     />
-                    {errors.zip && (
-                      <span className="error-text">{errors.zip.message}</span>
+                    {errors.zipCode && (
+                      <span className="error-text">{errors.zipCode.message}</span>
                     )}
                   </div>
                 </div>

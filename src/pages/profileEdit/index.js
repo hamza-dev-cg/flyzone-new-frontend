@@ -6,14 +6,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { CiCamera } from "react-icons/ci";
 import { ToastContainer, toast } from "react-toastify";
 import { setUser } from "../../features/user/userSlice";
-import { useUpdateRegisterUserMutation } from "../../features/registerMeatFish/api";
+import { useUpdateUserMutation } from "../../features/user/api";
 import "../../assets/css/profile.css";
 import Avatar from "react-avatar";
 
 export default function ProfileEdit() {
   const navigate = useNavigate();
   const userData = useSelector((state) => state.user?.user);
-  const [UpdateRegisterUser] = useUpdateRegisterUserMutation();
+  const token = useSelector((state) => state.user?.token);
+  const [UpdateRegisterUser] = useUpdateUserMutation();
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
@@ -23,17 +24,17 @@ export default function ProfileEdit() {
   useEffect(() => {
     if (userData) {
       reset({
-        name: userData?.name || "",
-        last_name: userData?.last_name || "",
+        firstName: userData?.firstName || "",
+        lastName: userData?.lastName || "",
         email: userData?.email || "",
         address: userData?.address || "",
         city: userData?.city || "",
         state: userData?.state || "",
-        zip: userData?.zip || "",
-        phone: userData?.phone || "",
-        boat_name: userData?.boat_name || "",
+        zipCode: userData?.zipCode || "",
+        phoneNo: userData?.phoneNo || "",
+        boatName: userData?.boatName || "",
       });
-      setPreview(userData?.profile_image || "");
+      setPreview(userData?.imageUrl || "");
     }
   }, [userData, reset]);
 
@@ -48,29 +49,24 @@ export default function ProfileEdit() {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      const formData = new FormData();
+      // const formData = new FormData();
 
-      Object.keys(data).forEach((key) => {
-        formData.append(key, data[key]);
-      });
+      // Object.keys(data).forEach((key) => {
+      //   formData.append(key, data[key]);
+      // });
 
-      if (imageFile) {
-        formData.append("profile_image", imageFile);
-      }
+      // if (imageFile) {
+      //   formData.append("profile_image", imageFile);
+      // }
 
-      const response = await UpdateRegisterUser(formData);
-
+      const response = await UpdateRegisterUser({ data,  userId: userData.id, token});
       if (response?.data?.success) {
-        console.log(response?.data)
-        localStorage.setItem("user", JSON.stringify(response.data.data));
-        dispatch(setUser({ user: response.data.data }));
-        setPreview(userData.profile_image);
         toast.success("Profile updated successfully!");
-      } else {
-        toast.error("Failed to update profile.");
-      }
+        localStorage.setItem("user", JSON.stringify(response?.data?.user));
+        dispatch(setUser({ user: response?.data?.user }));
+        setPreview(userData.imageUrl);
+      } 
     } catch (error) {
-      console.error("Error updating profile:", error);
       toast.error("An error occurred while updating profile.");
     } finally {
       setLoading(false);
@@ -100,7 +96,7 @@ export default function ProfileEdit() {
                   />
                 ) : (
                   <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center">
-                    <Avatar size="120" name={userData?.name} src={userData?.profile_image} round={true} />
+                    <Avatar size="120" name={userData?.firstName} src={userData?.imageUrl} round={true} />
 
                   </div>
                 )}
@@ -127,13 +123,13 @@ export default function ProfileEdit() {
                     <input
                       type="text"
                       className="form-control"
-                      {...register("name", {
+                      {...register("firstName", {
                         required: "First name is required",
                       })}
                     />
                     {errors.name && (
                       <span className="text-danger font-12">
-                        {errors.name.message}
+                        {errors.firstName.message}
                       </span>
                     )}
                   </div>
@@ -146,13 +142,13 @@ export default function ProfileEdit() {
                     <input
                       type="text"
                       className="form-control"
-                      {...register("last_name", {
+                      {...register("lastName", {
                         required: "Last name is required",
                       })}
                     />
-                    {errors.last_name && (
+                    {errors.lastName && (
                       <span className="text-danger font-12">
-                        {errors.last_name.message}
+                        {errors.lastName.message}
                       </span>
                     )}
                   </div>
@@ -219,7 +215,7 @@ export default function ProfileEdit() {
                     <input
                       type="text"
                       className="form-control"
-                      {...register("zip")}
+                      {...register("zipCode")}
                     />
                   </div>
                 </div>
@@ -231,7 +227,7 @@ export default function ProfileEdit() {
                     <input
                       type="number"
                       className="form-control"
-                      {...register("phone")}
+                      {...register("phoneNo")}
                     />
                   </div>
                 </div>
@@ -243,7 +239,7 @@ export default function ProfileEdit() {
                     <input
                       type="text"
                       className="form-control"
-                      {...register("boat_name")}
+                      {...register("boatName")}
                     />
                   </div>
                 </div>

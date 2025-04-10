@@ -14,7 +14,6 @@ const WahooOpenLeaderBoard = ({ blueMarlineCovewahooOpen }) => {
     total_daily_aggregate: 0,
     total_overall_heavy_fish: 0,
   });
-console.log(blueMarlineCovewahooOpen);
   useEffect(() => {
     leaderBoardDataHandler();
   }, []);
@@ -219,7 +218,6 @@ console.log(blueMarlineCovewahooOpen);
     },
   ];
 
-  console.log('waho open' , wahooOpenData);
 
   return (
     <>

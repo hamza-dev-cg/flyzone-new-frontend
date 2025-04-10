@@ -274,7 +274,7 @@ const MainNavbar = () => {
                           data-bs-toggle="dropdown"
                         >
                           {/* <UserAvatar name={user?.name} size={42} /> */}
-                          <Avatar src={user?.profile_image} size="30"  name={user?.name} round={true} />
+                          <Avatar src={user?.profile_image} size="30"  name={user?.firstName} round={true} />
                         </a>
                         <ul
                           className="dropdown-menu dropdown-menu-end"
@@ -287,7 +287,7 @@ const MainNavbar = () => {
                             >
                               <div className="d-flex align-items-center justify-content-between p-0 m-0 ">
                                 <p className="mb-0">My Profile</p>
-                                <Avatar src={user?.profile_image} size="20"  name={user?.name} round={true} />
+                                <Avatar src={user?.profile_image} size="20"  name={user?.firstName} round={true} />
       
                               </div>
                             </a>

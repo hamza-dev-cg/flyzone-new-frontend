@@ -12,18 +12,16 @@ import "../../assets/css/login.css";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function VerifyOtp() {
-  const [otp, setOtp] = useState(["", "", "", ""]);
-  const inputRefs = [useRef(), useRef(), useRef(), useRef()];
+  const [otp, setOtp] = useState(["", "", "", "" , ""]);
+  const inputRefs = [useRef(), useRef(), useRef(), useRef() , useRef()];
   const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
   const [resendOtp, { isLoading: isResending }] = useResendOtpMutation();
   const [resendDisabled, setResendDisabled] = useState(false);
-
   const location = useLocation();
   const navigate = useNavigate();
-  const user_id = location.state?.userId;
-
-  if (!user_id) {
-    toast.error("User ID is missing. Please register again.");
+  const token = location.state?.token;
+  if (!token) {
+    toast.error("Token is missing. Please register again.");
     navigate("/signup");
   }
 
@@ -33,7 +31,7 @@ export default function VerifyOtp() {
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-    if (value && index < 3) {
+    if (value && index < 4) {
       inputRefs[index + 1].current.focus();
     }
   };
@@ -48,27 +46,24 @@ export default function VerifyOtp() {
   // Handle form submit (OTP verification)
   const onSubmit = async (e) => {
     e.preventDefault();
-    const finalOtp = otp.join("");
-
-    if (finalOtp.length !== 4) {
-      toast.error("OTP must be 4 digits");
+    const finalOtp = Number(otp.join(""));
+    if (finalOtp.toString().length !== 5) {
+      toast.error("OTP must be 5 digits");
       return;
     }
-
+    
     try {
-      const formData = convertToFormData({ user_id, otp: finalOtp });
-      const response = await verifyOtp(formData).unwrap();
-
+      const response = await verifyOtp({ finalOtp, token }).unwrap();
       if (response.success) {
-        toast.success(response?.messages[0]);
+        toast.success(response?.message);
         setTimeout(() => {
           navigate("/login");
         }, 1000);
       } else {
-        toast.error(response?.messages[0]);
+        toast.error(response?.message);
       }
     } catch (error) {
-      toast.error(error?.message || "Invalid OTP. Please try again.");
+      toast.error(error?.data?.message);
     }
   };
 
@@ -77,7 +72,7 @@ export default function VerifyOtp() {
     if (resendDisabled) return;
     try {
       setResendDisabled(true);
-      const formData = convertToFormData({ user_id });
+      const formData = convertToFormData({  });
       const response = await resendOtp(formData).unwrap();
 
       if (response.success) {
