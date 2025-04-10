@@ -23,7 +23,7 @@ const AdminRoutes = () => (
     <Route path="/admin-dashboard/events" element={<EventsUpload />} />
     <Route path="/admin-dashboard/detail" element={<ChubCayDatails />} />
     <Route path="/admin-dashboard/tournaments" element={<Tournaments />} />
-    <Route path="/admin-dashboard/tournaments/tournaments-details" element={<TournamentsDetails />} />
+    <Route path="/admin-dashboard/tournaments/tournaments-details/:id" element={<TournamentsDetails />} />
     <Route path="/admin-dashboard/tournaments/tournaments-details/add-event" element={<AddEvent />} />
   </>
 );

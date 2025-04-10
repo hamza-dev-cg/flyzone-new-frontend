@@ -4,7 +4,7 @@ import { productionBaseUrl, DevbaseUrl } from "../../apis/base";
 export const TournamentApi = createApi({
   reducerPath: "Tournament",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://flyzone.ai/flyzone_laravel',
+    baseUrl: 'http://10.229.220.25/',
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('authToken'); 
       if (token) {
@@ -20,7 +20,7 @@ export const TournamentApi = createApi({
         method: "GET",
       }),
     }),
-  
+
     CreateTournament: builder.mutation({
       query: (data) => ({
         url: `/api/create-tournament`,
@@ -28,6 +28,7 @@ export const TournamentApi = createApi({
         body: data,
       }),
     }),
+
     UpdateTournament: builder.mutation({
       query: (data) => ({
         url: `/api/update-tournament`,
@@ -35,12 +36,14 @@ export const TournamentApi = createApi({
         body: data,
       }),
     }),
+
     DeleteTournament: builder.mutation({
       query: (data) => ({
         url: `/api/tournaments/${data}`, 
         method: "DELETE",
       }),
     }),
+
     EventforPaymentTournament: builder.mutation({
       query: (data) => ({
         url: `api/tournament/add`,
@@ -48,12 +51,14 @@ export const TournamentApi = createApi({
         body: data,
       }),
     }),
+
     DeleteRegTournament: builder.mutation({
       query: (id) => ({
         url: `/api/tournament/delete/${id}`,
         method: "DELETE",
       }),
     }),
+
     EditRegTournament: builder.mutation({
       query: (data) => {
         const { id, ...rest } = data;
@@ -63,6 +68,39 @@ export const TournamentApi = createApi({
           body: rest,
         };
       },
+    }),
+
+    GetAllTournamentForAdmin: builder.mutation({
+      query: () => ({
+        url: `/api/tournament/get-all-tournament-categories`,
+        method: "GET",
+      }),
+    }),
+
+    CreateTournamentForAdmin: builder.mutation({
+      query: (data) => ({
+        url: `/api/tournament/create-tournament-category`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    DeleteTournamentForAdmin: builder.mutation({
+      query: (id) => ({
+        url: `/api/tournament/delete-tournament-category/${id}`,
+        method: "DELETE",
+      }),
+    }),
+    CreateTournamentCategoryForAdmin: builder.mutation({
+      query: (id) => ({
+        url: `/api/tournament/get-tournament-category/${id}`,
+        method: "GET",
+      }),
+    }),
+    DeleteTournamentCategoryForAdmin: builder.mutation({
+      query: (id) => ({
+        url: `/api/tournament/delete-tournament-category/${id}`,
+        method: "DELETE",
+      }),
     }),
   }),
 });
@@ -74,5 +112,10 @@ export const {
   useDeleteTournamentMutation,
   useDeleteRegTournamentMutation,
   useEditRegTournamentMutation,
-  useEventforPaymentTournamentMutation
+  useDeleteTournamentForAdminMutation,
+  useEventforPaymentTournamentMutation,
+  useGetAllTournamentForAdminMutation,
+  useCreateTournamentForAdminMutation,
+  useCreateTournamentCategoryForAdminMutation,
+  useDeleteTournamentCategoryForAdminMutation
 } = TournamentApi;

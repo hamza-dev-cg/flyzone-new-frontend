@@ -14,6 +14,7 @@ const ButtonWrapper = Styled(Button)`
     &.outlined{
       border:1px solid ${({ theme }) => theme.colors.primaryColor};
       color: ${({ theme }) => theme.colors.primaryColor};
+      background:transparent;
       &:hover{
         border:1px solid ${({ theme }) => theme.colors.primaryColor};
         color: ${({ theme }) => theme.colors.primaryColor};

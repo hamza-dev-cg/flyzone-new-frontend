@@ -28,7 +28,7 @@ export const IsAdminLoggedIn = () => {
     return false;
   }
 
-  if (user?.user_type === "admin") {
+  if (user?.role === "admin") {
     return true;
   } else {
     return false;
