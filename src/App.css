@@ -3484,3 +3484,17 @@ thead.background-row th {
   border-style: solid;
   border-color: #fff transparent transparent transparent;
 }
+.delete-icon{
+    right: 23px;
+    top: 20px;
+    background-color: #ffffff;
+    color: #db1414;
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ccc;
+}
