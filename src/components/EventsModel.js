@@ -10,9 +10,10 @@ import BurunuBomaImage from "../assets/images/BomaMain.png";
 
 import "../assets/css/eventModel.css";
 const modalSizeMap = {
-  Wahoo: "lg",
+  Wahoo: "md",
   Chub: "lg",
-  West: "md",
+  West: "sm",
+  Burunu: "sm",
 };
 const navLinks = {
   Wahoo: [
@@ -28,7 +29,7 @@ const navLinks = {
       path: "/tournaments/championship",
       title: "February 13th to 15th 2025",
       image: Camp,
-      width: "53%",
+      width: "56%",
       register: false,
     },
   ],
@@ -45,14 +46,14 @@ const navLinks = {
       path: "/tournaments/chub-cay-open",
       title: "March 27th to 29th, 2025",
       image: ChubClayOpenImage,
-      width: "53%",
+      width: "57%",
       register: true,
     },
     {
       path: "/tournaments/chub-cay-invitational",
       title: "April 11th to 13th, 2025",
       image: ChubClayInvitationsImage,
-      width: "70%",
+      width: "72%",
       register: true,
     },
   ],
@@ -71,7 +72,7 @@ const navLinks = {
       path: "/tournaments/burunu-boma",
       title: "May 2nd to 4th, 2025",
       image: BurunuBomaImage,
-      width: "71%",
+      width: "61%",
       register: false,
       name: "Burunu Boma",
     },
@@ -100,7 +101,7 @@ export default function EventsModal({ event, onClose }) {
 
   return (
     <Modal show={isModalVisible} centered size={modalSize}>
-      <div className="modal-container3" ref={modalRef}>
+      <div ref={modalRef}>
         <h4 className="textHeading-1">{eventData[0].name}</h4>
         <div className="event-model-container">
           {eventData.map((event, index) => (

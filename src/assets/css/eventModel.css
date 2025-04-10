@@ -1,14 +1,10 @@
-/* .modal-container3 {
-  border-radius: 11px;
-  border: 1px solid #01B4FF;
-  background: #FFF;
-  padding: 2rem;
-} */
+
 
 .event-model-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   gap: 1rem;
+  padding: 1rem;
 }
 
 .event-model-card {
@@ -17,7 +13,7 @@
   background: #FFF;
   box-shadow: 7px 11px 16.7px 0px rgba(0, 0, 0, 0.11);
   padding: 1rem;
-  width: 300px;
+  /* width: 300px; */
   text-align: center;
   margin-top: 1rem;
 }
@@ -41,6 +37,7 @@
   text-decoration: none;
   text-align: center;
   cursor: pointer;
+  font-size: 13px;
 }
 
 .btn-register {
@@ -94,5 +91,8 @@
 @media (max-width: 800px) {
   .event-model-card {
     width: 100%;
+  }
+  .event-model-container{
+    flex-direction: column;
   }
 }

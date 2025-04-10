@@ -8,7 +8,7 @@ import "../../assets/css/forumTable.css";
 export default function Forum() {
   return (
     <>
-      <div className="container layout-space">
+      <div className="container layout-space overflow-hidden">
         <div className="row">
           <div className="col-sm-12 col-md-12 col-lg-6  mt-4">
             <div className="info-des-container">

@@ -43,7 +43,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="container">
-        <div className="footer-row">
+        <div className="footer-row ">
           <div className="logo">
             <Link to="/">
               <img className="img-fluid" src={Logo} alt="logo" />

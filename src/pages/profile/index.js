@@ -30,7 +30,7 @@ import Image18 from "../../assets/images/new/18.png";
 import { setUser } from "../../features/user/userSlice";
 export default function Profile() {
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user?.user);
+  const userData = useSelector((state) => state?.user?.user);
   const [modalImage, setModalImage] = useState(null);
   const [showModel, setShowModel] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
@@ -70,12 +70,10 @@ export default function Profile() {
         <div className="d-flex flex-column justify-content-center text-center">
           <div className="d-flex justify-content-center w-full">
             <div className="d-flex justify-content-center w-full flex-column align-items-center">
-            <Avatar size="120" name={userData?.name} src={userData?.profile_image} round={true} />
-            
+            <Avatar size="120" name={userData?.firstName} src={userData?.imageUrl} round={true} />
             </div>
-
           </div>
-          <h5 className="mt-2">{userData?.name || "Guest User"}</h5>
+          <h5 className="mt-2">{userData?.firstName || "Guest User"}</h5>
           <p>{userData?.email}</p>
           <hr />
         </div>
@@ -85,11 +83,11 @@ export default function Profile() {
             <div className="d-flex flex-column flex-md-row justify-content-center gap-2 gap-md-5 ps-5 ps-md-5">
               <div className="d-flex flex-grow-1 align-items-center">
                 <span class="info-check"><RiShip2Line /> </span>
-                <p className="mb-0">{userData?.boat_name}</p>
+                <p className="mb-0">{userData?.email}</p>
               </div>
               <div className="d-flex flex-grow-1 flex-row align-items-center">
                 <span class="info-check"><MdPhone /> </span>
-                <p className="mb-0">{userData?.phone}</p>
+                <p className="mb-0">{userData?.phoneNo}</p>
               </div>
               <div className="d-flex flex-grow-1 align-items-center">
                 <span class="info-check"><IoLocationOutline /> </span>

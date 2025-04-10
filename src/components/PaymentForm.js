@@ -25,7 +25,7 @@ function PaymentForm() {
   const storedTotalAmount = parseInt(localStorage.getItem("total_amount")) || 0;
   const storedSelectedEntries = JSON.parse(localStorage.getItem("selected_entries")) || [];
   const subTotal = amount + storedTotalAmount;
-  const convenience_fee = (4 / 100) * subTotal;
+  const convenience_fee = selectedOption === "cash" ? 0 : (4 / 100) * subTotal;
   const total = subTotal + convenience_fee;
 
   const dataNew = {
@@ -109,7 +109,7 @@ function PaymentForm() {
           setSuccess("Payment and registration successful!");
           localStorage.removeItem("formStep");
           localStorage.removeItem("selected_entries");
-           localStorage.removeItem("total_amount");
+          localStorage.removeItem("total_amount");
 
           setTimeout(() => navigate("/"), 2000);
         } else {

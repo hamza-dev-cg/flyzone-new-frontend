@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { convertToFormData } from "../../utils/helpers";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -35,34 +34,29 @@ export default function Login() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const formData = convertToFormData(data);
-      const response = await createUser(formData).unwrap();
-
+      const response = await createUser(data).unwrap();
       if (response.success) {
-        dispatch(setUser({ user: response?.data }));
-        localStorage.setItem("authToken", response?.access_token);
-        localStorage.setItem("user", JSON.stringify(response?.data));
-
-        toast.success(response?.messages[0]);
-
+        dispatch(setUser({ user: response?.user , token : response?.token }));
+        localStorage.setItem("authToken", response?.token);
+        localStorage.setItem("user", JSON.stringify(response?.user));
+        toast.success("User is Login Successfully");
         setTimeout(() => {
           // Retrieve the last visited route before login
           const redirectPath = localStorage.getItem("redirectPath") || "/";
-
           // Clear the stored path after use
           localStorage.removeItem("redirectPath");
 
-          if (response?.data?.user_type === "admin") {
+          if (response?.user?.role === "admin") {
             navigate("/admin-dashboard/registration");
           } else {
             navigate(redirectPath);
           }
         }, 1000);
       } else {
-        toast.error(response?.messages[0]);
+        toast.error(response?.message);
       }
     } catch (error) {
-      toast.error(error.message || "Something went wrong");
+      toast.error(error.data.message);
     }
     setLoading(false);
   };
