@@ -9,13 +9,10 @@ const EventsNavbar = ({ links }) => {
   const navLinks = {
     wahoo: [
       { path: "/tournaments/wahoo-open", label: "Information" },
-      ,
       { path: "/tournaments/wahoo-open/rules", label: "Rules" },
-      {
-        path: "/tournaments/wahoo-open/resort-and-marina",
+      { path: "/tournaments/wahoo-open/resort-and-marina",
         label: "Resort & Marina",
-      },
-      {
+      },{
         path: "/tournaments/wahoo-open/gallery",
         label: "Gallery",
       },
@@ -32,7 +29,6 @@ const EventsNavbar = ({ links }) => {
     ],
     chubClayInvitational: [
       { path: "/tournaments/chub-cay-invitational", label: "Information" },
-      ,
       { path: "/tournaments/chub-cay-invitational/rules", label: "Rules" },
       {
         path: "/tournaments/chub-cay-invitational/gallery",

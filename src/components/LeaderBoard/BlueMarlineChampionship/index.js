@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Table from "../../Table";
-import OverallHeaviest10Tournament from "./OverallHeaviest10Tournament";
 import HeaviestFishofEachDay from "./HeaviestFishofEachDay";
-import HeaviestFishOfTheTournament from "./HeaviestFishOfTheTournament";
 import DailyAggregate from "./DailyAggregate";
 
 const ChampionshipLeaderBoard = ({ blueMarlineChampionSip }) => {

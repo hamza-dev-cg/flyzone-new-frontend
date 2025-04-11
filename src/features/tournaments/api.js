@@ -1,18 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { productionBaseUrl, DevbaseUrl } from "../../apis/base";
+import {baseQuery} from '../../utils/common';
 
 export const TournamentApi = createApi({
   reducerPath: "Tournament",
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://10.229.220.25/',
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem('authToken'); 
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     GetTournament: builder.mutation({
       query: () => ({
@@ -90,6 +82,13 @@ export const TournamentApi = createApi({
         method: "DELETE",
       }),
     }),
+    CreateTournamentEventForAdmin: builder.mutation({
+      query: (data) => ({
+        url: `/api/tournament//create-tournament-event`,
+        method: "POST",
+        body:data
+      }),
+    }),
     CreateTournamentCategoryForAdmin: builder.mutation({
       query: (id) => ({
         url: `/api/tournament/get-tournament-category/${id}`,
@@ -117,5 +116,6 @@ export const {
   useGetAllTournamentForAdminMutation,
   useCreateTournamentForAdminMutation,
   useCreateTournamentCategoryForAdminMutation,
-  useDeleteTournamentCategoryForAdminMutation
+  useDeleteTournamentCategoryForAdminMutation,
+  useCreateTournamentEventForAdminMutation,
 } = TournamentApi;

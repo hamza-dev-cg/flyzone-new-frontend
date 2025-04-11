@@ -9,7 +9,6 @@ const Index = (props) => {
     text,
     disabled,
     onClick,
-    marginBottom,
     width,
     startIcon,
     height,

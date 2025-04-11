@@ -24,7 +24,7 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 };
 
  const baseQuery = fetchBaseQuery({
-  baseUrl: "https://flyzone.ai/flyzone_laravel",
+  baseUrl: process.env.REACT_APP_DEV_URL,
   prepareHeaders: (headers) => {
     const token = localStorage.getItem("authToken");
     if (token) {

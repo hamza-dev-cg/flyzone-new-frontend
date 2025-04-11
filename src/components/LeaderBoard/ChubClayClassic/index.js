@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import Table from "../../Table";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import Avatar from 'react-avatar';
 
 const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
   const [tournamentData, setTournamentData] = useState({

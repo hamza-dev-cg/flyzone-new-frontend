@@ -1,5 +1,3 @@
-import { Image } from "react-grid-gallery";
-
 import Gallery01 from "../../../assets/images/new/g-1.JPG";
 import Gallery02 from "../../../assets/images/new/g-2.JPG";
 import Gallery03 from "../../../assets/images/new/g-3.JPG";
