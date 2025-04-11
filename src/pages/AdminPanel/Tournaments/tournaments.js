@@ -39,8 +39,8 @@ const Tournaments = () => {
   const navigate = useNavigate();
 
   const TournamentCard = ({ name, description, navigateTo, id }) => (
-    <div className="col-lg-4 col-md-6">
-      <span className="position-relative">
+    <div className="col-lg-4 col-md-6 d-flex">
+      <span className="position-relative tournament-box">
         <div
           className="delete-icon position-absolute"
           onClick={() => {
@@ -50,14 +50,11 @@ const Tournaments = () => {
         >
           <IoTrashOutline />
         </div>
-        <div className="tournament-box">
+        <div>
           <img src={TournamentPic} alt="tournament" />
           <h2>{name}</h2>
           <p>{description}</p>
-          <Button
-            text="View Tournament"
-            onClick={() => navigate(navigateTo)}
-          />
+          <Button text="View Tournament" onClick={() => navigate(navigateTo)} />
         </div>
       </span>
     </div>
@@ -180,13 +177,13 @@ const Tournaments = () => {
             text="Add Tournaments"
           />
         </div>
-        <span className="caption">
-          See tournaments performance from here.
-        </span>
+        <span className="caption">See tournaments performance from here.</span>
 
         <div className="row">
           {showTournament.length === 0 ? (
-            <p>No tournaments available.</p>
+            <p>
+              <Loader />
+            </p>
           ) : (
             showTournament.map((tournament) => (
               <TournamentCard
@@ -201,10 +198,16 @@ const Tournaments = () => {
         </div>
       </TournamentsWrapper>
 
-      <Modal show={deleteTournament} centered size="150px">
-        <h4 className="text-center">Delete Tournament</h4>
-        <hr/>
-        <h6 className="text-center">Are you sure you want to delete this tournament?</h6>
+      <Modal
+        show={deleteTournament}
+        centered
+        size="150px"
+        header
+        headerTitle="Delete Tournament"
+      >
+        <h6 className="text-center">
+          Are you sure you want to delete this tournament?
+        </h6>
         <div className="d-flex justify-content-end gap-4 mt-4">
           <Button
             className="outlined"
@@ -220,9 +223,8 @@ const Tournaments = () => {
         </div>
       </Modal>
 
-      <Modal show={addTournament}>
+      <Modal show={addTournament} header headerTitle="Add Tournament">
         <div className="Add-tournament-modal">
-          <h1 className="text-center color-primary">Add Tournament</h1>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Input
               label="Title"

@@ -1,18 +1,14 @@
-import React, { useState, useEffect,Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   useLocation,
-  useNavigate,
-  Navigate,
-  Outlet
 } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import store from "./store/store";
 import theme from "./styles/theme-variable";
 import GlobalStyles from "./styles/global-styles";
-import RegisterForm from "./pages/RegisterForm";
 import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./pages/NotFound";
 import ChatBotIcon from "./components/ChatBot/ChatBotIcon";

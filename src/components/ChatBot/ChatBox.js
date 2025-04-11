@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import "./ChatBot.css";
 import ChatBot_Image from "../../assets/images/chatbot-icon.png";
 import Send_Text_Image from "../../assets/icons/send-icon.svg";
-import Close_Chat_Icon from "../../assets/images/chat-close-icon.png";
 import Chat_Suggestion_1 from "../../assets/images/chat-suggetion-1.png";
 import Chat_Suggestion_2 from "../../assets/images/chat-suggetion-2.png";
 import Chat_Suggestion_3 from "../../assets/images/chat-suggetion-3.png";
@@ -100,7 +99,7 @@ const ChatBox = ({ closeChatBox }) => {
             }}
           >
             <div>
-              <img src={Chat_Suggestion_1} />
+              <img src={Chat_Suggestion_1} alt="no-suggestion" />
             </div>
             <div>
               <p>Details about upcoming tournaments</p>
@@ -115,7 +114,7 @@ const ChatBox = ({ closeChatBox }) => {
             }}
           >
             <div>
-              <img src={Chat_Suggestion_2} />
+              <img src={Chat_Suggestion_2} alt="no-suggestion" />
             </div>
             <div>
               <p>Starting a thread in forums</p>
@@ -130,7 +129,7 @@ const ChatBox = ({ closeChatBox }) => {
             }}
           >
             <div>
-              <img src={Chat_Suggestion_3} />
+              <img src={Chat_Suggestion_3} alt="no-suggestion" />
             </div>
             <div>
               <p>What FlyZone is offering?</p>

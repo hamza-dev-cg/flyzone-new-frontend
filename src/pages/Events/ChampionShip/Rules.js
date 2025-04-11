@@ -1,6 +1,5 @@
 import React from "react";
 import EventsNavbar from "../../../components/EventsNavbar";
-import Footer from "../../../components/Footer";
 import Line from "../../../assets/images/line.png";
 import EventInformationBg from "../../../assets/images/event-informat-bg.png";
 

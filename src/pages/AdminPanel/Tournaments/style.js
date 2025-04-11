@@ -11,6 +11,8 @@ const TournamentsWrapper = Styled.div`
       padding:16px;
       border:1px solid #E5E5E5;
       border-radius:12px;
+      width: 100%;
+      display: block;
       img{
         width:100%;
         max-width:100%

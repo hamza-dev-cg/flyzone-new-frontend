@@ -1,17 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { DevbaseUrl } from '../../apis/base'
+import { DevbaseUrl } from '../../apis/base';
+import {baseQuery} from '../../utils/common';
+
 export const ForumApi = createApi({
   reducerPath: "Forum",
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://flyzone.ai/flyzone_laravel',
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery,
   endpoints: (builder) => ({
     GetCategory: builder.mutation({
       query: () => ({

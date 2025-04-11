@@ -10,7 +10,8 @@ import GetStartedButtonArrowImage from "../../assets/images/get-started-btn-arro
 import Start1 from "../../assets/images/start-heo-img-1.png";
 import Start2 from "../../assets/images/start-heo-img-2.png";
 import UpcomingEvents from "../../components/UpcomingEvents";
-import LeaderBoard from '../LeaderBoard/index'
+import LeaderBoard from '../LeaderBoard/index';
+
 export default function Home() {
   const navigate = useNavigate();
 
@@ -121,7 +122,7 @@ export default function Home() {
       </div>
       <div className="container text-center mt-5 pt-5">
         <h1 className="leaderboard-h1">
-          Events<span> Leaderboard</span>
+          Events<span>Leaderboard</span>
         </h1>
 
       </div>

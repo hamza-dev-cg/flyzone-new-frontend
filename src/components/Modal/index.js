@@ -1,5 +1,5 @@
-import { useState } from "react";
-import Button from "react-bootstrap/Button";
+import React from "react";
+import Button from "../../components/Button";
 import Modal from "react-bootstrap/Modal";
 
 function Example({
@@ -10,7 +10,9 @@ function Example({
   footer,
   children,
   centered,
-  size
+  size,
+  headerTitle,
+  saveText
 }) {
   return (
     <>
@@ -21,20 +23,16 @@ function Example({
         onHide={handleClose}
       >
         {header && (
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Header>
+            <Modal.Title>{headerTitle}</Modal.Title>
           </Modal.Header>
         )}
 
         <Modal.Body>{children}</Modal.Body>
         {footer && (
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleSave}>
-              Save Changes
-            </Button>
+            <Button  text="Close" className="outlined" onClick={handleClose} />
+            <Button text={saveText}  onClick={handleSave} />
           </Modal.Footer>
         )}
       </Modal>

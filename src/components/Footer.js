@@ -54,6 +54,7 @@ const Footer = () => {
             <a
               href="https://www.google.com/maps?q=2875+S+Ocean+Blvd,+Ste.+200+Palm+Beach,+FL+33480"
               target="_blank"
+              rel="noreferrer"
               className="email-link mx-2"
             >
               Florida Office 2875 S Ocean Blvd, Ste. 200 Palm Beach, FL 33480
@@ -73,7 +74,7 @@ const Footer = () => {
           </div>
           <div className="footer-row-box">
             {socialLinks.map(({ href, imgSrc, alt }) => (
-              <a key={href} href={href} target="_blank" className="social-icon">
+              <a key={href}  rel="noreferrer" href={href} target="_blank" className="social-icon">
                 <img src={imgSrc} alt={alt} />
               </a>
             ))}
