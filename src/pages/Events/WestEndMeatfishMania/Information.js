@@ -10,6 +10,9 @@ const Information = () => {
     <div>
       <section className="whoo-open-hero-section">
         <EventsNavbar basePath="/events" links="westEndMeatFishMania" />
+        <div class="text-center mt-5 d-block d-lg-none d-md-none">
+          <a class="register-top-show" href="/west-end-meat-fish/register/3">Register</a>
+        </div>
         <TournamentInfo
           title={
             <>

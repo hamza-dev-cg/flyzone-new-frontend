@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Logo from "../assets/images/logo.png";
 import Avatar from 'react-avatar';
 import Menu from "../assets/images/menu.png";
@@ -8,33 +9,56 @@ import EventsModel from "./EventsModel";
 import ProfileImg from "../assets/images/forum-img.png";
 import NotifyImg from "../assets/images/notify.png";
 import { getTokenFromLocalStorage } from "../utils/helpers";
+import {
+  useGetAllTournamentForAdminMutation,
+} from "../features/tournaments/api";
 import "../assets/css/navbar.css";
 const MainNavbar = () => {
   const navigate = useNavigate();
+  const [getTournamentAPI] = useGetAllTournamentForAdminMutation();
   const [showModal, setShowModal] = useState(false);
-  const [eventName, setEventName] = useState("");
-  const handleOpenModal = (name) => {
-    setEventName(name);
+  const [showTournament, setShowTournament] = useState([]);
+  const [event, setEvent] = useState("");
+  const userData = useSelector((state) => state.user?.user);
+
+  const [user, setUser] = useState(userData);
+  const token = getTokenFromLocalStorage();
+  const location = useLocation();
+
+  // console.log('Here is the user data' , userData);
+  // useEffect(() => {
+  //   const storedUser = JSON.parse(localStorage.getItem("user"));
+  //   setUser(storedUser);
+  // }, []);
+
+  const handleOpenModal = (data) => {
+    setEvent(data);
     setShowModal(true);
   };
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
   const logoutHandler = () => {
     localStorage.clear();
     sessionStorage.clear();
     navigate("/login");
   };
-  const [user, setUser] = useState(null);
+
+
+  const fetchTournaments = async () => {
+    try {
+      const response = await getTournamentAPI();
+      if (response?.data?.tournaments) {
+        setShowTournament(response.data.tournaments);
+      }
+    } catch (err) {
+      console.log("Something went wrong while fetching tournaments.");
+    }
+  };
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
-
+    fetchTournaments();
   }, []);
-  const token = getTokenFromLocalStorage();
-  const location = useLocation();
   return (
     <div className="main-navbar p-0">
       <div className="container">
@@ -89,7 +113,7 @@ const MainNavbar = () => {
                   >
                     Tournaments
                   </span>
-                  <ul className="dropdown-menu " aria-labelledby="navbarDropdown">
+                  {/* <ul className="dropdown-menu " aria-labelledby="navbarDropdown">
                     <li>
                       <span
                         className="nav-anchor dropdown-item"
@@ -119,10 +143,24 @@ const MainNavbar = () => {
                         className="nav-anchor dropdown-item"
                         onClick={() => handleOpenModal("Burunu")}
                       >
-                        Burunu Boma 
+                        Burunu Boma
                       </span>
                     </li>
+                  </ul> */}
+
+                  <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {showTournament.map((tournament, index) => (
+                      <li key={index}>
+                        <span
+                          className="nav-anchor dropdown-item"
+                          onClick={() => handleOpenModal(tournament)}
+                        >
+                          {tournament.name}
+                        </span>
+                      </li>
+                    ))}
                   </ul>
+
                 </li>
                 <Link
                   className={`nav-anchor ${location.pathname === "/forums" && "active-link"
@@ -274,7 +312,7 @@ const MainNavbar = () => {
                           data-bs-toggle="dropdown"
                         >
                           {/* <UserAvatar name={user?.name} size={42} /> */}
-                          <Avatar src={user?.profile_image} size="30"  name={user?.firstName} round={true} />
+                          <Avatar src={user?.profile_image} size="30" name={user?.firstName} round={true} />
                         </a>
                         <ul
                           className="dropdown-menu dropdown-menu-end"
@@ -287,8 +325,8 @@ const MainNavbar = () => {
                             >
                               <div className="d-flex align-items-center justify-content-between p-0 m-0 ">
                                 <p className="mb-0">My Profile</p>
-                                <Avatar src={user?.profile_image} size="20"  name={user?.firstName} round={true} />
-      
+                                <Avatar src={user?.profile_image} size="20" name={user?.firstName} round={true} />
+
                               </div>
                             </a>
                           </li>
@@ -297,7 +335,7 @@ const MainNavbar = () => {
                               className="nav-anchor dropdown-item pt-2"
                               href="/profile/update"
                             >
-                             Edit Profile
+                              Edit Profile
                             </a>
                           </li>
                           <li>
@@ -315,16 +353,16 @@ const MainNavbar = () => {
                   </>
                 ) : (
                   <>
-                  <Link
-                        className={`nav-anchor  text-white ${location.pathname === "/sign-in" && "active-link"
-                          }`}
-                        to="/login"
-                      >
-                    <button className="nav-btn">
-                      
+                    <Link
+                      className={`nav-anchor  text-white ${location.pathname === "/sign-in" && "active-link"
+                        }`}
+                      to="/login"
+                    >
+                      <button className="nav-btn">
+
                         Sign In
-                     
-                    </button>
+
+                      </button>
                     </Link>
                   </>
                 )}
@@ -336,7 +374,7 @@ const MainNavbar = () => {
 
       {showModal && (
         <EventsModel
-          event={eventName}
+          event={event}
           show={showModal}
           onClose={handleCloseModal}
         />

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Line from "../../assets/images/line.png";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,7 +10,6 @@ import "../../assets/css/profile.css";
 import Avatar from "react-avatar";
 
 export default function ProfileEdit() {
-  const navigate = useNavigate();
   const userData = useSelector((state) => state.user?.user);
   const token = useSelector((state) => state.user?.token);
   const [UpdateRegisterUser] = useUpdateUserMutation();
@@ -91,8 +89,6 @@ export default function ProfileEdit() {
                     src={preview}
                     alt="Profile Preview"
                     className="rounded-circle rounded-image-edit"
-                    width="150px"
-                    height="150px"
                   />
                 ) : (
                   <div className="rounded-circle bg-secondary d-flex align-items-center justify-content-center">

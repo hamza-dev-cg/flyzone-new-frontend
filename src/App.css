@@ -1,6 +1,7 @@
 /* Events Page -> Navbar Start */
 body {
   font-family: "Poppins", sans-serif !important;
+  overflow-x: hidden;
 }
 .events-navbar .nav {
   height: 86px;
@@ -350,6 +351,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  flex-direction: row;
   padding: 30px 0px;
 }
 
@@ -1089,7 +1091,7 @@ body {
 #footprint-h1 {
   margin-top: 4rem;
   color: #191a15;
-  font-size: 36px;
+  font-size: 2rem;
 
   font-weight: 600;
   line-height: 57px;
@@ -1099,8 +1101,10 @@ body {
   }
 }
 
+
+
 .form-container {
-  padding: clamp(0.5rem, 10vw, 2rem);
+  padding: 1.5rem;
 
   input {
     background-color: #cce7f2;
@@ -1636,7 +1640,7 @@ body {
 
 @media (max-width: 780px) {
   .responsive-line {
-    width: 100%;
+    width: 70%;
     height: auto;
     margin: 5px 0px;
   }
@@ -1928,7 +1932,7 @@ body {
   background: #f7f9fb;
   box-shadow: 7px 11px 16.7px 0px rgba(0, 0, 0, 0.11);
   max-width: 900px;
-  padding: 40px;
+  /* padding: 40px; */
   margin-top: 28px;
   width: 100%;
 }
@@ -3411,8 +3415,15 @@ thead.background-row th {
   margin-top: -98px;
 }
 .rounded-image-edit {
-  margin-top: -156px;
+  margin-top: -140px;
+  width: 100px;
+  height:  100px;
 }
+ @media (max-width: 991px){
+  .rounded-image-edit {
+    margin-top: -100px;
+  }
+ }
 .upload-icon {
   font-size: 16px;
   margin-right: 8px;
@@ -3445,7 +3456,24 @@ thead.background-row th {
   cursor: pointer;
 }
 
+@media (max-width: 500px){
+  .stepper-font-size {
+    font-size: 10px;
+  }
+}
 
+@media (max-width: 768px) {
+  .step-divider {
+    left: 40%;
+    width: 60%;
+  }
+}
+@media (max-width: 400px) {
+  .step-divider {
+    left: 60%;
+    width: 40%;
+  }
+}
 
 .tooltip-texts {
   visibility: hidden;
@@ -3484,17 +3512,39 @@ thead.background-row th {
   border-style: solid;
   border-color: #fff transparent transparent transparent;
 }
-.delete-icon{
-    right: 23px;
-    top: 20px;
-    background-color: #ffffff;
-    color: #db1414;
-    width: 32px;
-    height: 32px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 0 10px #ccc;
+
+
+/* The register button should be show at the top of the title */
+
+.register-top-show {
+  padding: 5px 10px;
+  border: none;
+  background: #020202;
+  cursor: pointer;
+  font-size: 14px;
+  color: #fff;
+  font-size: 12.574px;
+  font-weight: 600;
+  border-radius: 39.293px;
+  text-decoration: none;
+  padding: 13px 30px;
+}
+
+.service-line{
+  width: 40%;
+}
+.about-fly-img{
+  width: 100%;
+}
+
+@media (max-width: 991px){
+  .service-line{
+    width: 100%;
+  }
+  #footprint-h1 {
+    font-size: 1rem;
+}
+.about-fly-img{
+  width: 90%;
+}
 }

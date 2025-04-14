@@ -228,7 +228,7 @@ const Registration = () => {
       <ToastContainer />
       <section className="layout-space register-section">
         <div className="content-center">
-          <h1>{firstSegment} Registration Form</h1>
+          <h1 className="text-center">{firstSegment} Registration Form</h1>
           <img className="responsive-line" src={Line} alt="line" />
         </div>
 
@@ -239,7 +239,7 @@ const Registration = () => {
                 <>
                   <div
                     key={index}
-                    className="d-flex flex-column align-items-center w-full"
+                    className="d-flex flex-column align-items-center stepper-font-size"
                   >
                     <div
                       className={`rounded-full w-8 h-8 flex items-center justify-center step-stepper text-white ${index === formStep

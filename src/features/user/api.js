@@ -5,7 +5,6 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "http://10.229.220.25",
     prepareHeaders: (headers, { getState }) => {
-      // You can add default headers here if needed
       return headers;
     },
   }),

@@ -10,7 +10,7 @@ function GetService() {
             Intelligent IT<br></br> Solutions with Flyzone
           </span>
         </h1>
-        <img src={Line} alt="" width="350" className="mb-4 mt-2" />
+        <img src={Line} alt="" className="mb-4 mt-2 service-line" />
         <a className="service-btn" href="/contact-us">
           Book a meeting now
         </a>

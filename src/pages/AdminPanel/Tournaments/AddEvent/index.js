@@ -124,7 +124,7 @@ const Index = () => {
     try {
       const formData = {
         ...data,
-          "parentTournamentId": "67f7b0d96306692def75e14f"
+          "parentTournamentId": "67fccc8b09a2ece3cc537f20"
       };
      
       const response = await createTournamentEvent(formData);
