@@ -82,8 +82,8 @@ const navLinks = {
 export default function EventsModal({ event, onClose }) {
   const [isModalVisible, setModalVisible] = useState(true);
   const modalRef = useRef(null);
-  const eventData = navLinks[event];
-  const modalSize = modalSizeMap[event] || "lg";
+  const eventData = navLinks[event.name];
+  const modalSize = modalSizeMap[event.name] || "lg";
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -96,8 +96,6 @@ export default function EventsModal({ event, onClose }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
   if (!isModalVisible || !eventData) return null;
-
-
 
   return (
     <Modal show={isModalVisible} centered size={modalSize}>

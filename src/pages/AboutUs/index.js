@@ -1,6 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
-import Footer from "../../components/Footer";
-import MainNavbar from "../../components/MainNavbar";
+import React, { useEffect, useState } from "react";
 import GetService from "../../components/GetService";
 import MiniNavbar from "../../components/MiniNavbar";
 import VideoPlayer from "../../components/VideoPlayer";
@@ -20,30 +18,7 @@ import Agreement from "../../assets/images/agreement.png";
 import Game from "../../assets/images/game.png";
 import Choose from "../../assets/images/choose.png";
 
-const useInView = (options = { threshold: 0.4 }) => {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) setInView(true);
-    }, options);
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  });
-
-  return [ref, inView];
-};
-const slideIn = (direction = "left", isVisible, delay = 0) => ({
-  initial: { x: direction === "left" ? "-200%" : "100%" },
-  animate: { x: isVisible ? 0 : direction === "left" ? "-200%" : "100%" },
-  transition: { duration: 1, ease: "easeInOut", delay },
-});
-
 export default function AboutUs() {
-  const [diffRef, inViewDiff] = useInView();
-
   const [isInViewAboutUs, setIsInViewAboutUs] = useState(false);
   const [isInViewAboutStackHolders, setIsInViewAboutStackHolders] =
     useState(false);
@@ -95,6 +70,7 @@ export default function AboutUs() {
   }, []);
   return (
     <div className="about-us-section">
+      {/* Our About */}
       <div className="container  layout-space">
         <div className="text-center">
           <h1 className="main-h1 pt-3">
@@ -111,10 +87,7 @@ export default function AboutUs() {
           <VideoPlayer />
         </div>
         {/* About Section */}
-        <div
-          className="container about-us-section d-flex justify-content-center align-items-center mt-5 mb-5 gap-5 flex-column flex-lg-row"
-          id="about-us-section"
-        >
+        <div className="container about-us-section d-flex justify-content-center align-items-center mt-5 mb-5 gap-5 flex-column flex-lg-row" id="about-us-section">
           <div className="about-details-box d-flex flex-column justify-content-center">
             <h1 className="title">
               <Typewriter text="About Our Company" />
@@ -123,13 +96,14 @@ export default function AboutUs() {
               Every great performance starts with the right foundation. At
               Flyzone, we provide the technology that powers excellence in
               sports and entertainment. With a clear understanding of the
-              industry’s fast-paced nature, we design IT solutions that simplify
-              operations, elevate experiences, and ensure lasting impact.
+              industry’s fast-paced nature, we design IT solutions that
+              simplify operations, elevate experiences, and ensure lasting
+              impact.
               <br></br>
               <br></br>
               From AI-driven systems that optimize decision-making to secure
-              platforms that build trust, our work is grounded in one goal: to
-              help your business achieve more.
+              platforms that build trust, our work is grounded in one goal:
+              to help your business achieve more.
             </p>
             <div className="d-flex flex-column gap-3 my-2 about-list">
               <div className="d-flex gap-2 ">
@@ -151,7 +125,7 @@ export default function AboutUs() {
               </div>
             </div>
           </div>
-          <div className="img-box">
+          <div>
             <motion.img
               src={AboutMain}
               alt="Fish"
@@ -205,11 +179,11 @@ export default function AboutUs() {
                     </div>
                     <p>
                       With over 30 years of experience in the fishing industry,
-                      Robert Fly has brought his expertise into a new chapter
-                      with FlyZone. Known for creating impactful sporting
-                      experiences across six continents, he is now combining his
-                      knowledge with advanced AI technology to transform the
-                      sports and entertainment industry.
+                      Robert Fly has brought his expertise into a new chapter with
+                      FlyZone. Known for creating impactful sporting experiences
+                      across six continents, he is now combining his knowledge
+                      with advanced AI technology to transform the sports and
+                      entertainment industry.
                     </p>
                     <p>
                       FlyZone focuses on improving event management, audience
@@ -221,13 +195,13 @@ export default function AboutUs() {
                     <p>
                       By blending traditional sporting expertise with modern
                       technology, Robert and Mike are creating new opportunities
-                      for partners and stakeholders, setting a new standard in
-                      the industry. Their shared vision is raising the bar in
-                      the management and experience of sports and entertainment.
+                      for partners and stakeholders, setting a new standard in the
+                      industry. Their shared vision is raising the bar in the
+                      management and experience of sports and entertainment.
                     </p>
                   </div>
                   <div className="team-img-container">
-                    <img src={Fly} alt="mike" width="300" />
+                    <img src={Fly} alt="mike" className="about-fly-img" />
                   </div>
                 </div>
               </motion.div>
@@ -245,7 +219,7 @@ export default function AboutUs() {
               >
                 <div className="team-container">
                   <div className="team-img-container">
-                    <img src={Mike} alt="mike" width="300" />
+                    <img src={Mike} alt="mike"   className="about-fly-img"/>
                   </div>
                   <div className="team-detail-container">
                     <div className="d-flex flex-row justify-content-start align-items-center mb-2">
@@ -265,27 +239,26 @@ export default function AboutUs() {
                     </div>
                     <p>
                       With years of experience in technology and business, Mike
-                      Callahan knows how to bring the right tools to the table
-                      and turn ideas into action. His expertise in building
-                      strong teams and creating winning strategies drives
-                      FlyZone’s mission to reshape the sports and entertainment
-                      industry through smart, AI-driven solutions.
+                      Callahan knows how to bring the right tools to the table and
+                      turn ideas into action. His expertise in building strong
+                      teams and creating winning strategies drives FlyZone’s
+                      mission to reshape the sports and entertainment industry
+                      through smart, AI-driven solutions.
                     </p>
                     <p>
                       Whether it’s simplifying venue operations, boosting
                       security, or enhancing audience experiences, Mike has a
-                      knack for tackling challenges head-on and turning
-                      roadblocks into stepping stones. He believes in solutions
-                      that don’t just work but leave a lasting impact.
+                      knack for tackling challenges head-on and turning roadblocks
+                      into stepping stones. He believes in solutions that don’t
+                      just work but leave a lasting impact.
                     </p>
                     <p>
-                      But FlyZone’s story is about more than just
-                      technology—it’s about a partnership built to last. For
-                      over 45 years, Mike and Robert Fly have shared a
-                      friendship that’s the heartbeat of the company. Their
-                      collaboration isn’t just about business; it’s about trust,
-                      shared vision, and creating a legacy that stands the test
-                      of time.
+                      But FlyZone’s story is about more than just technology—it’s
+                      about a partnership built to last. For over 45 years, Mike
+                      and Robert Fly have shared a friendship that’s the heartbeat
+                      of the company. Their collaboration isn’t just about
+                      business; it’s about trust, shared vision, and creating a
+                      legacy that stands the test of time.
                     </p>
                   </div>
                 </div>
@@ -293,68 +266,7 @@ export default function AboutUs() {
             </div>
           </div>
         </div>
-        <div
-          ref={diffRef}
-          className="difference-section"
-          id="our-differentiations-section"
-        >
-          <h1 className="difference-title">
-            Our Key <span>Differentiators</span>
-          </h1>
-          <p className="difference-des">
-            At Flyzone, we deliver IT solutions that tackle your most complex
-            challenges and drive meaningful results. Trusted by some of the
-            biggest names in the sports and entertainment industry, we harness
-            the power of data and AI technology to expand audience reach and
-            foster long-term engagement. From financial management to AI-powered
-            insights and seamless audience interactions, our solutions make your
-            daily operations smarter and more efficient.
-          </p>
-          <div className="row mt-4">
-            <div className="col-lg-7">
-              {[
-                {
-                  icon: Bulb,
-                  title: "Solutions That Fit Your Goals",
-                  desc: " At Flyzone, we know that every business has unique goals. That's why our solutions are tailored to your needs—whether it's enhancing audience engagement with advanced tools or streamlining backend processes for greater efficiency, we design strategies that align with your objectives.",
-                },
-                {
-                  icon: Security,
-                  title: "Partnerships That Power Growth",
-                  desc: "Our partnerships with industry leaders bring the latest tools and technologies directly to your business. This collaboration empowers you to stay agile, embrace innovation faster, and strengthen your position in a competitive market.",
-                },
-                {
-                  icon: Shakehand,
-                  title: "Your Security, Our Priority",
-                  desc: "Data breaches and system vulnerabilities cost more than money—they erode trust. With Flyzone, your business is protected by robust security protocols that evolve with the threats, keeping your operations safe and reliable.",
-                },
-                {
-                  icon: Agreement,
-                  title: "Multilingual Support",
-                  desc: " Whether your audience is local or global, our multilingual support ensures seamless communication at every touchpoint. We help you connect without limitations, opening new doors to growth.",
-                },
-              ].map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  className="detail-row d-flex flex-column flex-lg-row align-items-lg-start align-items-center text-lg-start text-center "
-                  {...slideIn("left", inViewDiff, idx * 0.3)}
-                >
-                  <div className="detail-img">
-                    <img src={item.icon} alt={item.title} width={80} />
-                  </div>
-                  <div className="detail-content">
-                    <h6>{item.title}</h6>
-                    <p>{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            <div className="col-lg-5 col-md-12 order-lg-1 order-1 align-self-center">
-              <img src={Game} alt="fish" className="detail-images-2 " />
-            </div>
-          </div>
-        </div>
-        {/* <div className="difference-section" id="our-differentiations-section">
+        <div className="difference-section" id="our-differentiations-section">
           <h1 className="difference-title">
             Our Key <span>Differentiators</span>
           </h1>
@@ -484,7 +396,7 @@ export default function AboutUs() {
               <img src={Game} alt="fish" className="detail-images-2 " />
             </div>
           </div>
-        </div> */}
+        </div>
         <div className="why-choose-us-section" id="why-choose-us-section">
           <div className="container my-5 d-flex flex-column-reverse flex-lg-row gap-5 align-items-center ">
             <motion.img
@@ -515,9 +427,9 @@ export default function AboutUs() {
                 engagement, and ensure robust security.
                 <br></br>
                 <br></br>
-                At Flyzone, it’s not just about keeping up—it’s about giving you
-                the tools to lead, innovate, and succeed in a rapidly evolving
-                industry.
+                At Flyzone, it’s not just about keeping up—it’s about giving
+                you the tools to lead, innovate, and succeed in a rapidly
+                evolving industry.
               </p>
             </div>
           </div>
@@ -543,10 +455,7 @@ export default function AboutUs() {
             </ul>
           </div>
           <div className="d-flex justify-content-center">
-            <img
-              src={About_Us_Image}
-              alt="about us"
-              className="about-images-1 "
+            <img src={About_Us_Image} alt="about us" className="about-images-1 "
             />
           </div>
         </div>

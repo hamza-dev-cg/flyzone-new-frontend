@@ -13,7 +13,7 @@ const PublicProfile = () => {
   const location = useLocation();;
   const dispatch = useDispatch()
   const userData = location?.state?.user;
-  const [GetTournament, { isLoading: isFetching }] = useGetTournamentMutation();
+  const [GetTournament] = useGetTournamentMutation();
 
   useEffect(() => {
     const fetchTournaments = async () => {
@@ -44,7 +44,7 @@ const PublicProfile = () => {
           <div className="details">
           <div className="">
             <h5 className="text-left mb-3">Contact Info</h5>
-            <div className="d-flex flex-column flex-md-row justify-content-center gap-2 gap-md-5 ps-5 ps-md-5">
+            <div className="d-flex flex-column flex-md-row justify-content-center gap-2 gap-md-5 ps-md-5">
               <div className="d-flex flex-grow-1 align-items-center">
                 <span class="info-check"><RiShip2Line /> </span>
                 <p className="mb-0">{userData?.boat_name}</p>

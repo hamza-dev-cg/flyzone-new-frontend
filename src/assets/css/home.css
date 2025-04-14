@@ -9,8 +9,14 @@
 }
 
 .leaderboard-h1 {
-    font-size: 36.302px;
+    font-size: 2rem;
     font-weight: 600;
+}
+
+@media (max-width : 991px){
+.leaderboard-h1 {
+    font-size: 1.5rem;
+}
 }
 
 .leaderboard-h1 span {
