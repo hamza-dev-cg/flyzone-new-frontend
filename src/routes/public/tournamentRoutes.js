@@ -73,28 +73,28 @@ const BurunuBomaRules = lazy(() =>
 const TournamentRoutes = () => (
   <>
     {/* Wahoo */}
-    <Route path="/tournaments/wahoo-open" element={<WahooOpen />} />
-    <Route path="/tournaments/wahoo-open/gallery" element={<WahooOpenGallery />} />
-    <Route path="/tournaments/wahoo-open/rules" element={<WahooOpenRules />} />
+    <Route path="/tournaments/blue-marlin-cove-wahoo-open" element={<WahooOpen />} />
+    <Route path="/tournaments/blue-marlin-cove-wahoo-open/gallery" element={<WahooOpenGallery />} />
+    <Route path="/tournaments/blue-marlin-cove-wahoo-open/rules" element={<WahooOpenRules />} />
 
     {/* Championship */}
-    <Route path="/tournaments/championship" element={<ChampionShip />} />
-    <Route path="/tournaments/championship/gallery" element={<ChampionShipGallery />} />
-    <Route path="/tournaments/championship/rules" element={<ChampionShipRules />} />
+    <Route path="/tournaments/blue-marlin-cove-championship" element={<ChampionShip />} />
+    <Route path="/tournaments/blue-marlin-cove-championship/gallery" element={<ChampionShipGallery />} />
+    <Route path="/tournaments/blue-marlin-cove-championship/rules" element={<ChampionShipRules />} />
 
     {/* Chub Cay Classic */}
-    <Route path="/tournaments/chub-cay-classic" element={<ChubClayClassicInformation />} />
-    <Route path="/tournaments/chub-cay-classic/rules" element={<ChubClayClassicRules />} />
-    <Route path="/tournaments/chub-cay-classic/gallery" element={<ChubClayClassicGallery />} />
+    <Route path="/tournaments/chub-cay-classic-2025" element={<ChubClayClassicInformation />} />
+    <Route path="/tournaments/chub-cay-classic-2025/rules" element={<ChubClayClassicRules />} />
+    <Route path="/tournaments/chub-cay-classic-2025/gallery" element={<ChubClayClassicGallery />} />
 
-    <Route path="/tournaments/chub-cay-open" element={<ChubClayOpenInformation />} />
-    <Route path="/tournaments/chub-cay-open/rules" element={<ChubClayOpenRules />} />
-    <Route path="/tournaments/chub-cay-open/gallery" element={<ChubClayOpenGallery />} />
+    <Route path="/tournaments/chub-cay-open-2025" element={<ChubClayOpenInformation />} />
+    <Route path="/tournaments/chub-cay-open-2025/rules" element={<ChubClayOpenRules />} />
+    <Route path="/tournaments/chub-cay-open-2025/gallery" element={<ChubClayOpenGallery />} />
 
     
-    <Route path="/tournaments/chub-cay-invitational" element={<ChubClayInvitationalInformation />} />
-    <Route path="/tournaments/chub-cay-invitational/rules" element={<ChubClayInvitationalRules />} />
-    <Route path="/tournaments/chub-cay-invitational/gallery" element={<ChubClayInvitationalGallery />} />
+    <Route path="/tournaments/chub-cay-invitational-2025" element={<ChubClayInvitationalInformation />} />
+    <Route path="/tournaments/chub-cay-invitational-2025/rules" element={<ChubClayInvitationalRules />} />
+    <Route path="/tournaments/chub-cay-invitational-2025/gallery" element={<ChubClayInvitationalGallery />} />
 
     {/* West End Madness */}
     <Route path="/tournaments/west-end-meatfish-mania" element={<WestEndMeatFishManiaInformation/>} />
