@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FiPlus } from "react-icons/fi";
 import { ToastContainer, toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
+import Modal from "../../../../components/Modal";
 import {
   useCreateTournamentCategoryForAdminMutation,
   useDeleteTournamentCategoryForAdminMutation,
@@ -17,6 +18,8 @@ const TournamentsDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [deleteTournament, setDeleteTournament] = useState("");
+  const [deleteTournamentEventId, setDeleteTournamentEventId] = useState("");
+  const [deleteTournamentEvent, setDeleteTournamentEvent] = useState(false);
   const [GetTournamentCategory, { isLoading: isFetching }] =
     useCreateTournamentCategoryForAdminMutation();
   const [DeleteTournamentCategory] =
@@ -29,7 +32,8 @@ const TournamentsDetails = () => {
     try {
       const response = await GetTournamentCategory(tournamentId);
       if (response) {
-        setShowTournamentCategory(response.data);
+        console.log(response, "response");
+        setShowTournamentCategory(response.data.events);
       } else {
         toast.error("Failed to fetch tournaments.");
       }
@@ -41,12 +45,13 @@ const TournamentsDetails = () => {
     getTournamentCategoryRecord(tournamentId);
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      const response = await DeleteTournamentCategory(id);
+      const response = await DeleteTournamentCategory(deleteTournamentEventId);
       if (response?.data) {
         toast.success("TournamentCategory Delete Successfully");
         getTournamentCategoryRecord(tournamentId);
+        setDeleteTournamentEvent(false);
       } else {
         toast.error("Failed to add tournament");
       }
@@ -64,7 +69,13 @@ const TournamentsDetails = () => {
         <p>{description}</p>
         <div className="d-flex gap-3">
           <Button text="View Tournament" />
-          <div className="trash-icon" onClick={handleDelete}>
+          <div
+            className="trash-icon"
+            onClick={() => {
+              setDeleteTournamentEvent(true);
+              setDeleteTournamentEventId(id);
+            }}
+          >
             <IoTrashOutline />
           </div>
         </div>
@@ -93,7 +104,7 @@ const TournamentsDetails = () => {
             startIcon={<FiPlus />}
             onClick={() =>
               navigate(
-                "/admin-dashboard/tournaments/tournaments-details/add-event"
+                `/admin-dashboard/tournaments/tournaments-details/add-event/${tournamentId}`
               )
             }
             text="Add Events"
@@ -108,7 +119,11 @@ const TournamentsDetails = () => {
             <Loader />
           ) : showTournamentCategory && showTournamentCategory.length > 0 ? (
             showTournamentCategory.map((tournament) => (
-              <TournamentCard key={tournament.id} {...tournament} />
+              <TournamentCard
+                key={tournament.id}
+                id={tournament.id}
+                {...tournament}
+              />
             ))
           ) : (
             <div className="col-12 text-center text-muted mt-4 fw-bold">
@@ -116,6 +131,30 @@ const TournamentsDetails = () => {
             </div>
           )}
         </div>
+        <Modal
+          show={deleteTournamentEvent}
+          centered
+          size="150px"
+          header
+          headerTitle="Delete Tournament"
+        >
+          <h6 className="text-center">
+            Are you sure you want to delete this tournament?
+          </h6>
+          <div className="d-flex justify-content-end gap-4 mt-4">
+            <Button
+              className="outlined"
+              text="Yes"
+              width="100%"
+              onClick={handleDelete}
+            />
+            <Button
+              text="Cancel"
+              width="100%"
+              onClick={() => setDeleteTournament(false)}
+            />
+          </div>
+        </Modal>
       </TournamentsWrapper>
     </>
   );
