@@ -1,15 +1,16 @@
-import React from "react";
+import React  , {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import Correct from "../assets/correct.svg";
 import Classic from "../assets/images/Chub-Cay-Classic.png";
 import ChubClayOpenImage from "../assets/images/Chub-Cay-Open.png";
 import ChubClayInvitationsImage from "../assets/images/Chub-Cay-Invitational.png";
-import WestEndMadnessImage from "../assets/images/West_End_Meatfish_Madness_Compressed__1___1_-removebg.png";
 import WestEndMeatfishImage from "../assets/images/West-End-Meatfish-Mania_large.png";
 import BurunuBomaImage from "../assets/images/BomaMain.png";
-
 import "../assets/css/upComingEvent.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import {
+  useGetEventsCategoryForAdminMutation,
+} from "../features/tournaments/api";
 const events = [
   {
     title: "Chub Cay Classic",
@@ -69,7 +70,7 @@ const parseStartDate = (dateString) => {
 const EventItem = ({ event }) => (
   <div className="container d-flex flex-column mt-4 flex-xl-row gap-5 events-inner">
     <div className="hero-left ">
-      <h1 className="champ-h1">{event.title}</h1>
+      <h1 className="champ-h1">{event.name}</h1>
       <p className="hero-p">{event.description}</p>
       <span className="d-flex justify-content-between">
         <ul className="list-unstyled text-start d-flex flex-column gap-4">
@@ -80,11 +81,13 @@ const EventItem = ({ event }) => (
             <strong>{event.date}</strong>
           </li>
           {[
-            "Chub Cay Classic",
-            "Chub Cay Open",
-            "Chub Cay Invitational",
-            "Burunu Boma",
-          ].includes(event.title) ? (
+            "blue-marlin-cove-wahoo-open",
+            "blue-marlin-cove-championship",
+            "chub-cay-classic-2025",
+            "chub-cay-open-2025",
+            "chub-cay-invitational-2025",
+            "burunu-boma",
+          ].includes(event.slug) ? (
             <>
               <li className="d-flex align-items-center gap-2">
                 <div className="checkmark-circle">
@@ -142,7 +145,7 @@ const EventItem = ({ event }) => (
             </>
           )}
           <li>
-            <Link className="text-decoration-none text-white" to={event.link}>
+            <Link className="text-decoration-none text-white" to={`/tournaments/${event.slug}`} state={{ event }}>
               <button className="contact-button mt-0">More Information</button>
             </Link>
           </li>
@@ -160,18 +163,35 @@ const EventItem = ({ event }) => (
 );
 
 const UpcomingEvents = () => {
+  const [getEvents] = useGetEventsCategoryForAdminMutation();
+  const [eventData , setEventData] = useState(null)
+
+  const fetchTournaments = async () => {
+    try {
+      const response = await getEvents();
+      if (response?.data?.tournaments) {
+        setEventData(response.data.tournaments);
+      }
+    } catch (err) {
+      console.log("Something went wrong while fetching tournaments.");
+    }
+  };
+
+  useEffect(() => {
+    fetchTournaments();
+  }, []);
   const today = new Date();
-  const upcomingEvents = events.filter((event) => {
-    const eventStartDate = parseStartDate(event.date);
-    return eventStartDate && eventStartDate >= today;
-  });
+  // const upcomingEvents = eventData.filter((event) => {
+  //   const eventStartDate = parseStartDate(event.date);
+  //   return eventStartDate && eventStartDate >= today;
+  // });
 
   return (
     <div className="mb-4 ">
       <h1 className="upcoming-event-head">
         Upcoming <span>Events</span>
       </h1>
-      {upcomingEvents.length === 0 ? (
+      {eventData?.length === 0 ? (
         <p className="text-center">No upcoming events.</p>
       ) : (
         <div
@@ -181,7 +201,7 @@ const UpcomingEvents = () => {
         >
           {/* Carousel Indicators */}
           <div className="carousel-indicators">
-            {upcomingEvents.map((_, index) => (
+            {eventData?.map((_, index) => (
               <button
                 key={index}
                 type="button"
@@ -195,7 +215,7 @@ const UpcomingEvents = () => {
 
           {/* Carousel Inner */}
           <div className="carousel-inner">
-            {upcomingEvents.map((event, index) => (
+            {eventData?.map((event, index) => (
               <div
                 key={index}
                 className={`carousel-item ${index === 0 ? "active" : ""}`}

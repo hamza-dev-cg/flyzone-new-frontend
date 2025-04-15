@@ -7,83 +7,70 @@ import ChubClayInvitationsImage from "../assets/images/Chub-Cay-Invitational.png
 import ChubClayOpenImage from "../assets/images/Chub-Cay-Open.png";
 import WestEndMeatfishImage from "../assets/images/West-End-Meatfish-Mania_large.png";
 import BurunuBomaImage from "../assets/images/BomaMain.png";
-
+import { useGetTournamentCategoryForAdminMutation } from '../features/tournaments/api'
+import { formatDateRange } from '../utils/helpers'
 import "../assets/css/eventModel.css";
+import { Link } from "react-router-dom";
 const modalSizeMap = {
-  Wahoo: "md",
-  Chub: "lg",
-  West: "sm",
-  Burunu: "sm",
+  "wahoo": "md",
+  "chub-cay": "lg",
+  "west-end-meat": "sm",
+  "burunu-boma": "sm",
 };
-const navLinks = {
-  Wahoo: [
-    {
-      path: "/tournaments/wahoo-open",
-      title: "January 16th to 18th 2025",
-      image: BlueMarlin,
-      width: "100%",
-      register: false,
-      name: "Wahoo Events",
-    },
-    {
-      path: "/tournaments/championship",
-      title: "February 13th to 15th 2025",
-      image: Camp,
-      width: "56%",
-      register: false,
-    },
-  ],
-  Chub: [
-    {
-      path: "/tournaments/chub-cay-classic",
-      title: "March 13th to 15th, 2025",
-      image: ClubClayClassicImage,
-      width: "70%",
-      register: false,
-      name: "Chub Cay Events",
-    },
-    {
-      path: "/tournaments/chub-cay-open",
-      title: "March 27th to 29th, 2025",
-      image: ChubClayOpenImage,
-      width: "57%",
-      register: true,
-    },
-    {
-      path: "/tournaments/chub-cay-invitational",
-      title: "April 11th to 13th, 2025",
-      image: ChubClayInvitationsImage,
-      width: "72%",
-      register: true,
-    },
-  ],
-  West: [
-    {
-      path: "/tournaments/west-end-meatfish-mania",
-      title: "May 8th to 10th, 2025",
-      image: WestEndMeatfishImage,
-      width: "71%",
-      register: true,
-      name: "West And MeatFish",
-    },
-  ],
-  Burunu: [
-    {
-      path: "/tournaments/burunu-boma",
-      title: "May 2nd to 4th, 2025",
-      image: BurunuBomaImage,
-      width: "61%",
-      register: false,
-      name: "Burunu Boma",
-    },
-  ],
+
+const eventAssets = {
+  "blue-marlin-cove-wahoo-open": {
+    image: BlueMarlin,
+    width: "100%",
+  },
+  "blue-marlin-cove-championship": {
+    image: Camp,
+    width: "56%",
+  },
+  "chub-cay-classic-2025": {
+    image: ClubClayClassicImage,
+    width: "70%",
+  },
+  "chub-cay-open-2025": {
+    image: ChubClayOpenImage,
+    width: "57%",
+  },
+  "chub-cay-invitational-2025": {
+    image: ChubClayInvitationsImage,
+    width: "72%",
+  },
+  "west-end-meatfish-mania": {
+    image: WestEndMeatfishImage,
+    width: "71%",
+  },
+  "burunu-boma": {
+    image: BurunuBomaImage,
+    width: "61%",
+  },
 };
+
 
 export default function EventsModal({ event, onClose }) {
+  const [eventdata, setEventData] = useState(null)
+  const [getEvents] = useGetTournamentCategoryForAdminMutation();
+  const fetchEvents = async () => {
+    try {
+      const response = await getEvents(event.id);
+      if (response?.data?.events) {
+        setEventData(response.data.events);
+      }
+    } catch (err) {
+      console.log("Something went wrong while fetching tournaments.");
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents()
+  }, [event])
+
   const [isModalVisible, setModalVisible] = useState(true);
   const modalRef = useRef(null);
-  const eventData = navLinks[event.name];
-  const modalSize = modalSizeMap[event.name] || "lg";
+  const modalSize = modalSizeMap[event.slug] || "lg";
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -95,42 +82,55 @@ export default function EventsModal({ event, onClose }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
-  if (!isModalVisible || !eventData) return null;
+  if (!isModalVisible || !eventdata) return null;
 
   return (
     <Modal show={isModalVisible} centered size={modalSize}>
       <div ref={modalRef}>
-        <h4 className="textHeading-1">{eventData[0].name}</h4>
+        <h4 className="textHeading-1">{event.name}</h4>
         <div className="event-model-container">
-          {eventData.map((event, index) => (
-            <div key={index} className="event-model-card">
-              <div className="modal-img">
-                <img src={event.image} alt={event.title} width={event.width} />
+          {eventdata?.map((event, index) => {
+            const asset = eventAssets[event.slug] || {};
+            return (
+              <div key={index} className="event-model-card">
+                <div className="modal-img">
+                  <img
+                    src={asset.image}
+                    alt={event.name}
+                    width={asset.width || "100%"} // fallback to 100%
+                  />
+                </div>
+                <p className="card-text">
+                  {formatDateRange(event.startDate, event.endDate)}
+                </p>
+                <div className="event-model-btn">
+                  {event.slug !== "burunu-boma" && (
+                    <a
+                      href={
+                        event.slug === "west-end-meatfish-mania"
+                          ? `/west-end-meat-fish/register/${event.id}`
+                          : "/register"
+                      }
+                      className={`${new Date(event.endDate) < new Date()
+                        ? "disabled-new"
+                        : "btn-register"
+                        }`}
+                    >
+                      {new Date(event.endDate) < new Date()
+                        ? "Event Closed"
+                        : "Register"}
+                    </a>
+                  )}
+                  <Link to={`/tournaments/${event.slug}`} state={{ event }} className="btn-learn-more">
+                    Learn More
+                  </Link>
+                
+                </div>
               </div>
-              <p className="card-text">{event.title}</p>
-              <div className="event-model-btn">
-                {event.name !== "Burunu Boma" && (
-                  <a
-                    href={
-                      event.name === "West And MeatFish Events"
-                        ? "/west-end-meat-fish/register/2"
-                        : event.name === "West And MeatFish"
-                        ? "/west-end-meat-fish/register/3"
-                        : "/register"
-                    }
-                    className={`${
-                      event.register ? "btn-register" : "disabled-new"
-                    }`}
-                  >
-                    {event.register ? "Register" : "Event Closed"}
-                  </a>
-                )}
-                <a href={event.path} className="btn-learn-more">
-                  Learn More
-                </a>
-              </div>
-            </div>
-          ))}
+            );
+          })}
+
+
         </div>
       </div>
     </Modal>

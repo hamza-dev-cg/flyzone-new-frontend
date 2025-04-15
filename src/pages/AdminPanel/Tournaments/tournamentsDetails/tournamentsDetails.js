@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import Modal from "../../../../components/Modal";
 import {
-  useCreateTournamentCategoryForAdminMutation,
+  useGetTournamentCategoryForAdminMutation,
   useDeleteTournamentCategoryForAdminMutation,
 } from "../../../../features/tournaments/api";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ const TournamentsDetails = () => {
   const [deleteTournamentEventId, setDeleteTournamentEventId] = useState("");
   const [deleteTournamentEvent, setDeleteTournamentEvent] = useState(false);
   const [GetTournamentCategory, { isLoading: isFetching }] =
-    useCreateTournamentCategoryForAdminMutation();
+  useGetTournamentCategoryForAdminMutation();
   const [DeleteTournamentCategory] =
     useDeleteTournamentCategoryForAdminMutation();
   const [showTournamentCategory, setShowTournamentCategory] = useState([]);

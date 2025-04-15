@@ -3,9 +3,11 @@ import EventsNavbar from "../../../components/EventsNavbar";
 import WestEndMeatfishImage from "../../../assets/images/West-End-Meatfish-Mania_large.png";
 import TournamentInfo from "../../../components/TornamentInfo";
 import DaySchedule from "../../../components/DaySchedule";
-
+import { useLocation } from "react-router-dom";
+import { formatDateRange } from '../../../utils/helpers'
 const Information = () => {
-
+  const location = useLocation();
+  const event = location?.state?.event;
   return (
     <div>
       <section className="whoo-open-hero-section">
@@ -14,35 +16,20 @@ const Information = () => {
           <a class="register-top-show" href="/west-end-meat-fish/register/3">Register</a>
         </div>
         <TournamentInfo
-          title={
-            <>
-              West End <br></br> Meatfish Mania
-            </>
-          }
+          title= {event?.name}
           imgSrc={WestEndMeatfishImage}
           altText={WestEndMeatfishImage}
-          date={"May 8th to May 10th, 2025"}
-          description={
-            <>
-              Fly Zone Fishing proudly presents the West End MeatFish Mania
-              2025, an electrifying fishing tournament set against the stunning
-              backdrop of Blue Marlin Cove in West End, Grand Bahama. Taking
-              place from{" "}
-              <b style={{ fontWeight: "bold" }}>May 8 to May 10, 2025,</b> this
-              action-packed event invites anglers from across the globe to
-              battle it out for top prizes while targeting Tuna, Mahi-Mahi, and
-              Wahoo in the pristine waters of the Bahamas.
-              <br></br>
-              <br></br>
-              With its world-class fishing grounds, breathtaking scenery, and
-              competitive yet welcoming atmosphere, West End MeatFish Mania is
-              the ultimate event for fishing enthusiasts of all skill levels.
-              Whether you're chasing the thrill of the catch or looking to
-              connect with fellow anglers, this tournament delivers an
-              unforgettable experience. Secure your spot today and get ready for
-              an epic fishing adventure!
-            </>
-          }
+          date={formatDateRange(event?.startDate , event?.endDate)}
+          description=
+          {event?.description?.split("\n").map((line, idx) => (
+            <p
+              key={idx}
+              dangerouslySetInnerHTML={{
+                __html: line
+                  .replace(/(May 8 to May 10, 2025,)/g, "<b>$1</b>")
+              }}
+            />
+          ))}
         />
       </section>
       <section className="schedule-section">

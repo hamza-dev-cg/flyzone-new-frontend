@@ -3,39 +3,31 @@ import TournamentInfo from "../../../components/TornamentInfo";
 import EventsNavbar from "../../../components/EventsNavbar";
 import Camp from "../../../assets/images/camp.png";
 import EventInformationBg from "../../../assets/images/event-informat-bg.png";
-
+import { useLocation } from "react-router-dom";
+import { formatDateRange } from '../../../utils/helpers'
 const ChampionShip = () => {
+  const location = useLocation();
+  const event = location?.state?.event;
   return (
     <div>
       <section className="championship-hero-section">
         <img className="championship-bg" src={EventInformationBg} alt="fish" />
         <EventsNavbar basePath="/events" links="championship" />
         <TournamentInfo
-          title="Blue Marlin Cove Championship"
+          title={event?.name}
           imgSrc={Camp}
           altText={Camp}
-          date={"February 13th thru 15th, 2025"}
-          description={
-            <>
-              Get ready for an exhilarating fishing experience at the 2025 Blue
-              Marlin Cove Wahoo Championship, taking place from{" "}
-              <b style={{ fontWeight: "bold" }}>February 13 to 15 </b> in the
-              beautiful West End, Bahamas! This renowned event is set against
-              the pristine waters of the Bahamas, making it the ideal setting
-              for anglers to battle for the best wahoo catch. With the promise
-              of thrilling competition, outstanding prizes, and an atmosphere
-              filled with camaraderie, this is an event not to be missed!.
-              <br></br>
-              <br></br>
-              Participants will compete for top honors and generous cash awards,
-              while enjoying daily weigh-ins, evening gatherings, and the
-              unparalleled hospitality that Blue Marlin Cove is known for.
-              Whether you're a seasoned competitor or a passionate fishing
-              enthusiast, this tournament provides an unmatched opportunity to
-              reel in monster wahoos, connect with fellow anglers, and
-              experience the warmth and beauty of the West End.
-            </>
-          }
+          date={formatDateRange(event?.startDate, event?.endDate)}
+          description=
+          {event?.description?.split("\n").map((line, idx) => (
+            <p
+              key={idx}
+              dangerouslySetInnerHTML={{
+                __html: line
+                  .replace(/(February 13 to 15 )/g, "<strong>$1</strong>")
+              }}
+            />
+          ))}
         />
       </section>
 

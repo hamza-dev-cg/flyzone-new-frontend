@@ -58,3 +58,23 @@ export const convertToFormData = (dataObj) => {
   });
   return formData;
 };
+
+
+export const formatDateRange = (startDateStr, endDateStr) => {
+  const startDate = new Date(startDateStr);
+  const endDate = new Date(endDateStr);
+
+  const month = startDate.toLocaleString('en-US', { month: 'long' });
+  const year = startDate.getFullYear();
+
+  const startDay = startDate.getDate();
+  const endDay = endDate.getDate();
+
+  function getOrdinal(n) {
+    const s = ["th", "st", "nd", "rd"];
+    const v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
+
+  return `${month} ${getOrdinal(startDay)} to ${getOrdinal(endDay)}, ${year}`;
+}

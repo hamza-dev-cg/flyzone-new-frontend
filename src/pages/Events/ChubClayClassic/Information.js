@@ -5,42 +5,31 @@ import EventInformationBg from "../../../assets/images/event-informat-bg.png";
 import EventsNavbar from "../../../components/EventsNavbar";
 import TournamentInfo from "../../../components/TornamentInfo";
 import DaySchedule from "../../../components/DaySchedule";
-
+import { useLocation } from "react-router-dom";
+import { formatDateRange } from '../../../utils/helpers'
 const Information = () => {
+    const location = useLocation();
+    const event = location?.state?.event;
   return (
     <div>
       <section className="whoo-open-hero-section">
         <img className="wahoo-bg" src={EventInformationBg} alt="fish" />
         <EventsNavbar basePath="/events" links="chubClayClassic" />
         <TournamentInfo
-          title={
-            <>
-              Chub Cay <br /> Classic 2025
-            </>
-          }
+          title= {event?.name}
           imgSrc={ClubClayClassicImage}
           altText="Chub Cay Classic"
-          date="March 13th to March 15th, 2025"
-          description={
-            <>
-              <p>
-                The Chub Cay Classic, presented by Fly Zone Fishing, and hosted
-                by <strong>Chub Cay Marina and Resort</strong>, is the 4th
-                annual tournament in a three-part fishing series from March 13
-                to March 15, 2025, in the Bahamas. This event brings together
-                anglers from across the globe, promoting sport fishing,
-                camaraderie, and conservation.
-              </p>
-              <p>
-                <strong>Chub Cay Marina and Resort</strong> is famous for its
-                clear waters and great fishing spots, making it perfect for both
-                competitors and families. The tournament offers thrilling
-                competition, breathtaking scenery, and a strong commitment to
-                conservation. Stay updated via the official Fly Zone Fishing
-                website.
-              </p>
-            </>
-          }
+          date={formatDateRange(event?.startDate , event?.endDate)}
+          description=
+          {event?.description?.split("\n").map((line, idx) => (
+            <p
+              key={idx}
+              dangerouslySetInnerHTML={{
+                __html: line
+                  .replace(/(Chub Cay Marina and Resort)/g, "<strong>$1</strong>")
+              }}
+            />
+          ))}
         />
       </section>
 

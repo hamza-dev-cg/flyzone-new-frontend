@@ -8,48 +8,48 @@ const EventsNavbar = ({ links }) => {
   const location = useLocation();
   const navLinks = {
     wahoo: [
-      { path: "/tournaments/wahoo-open", label: "Information" },
-      { path: "/tournaments/wahoo-open/rules", label: "Rules" },
-      { path: "/tournaments/wahoo-open/resort-and-marina",
+      { path: "/tournaments/blue-marlin-cove-wahoo-open", label: "Information" },
+      { path: "/tournaments/blue-marlin-cove-wahoo-open/rules", label: "Rules" },
+      { path: "/tournaments/blue-marlin-cove-wahoo-open/resort-and-marina",
         label: "Resort & Marina",
       },{
-        path: "/tournaments/wahoo-open/gallery",
+        path: "/tournaments/blue-marlin-cove-wahoo-open/gallery",
         label: "Gallery",
       },
     ],
     championship: [
-      { path: "/tournaments/championship", label: "Information" },
+      { path: "/tournaments/blue-marlin-cove-championship", label: "Information" },
       {
-        path: "/tournaments/championship/resort-and-marina",
+        path: "/tournaments/blue-marlin-cove-championship/resort-and-marina",
         label: "Resort & Marina",
       },
-      { path: "/tournaments/championship/rules", label: "Rules" },
+      { path: "/tournaments/blue-marlin-cove-championship/rules", label: "Rules" },
 
-      { path: "/tournaments/championship/gallery", label: "Gallery" },
+      { path: "/tournaments/blue-marlin-cove-championship/gallery", label: "Gallery" },
     ],
     chubClayInvitational: [
-      { path: "/tournaments/chub-cay-invitational", label: "Information" },
-      { path: "/tournaments/chub-cay-invitational/rules", label: "Rules" },
+      { path: "/tournaments/chub-cay-invitational-2025", label: "Information" },
+      { path: "/tournaments/chub-cay-invitational-2025/rules", label: "Rules" },
       {
-        path: "/tournaments/chub-cay-invitational/gallery",
+        path: "/tournaments/chub-cay-invitational-2025/gallery",
         label: "Gallery",
       },
       { path: "/forums", label: "Forum" },
     ],
     chubClayOpen: [
-      { path: "/tournaments/chub-cay-open", label: "Information" },
-      { path: "/tournaments/chub-cay-open/rules", label: "Rules" },
+      { path: "/tournaments/chub-cay-open-2025", label: "Information" },
+      { path: "/tournaments/chub-cay-open-2025/rules", label: "Rules" },
       {
-        path: "/tournaments/chub-cay-open/gallery",
+        path: "/tournaments/chub-cay-open-2025/gallery",
         label: "Gallery",
       },
       { path: "/forums", label: "Forum" },
     ],
     chubClayClassic: [
-      { path: "/tournaments/chub-cay-classic", label: "Information" },
-      { path: "/tournaments/chub-cay-classic/rules", label: "Rules" },
+      { path: "/tournaments/chub-cay-classic-2025", label: "Information" },
+      { path: "/tournaments/chub-cay-classic-2025/rules", label: "Rules" },
       {
-        path: "/tournaments/chub-cay-classic/gallery",
+        path: "/tournaments/chub-cay-classic-2025/gallery",
         label: "Gallery",
       },
       { path: "/forums", label: "Forum" },
