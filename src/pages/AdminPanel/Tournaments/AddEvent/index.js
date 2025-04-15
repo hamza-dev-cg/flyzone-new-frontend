@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLocation,useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
+import { IoMdArrowBack } from "react-icons/io";
 import { LuClock8 } from "react-icons/lu";
 import { useCreateTournamentEventForAdminMutation } from "../../../../features/tournaments/api";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,6 +10,7 @@ import UploadIcon from "../../../../assets/icons/upload-file-icon.svg";
 import { FiPlus } from "react-icons/fi";
 import Button from "../../../../components/Button/index";
 import { AddEventWrapper, InputWrapper } from "./style";
+
 
 // Input Field
 const InputField = ({ label, type = "text", placeholder, children, extraProps = {} }) => (
@@ -110,6 +113,8 @@ const DayFishingSection = ({ day }) => (
 );
 
 const Index = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [uploadFile, setUploadFile] = useState(null);
   const [createTournamentEvent] = useCreateTournamentEventForAdminMutation();
 
@@ -119,17 +124,20 @@ const Index = () => {
     reset,
     formState: { errors },
   } = useForm();
-
+  const pathSegments = location.pathname.split("/");
+  const tournamentId = pathSegments[5];
   const onSubmit = async (data) => {
     try {
       const formData = {
         ...data,
-          "parentTournamentId": "67fccc8b09a2ece3cc537f20"
+          "parentTournamentId": tournamentId
       };
      
       const response = await createTournamentEvent(formData);
       if (response?.data) {
         toast.success("Tournament Added Successfully");
+        console.log("jjeee")
+        navigate(`/admin-dashboard/tournaments/tournaments-details/${tournamentId}`)
         reset();
       } else {
         toast.error("Failed to add tournament");
@@ -139,13 +147,17 @@ const Index = () => {
       toast.error("An error occurred while submitting the form.");
     }
   };
+  
 
   return (
     <AddEventWrapper>
       <ToastContainer />
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="d-flex justify-content-between align-items-center">
-          <h4 className="mb-0">Add New Event</h4>
+          <h4 className="mb-0">  <IoMdArrowBack
+              className="cursor-pointer"
+              onClick={() => navigate(-1)}
+            />Add New Event</h4>
           <Button startIcon={<FiPlus />} type="submit" text="Create Event" />
         </div>
 

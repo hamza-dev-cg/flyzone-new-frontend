@@ -13,6 +13,7 @@ const TournamentsWrapper = Styled.div`
       border-radius:12px;
       width: 100%;
       display: block;
+      margin-bottom:16px;
       img{
         width:100%;
         max-width:100%
@@ -27,6 +28,12 @@ const TournamentsWrapper = Styled.div`
         font-size:14px;
         color:#403E3E;
         margin-bottom:16px;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height:120px
       }
       button{
         width:100%;
@@ -41,9 +48,22 @@ const TournamentsWrapper = Styled.div`
       display: flex;
       align-items:center;
       justify-content:center;
-      cursor:pointer
+      cursor:pointer;
+      color:#ff0000
+    }
+    .delete-icon{
+      background-color:#fff;
+      width: 32px;
+      height: 32px;
+      border-radius:50px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      right:24px;
+      top:32px;
+      color:#ff0000
     }
 
-  `
+  `;
 
 export default TournamentsWrapper;

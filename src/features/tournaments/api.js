@@ -84,7 +84,7 @@ export const TournamentApi = createApi({
     }),
     CreateTournamentEventForAdmin: builder.mutation({
       query: (data) => ({
-        url: `/api/tournament//create-tournament-event`,
+        url: `/api/tournament/create-tournament-event`,
         method: "POST",
         body:data
       }),
@@ -97,7 +97,7 @@ export const TournamentApi = createApi({
     }),
     DeleteTournamentCategoryForAdmin: builder.mutation({
       query: (id) => ({
-        url: `/api/tournament/delete-tournament-category/${id}`,
+        url: `/api/tournament/delete-tournament-event/${id}`,
         method: "DELETE",
       }),
     }),
