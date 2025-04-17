@@ -89,6 +89,7 @@ export const TournamentApi = createApi({
         body:data
       }),
     }),
+    
     CreateTournamentCategoryForAdmin: builder.mutation({
       query: (id) => ({
         url: `/api/tournament/get-tournament-category/${id}`,

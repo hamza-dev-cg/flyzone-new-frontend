@@ -12,8 +12,15 @@ export const RegisterMeatFishApi = createApi({
       }),
     }),
     UpdateRegisterUser: builder.mutation({
+      query: (userId , data) => ({
+        url: `/api/user/update?userId=${userId}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    MeatFishRegisterTournament: builder.mutation({
       query: (data) => ({
-        url: `/api/update-profile`,
+        url: `/api/registration/west-and-meat-fish`,
         method: "POST",
         body: data,
       }),
@@ -31,11 +38,10 @@ export const RegisterMeatFishApi = createApi({
         method: "GET",
       }),
     }),
- 
-    
   }),
 });
 
 export const {
+  useMeatFishRegisterTournamentMutation,
   useRegisterTournamentMutation,useUpdateRegisterUserMutation , useGetTournamentEventIdMutation,useGetPaymentHistoryMutation
 } = RegisterMeatFishApi;
