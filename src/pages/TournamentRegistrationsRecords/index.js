@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {useGetAllTournamentEventMutation} from '../../features/tournaments/api'
 import { ToastContainer, toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
@@ -16,18 +17,17 @@ const TournamentRegistrationsRecords = () => {
   const [tournament, setTournament] = useState("Chub Cay Open");
   const [showRecords, setShowRecords] = useState([]);
   const [filteredRecords, setFilteredRecords] = useState([]);
-  const [selectedOption, setSelectedOption] = useState({
-    value: "Chub Cay Open",
-    label: "Chub Cay Open",
-  });
+  const [AllTournamentEvents] = useGetAllTournamentEventMutation();
+  const [optionsData,setOptionData]=useState([])
+  
+  const [selectedOption, setSelectedOption] = useState(optionsData[0]);
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 15;
 
-  const optionsData = [
-    { value: "Chub Cay Classic", label: "Chub Cay Classic" },
-    { value: "Chub Cay Open", label: "Chub Cay Open" },
-    { value: "Chub Cay Invitational", label: "Chub Cay Invitational" },
-  ];
+  const optionsDataEvents = optionsData.map((x) => ({
+    value: x.name,
+    label: x.name,
+  }));
 
   const handlePageClick = (selected) => {
     setPageNumber(selected.selected);
@@ -54,8 +54,23 @@ const TournamentRegistrationsRecords = () => {
     setLoading(false);
   };
 
+  const AllTournamentEventsRecord = async () => {
+    try {
+      const response = await AllTournamentEvents();
+      if (response) {
+        setOptionData(response.data.tournaments);
+      } else {
+        toast.error("Failed to fetch tournaments.");
+      }
+    } catch (err) {
+      toast.error("Something went wrong while fetching data.");
+    }
+  };
+
   useEffect(() => {
     getTournamentRecord();
+    AllTournamentEventsRecord();
+
   }, []);
 
   useEffect(() => {
@@ -132,9 +147,10 @@ const TournamentRegistrationsRecords = () => {
         <div className="container d-flex justify-content-end align-items-center px-4">
           <div className="select-width">
             <Select
-              options={optionsData}
+              options={optionsDataEvents}
               value={selectedOption}
               onChange={handleDropdownChange}
+              placeholder="Select Tournament"
             />
           </div>
         </div>

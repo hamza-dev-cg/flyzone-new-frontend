@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import Table from "../../Table";
+import {chubClayClassic} from '../../../utils/dummyData';
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
-const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
+const ChubClayClassicLeaderBoard = () => {
   const [tournamentData, setTournamentData] = useState({
     day_1: [],
     day_2: [],
@@ -26,15 +27,15 @@ const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
       day_2: [],
       over_all: [],
     };
-  
+
     chubClayClassic.forEach((item) => {
       let day1Score = 0;
       let day2Score = 0;
       let lastCatchTime = null; // Track the last catch time
-  
+
       item.fish_weights.forEach((fish) => {
         const dayKey = `day_${fish.day_number}`;
-  
+
         // Assign points based on fish type
         let points = 0;
         switch (fish.fish_type) {
@@ -50,7 +51,7 @@ const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
           default:
             points = 0;
         }
-  
+
         if (transformedData[dayKey]) {
           transformedData[dayKey].unshift({
             id: item.id,
@@ -61,7 +62,7 @@ const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
             species: fish.fish_type,
             point: points,
           });
-  
+
           // Update total score for each day
           const fishCatchTime = new Date(fish.catch_up_time);
           if (fish.day_number === 1) {
@@ -69,14 +70,14 @@ const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
           } else if (fish.day_number === 2) {
             day2Score += points;
           }
-  
+
           // Track the last fish catch time for tie-breaking
           if (!lastCatchTime || fishCatchTime > lastCatchTime) {
             lastCatchTime = fishCatchTime;
           }
         }
       });
-  
+
       // Add to overall leaderboard
       if (day1Score > 0 || day2Score > 0) {
         transformedData.over_all.push({
@@ -86,49 +87,47 @@ const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
           day_1_total: day1Score,
           day_2_total: day2Score,
           total_score: day1Score + day2Score,
-          last_catch_time: lastCatchTime ? lastCatchTime.getTime() : Infinity,  // Track the last catch time
+          last_catch_time: lastCatchTime ? lastCatchTime.getTime() : Infinity, // Track the last catch time
         });
       }
     });
-  
+
     // Sorting overall leaderboard by total score and then by last catch time (for tie-breaking)
     transformedData.over_all.sort((a, b) => {
       if (b.total_score !== a.total_score) {
         return b.total_score - a.total_score; // Higher total score wins
       }
-  
+
       if (a.last_catch_time !== b.last_catch_time) {
         return a.last_catch_time - b.last_catch_time; // Earliest catch time wins
       }
-  
+
       return 0; // If still tied, keep the order unchanged
     });
-  
+
     // Sorting Day 1 fish catches by release time (catch-up time), latest catch will be at the top
-    transformedData.day_1.sort((a, b) => new Date(b.release) - new Date(a.release));
-  
+    transformedData.day_1.sort(
+      (a, b) => new Date(b.release) - new Date(a.release)
+    );
+
     // Sorting Day 2 fish catches by release time (catch-up time), latest catch will be at the top
-    transformedData.day_2.sort((a, b) => new Date(b.release) - new Date(a.release));  // Corrected sort to match Day 1 logic
-  
+    transformedData.day_2.sort(
+      (a, b) => new Date(b.release) - new Date(a.release)
+    ); // Corrected sort to match Day 1 logic
+
     setTournamentData(transformedData);
   };
-  
-  
-  
 
+  // day no 01  zainab = 500
+  // day no 02  zainab = 300 late
+  // day no 01  noor = 0
+  // day no 02  noor = 800 earliest
 
-// day no 01  zainab = 500
-// day no 02  zainab = 300 late 
-// day no 01  noor = 0
-// day no 02  noor = 800 earliest 
+  // day no 01  fatima = 500 earliest
+  // day no 02  fatima = 0
 
-// day no 01  fatima = 500 earliest
-// day no 02  fatima = 0
-
-
-// day no 01  eman = 0
-// day no 02  eman = 500 late
-
+  // day no 01  eman = 0
+  // day no 02  eman = 500 late
 
   const getPaginatedData = (data, page) => {
     const startIndex = page * itemsPerPage;
@@ -149,9 +148,7 @@ const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
   const UserDetailColumn = {
     Header: "User",
     accessor: "user_detail",
-  
   };
-
 
   const ChubCayDays = [
     ProfileColumn,
@@ -204,7 +201,10 @@ const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
         <div className="table-row my-2">
           <Table
             columns={ChubCayOverScore}
-            data={getPaginatedData(tournamentData?.over_all, pageNumber.over_all)}
+            data={getPaginatedData(
+              tournamentData?.over_all,
+              pageNumber.over_all
+            )}
             isEditable={false}
             isDeletable={false}
           />
@@ -213,7 +213,9 @@ const ChubClayClassicLeaderBoard = ({ chubClayClassic }) => {
               previousLabel={<FaAngleLeft />}
               nextLabel={<FaAngleRight />}
               breakLabel={"..."}
-              pageCount={Math.ceil(tournamentData?.over_all.length / itemsPerPage)}
+              pageCount={Math.ceil(
+                tournamentData?.over_all.length / itemsPerPage
+              )}
               marginPagesDisplayed={2}
               pageRangeDisplayed={3}
               onPageChange={(selected) => handlePageClick(selected, "over_all")}

@@ -44,3 +44,4 @@ export { default as WestEndMeatFishManiaOptional } from "./Events/WestEndMeatfis
 // Burunu Boma
 export { default as BurunuBomaInformation } from "./Events/BurunuBoma/Information";
 export { default as BurunuBomaRules } from "./Events/BurunuBoma/Rules";
+export { default as BurunuRegistration } from "./Events/BurunuBoma/Registerion";

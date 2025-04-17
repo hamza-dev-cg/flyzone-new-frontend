@@ -101,6 +101,12 @@ export const TournamentApi = createApi({
         method: "DELETE",
       }),
     }),
+    GetAllTournamentEvent: builder.mutation({
+      query: (id) => ({
+        url: `/api/tournament/get-all-tournament-events`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -118,4 +124,5 @@ export const {
   useCreateTournamentCategoryForAdminMutation,
   useDeleteTournamentCategoryForAdminMutation,
   useCreateTournamentEventForAdminMutation,
+  useGetAllTournamentEventMutation,
 } = TournamentApi;

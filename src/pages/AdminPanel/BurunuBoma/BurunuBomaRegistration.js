@@ -104,7 +104,7 @@ const ChubCayRegistration = () => {
       
 
       <div className="mt-4">
-        <Table columns={columns} data={tournamentData[0].filter((tournament)=>tournament.tournament_category === "Chub Cay")} renderRow={renderRow} loading={isFetching} />
+        <Table columns={columns} data={tournamentData[0].filter((tournament)=>tournament.tournament_category.includes("Burunu"))} renderRow={renderRow} loading={isFetching} />
       </div>
       <AddModal show={showModal} onClose={handleCloseModal} refreshData={getTournamentRecord} />
       <EditModal show={showEditModal} onClose={handleCloseEditModal} data={selectedData} refreshData={getTournamentRecord} />

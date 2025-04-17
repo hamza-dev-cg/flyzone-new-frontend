@@ -3548,3 +3548,8 @@ thead.background-row th {
   width: 90%;
 }
 }
+.disabled-svg{
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: none;
+}

@@ -9,12 +9,14 @@ import WestEndMeatfishImage from "../assets/images/West-End-Meatfish-Mania_large
 import BurunuBomaImage from "../assets/images/BomaMain.png";
 
 import "../assets/css/eventModel.css";
+
 const modalSizeMap = {
   Wahoo: "md",
   Chub: "lg",
   West: "sm",
   Burunu: "sm",
 };
+
 const navLinks = {
   Wahoo: [
     {
@@ -33,7 +35,7 @@ const navLinks = {
       register: false,
     },
   ],
-  Chub: [
+  ChubCay: [
     {
       path: "/tournaments/chub-cay-classic",
       title: "March 13th to 15th, 2025",
@@ -57,7 +59,7 @@ const navLinks = {
       register: true,
     },
   ],
-  West: [
+  WestEndMeat: [
     {
       path: "/tournaments/west-end-meatfish-mania",
       title: "May 8th to 10th, 2025",
@@ -67,9 +69,9 @@ const navLinks = {
       name: "West And MeatFish",
     },
   ],
-  Burunu: [
+  BurunuBoma: [
     {
-      path: "/tournaments/burunu-boma",
+      path: `/tournaments/burunu-boma`,
       title: "May 2nd to 4th, 2025",
       image: BurunuBomaImage,
       width: "61%",
@@ -82,8 +84,13 @@ const navLinks = {
 export default function EventsModal({ event, onClose }) {
   const [isModalVisible, setModalVisible] = useState(true);
   const modalRef = useRef(null);
-  const eventData = navLinks[event.name];
-  const modalSize = modalSizeMap[event.name] || "lg";
+  const formatName = (name) =>
+    name
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join("");
+  const eventData = navLinks[formatName(event?.name)]; // match array from navLinks
+  const modalSize = modalSizeMap[event?.name] || "lg";
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -95,37 +102,36 @@ export default function EventsModal({ event, onClose }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [onClose]);
+
   if (!isModalVisible || !eventData) return null;
 
   return (
     <Modal show={isModalVisible} centered size={modalSize}>
       <div ref={modalRef}>
-        <h4 className="textHeading-1">{eventData[0].name}</h4>
+        <h4 className="textHeading-1">{eventData[0]?.name || "Event Details"}</h4>
         <div className="event-model-container">
-          {eventData.map((event, index) => (
+          {eventData.map((e, index) => (
             <div key={index} className="event-model-card">
               <div className="modal-img">
-                <img src={event.image} alt={event.title} width={event.width} />
+                <img src={e.image} alt={e.title} width={e.width} />
               </div>
-              <p className="card-text">{event.title}</p>
+              <p className="card-text">{e.title}</p>
               <div className="event-model-btn">
-                {event.name !== "Burunu Boma" && (
+                {e.name !== "Burunu Boma" && (
                   <a
                     href={
-                      event.name === "West And MeatFish Events"
+                      e.name === "West And MeatFish Events"
                         ? "/west-end-meat-fish/register/2"
-                        : event.name === "West And MeatFish"
+                        : e.name === "West And MeatFish"
                         ? "/west-end-meat-fish/register/3"
                         : "/register"
                     }
-                    className={`${
-                      event.register ? "btn-register" : "disabled-new"
-                    }`}
+                    className={e.register ? "btn-register" : "disabled-new"}
                   >
-                    {event.register ? "Register" : "Event Closed"}
+                    {e.register ? "Register" : "Event Closed"}
                   </a>
                 )}
-                <a href={event.path} className="btn-learn-more">
+                <a href={e.path} className="btn-learn-more">
                   Learn More
                 </a>
               </div>

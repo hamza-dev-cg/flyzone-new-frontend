@@ -1,5 +1,7 @@
 import React, { lazy } from "react";
 import { Route } from "react-router-dom";
+import { getTokenFromLocalStorage } from "../../utils/helpers";
+import { Navigate, Outlet, useLocation  } from "react-router-dom";
 
 // Lazy load tournament components
 const WahooOpen = lazy(() =>
@@ -70,6 +72,23 @@ const BurunuBomaInformation = lazy(() =>
 const BurunuBomaRules = lazy(() =>
   import("../../pages").then(module => ({ default: module.BurunuBomaRules }))
 );
+const BurunuRegistration = lazy(() =>
+  import("../../pages").then((module) => ({
+    default: module.BurunuRegistration,
+  }))
+);
+const PrivateRoute = () => {
+
+  const token = getTokenFromLocalStorage()?.token;
+  const location = useLocation();
+
+  if (!token) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+  return <Outlet />;
+
+};
+
 const TournamentRoutes = () => (
   <>
     {/* Wahoo */}
@@ -103,7 +122,12 @@ const TournamentRoutes = () => (
     <Route path="/tournaments/west-end-meatfish-mania/optional" element={<WestEndMeatFishManiaOptional />} />
 
     <Route path="/tournaments/burunu-Boma" element={<BurunuBomaInformation/>} />
+    
     <Route path="/tournaments/burunu-Boma/rules" element={<BurunuBomaRules />} />
+
+    <Route element={<PrivateRoute />}>
+    <Route path="/tournaments/burunu-Boma/register" element={<BurunuRegistration/>} />
+    </Route>
 
   </>
 );

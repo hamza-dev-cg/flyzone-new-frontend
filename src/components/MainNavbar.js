@@ -44,7 +44,6 @@ const MainNavbar = () => {
     navigate("/login");
   };
 
-
   const fetchTournaments = async () => {
     try {
       const response = await getTournamentAPI();
