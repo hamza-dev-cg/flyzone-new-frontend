@@ -3,8 +3,11 @@ import EventsNavbar from "../../../components/EventsNavbar";
 import TournamentInfo from "../../../components/TornamentInfo";
 import EventInformationBg from "../../../assets/images/event-informat-bg.png";
 import Blue_Marin from "../../../assets/images/blue-marlin.png";
-
+import { useLocation } from "react-router-dom";
+import { formatDateRange } from '../../../utils/helpers'
 const WahooOpen = () => {
+  const location = useLocation();
+  const event = location?.state?.event;
   return (
     <div>
       <section className="whoo-open-hero-section">
@@ -13,35 +16,22 @@ const WahooOpen = () => {
         </div>
         <EventsNavbar basePath="/events" links="wahoo" />
         <TournamentInfo
-          title="Blue Marlin Cove Wahoo Open"
+          title={event?.name}
           imgSrc={Blue_Marin}
           altText={Blue_Marin}
-          date={"January 16th to 18th, 2025"}
-          description={
-            <>
-              Join us for the highly anticipated Blue Marlin Cove Wahoo Open, a
-              premier wahoo fishing tournament set against the stunning backdrop
-              of West End, Bahamas, from{" "}
-              <b style={{ fontWeight: "bold" }}>January 16-18.</b> This
-              exhilarating event invites anglers from near and far to compete
-              for glory and prizes in one of the most sought-after fishing
-              destinations in the world.
-              <br></br>
-              <br></br>
-              With an entry fee of <b style={{ fontWeight: "bold" }}>$2,500</b>,
-              participants will have the chance to showcase their skills,
-              compete with fellow fishing enthusiasts, and experience the thrill
-              of reeling in trophy-sized wahoo. The tournament promises not only
-              fierce competition but also a vibrant atmosphere filled with
-              camaraderie and shared passion for the sport.
-              <br></br>
-              <br></br>
-              Whether you’re an experienced angler or a newcomer to wahoo
-              fishing, the Blue Marlin Cove Wahoo Open offers an unforgettable
-              experience amidst the breathtaking beauty of the Bahamas. Don’t
-              miss your chance to be part of this extraordinary event!
-            </>
-          }
+          date={formatDateRange(event?.startDate, event?.endDate)}
+          description=
+          {event?.description?.split("\n").map((line, idx) => (
+            <p
+              key={idx}
+              dangerouslySetInnerHTML={{
+                __html: line
+                .replace(/(\$2,500)/g, "<strong>$1</strong>")
+
+                  .replace(/(January 16-18)/g, "<b>$1</b>")
+              }}
+            />
+          ))}
         />
       </section>
       <section className="schedule-section">
