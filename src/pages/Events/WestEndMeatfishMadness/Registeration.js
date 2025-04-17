@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { json, useParams } from "react-router-dom";
+
 import { useForm } from "react-hook-form";
 import { Stepper, Step } from "react-form-stepper";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,102 +11,20 @@ import PaymentForm from "../../../components/PaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { setUser } from "../../../features/user/userSlice";
+import { useLocation } from "react-router-dom";
+
 import {
   useUpdateRegisterUserMutation,
-  useGetPaymentHistoryMutation,
+  useMeatFishRegisterTournamentMutation
 } from "../../../features/registerMeatFish/api";
 import { useEventforPaymentTournamentMutation } from "../../../features/tournaments/api";
-import { useParams } from "react-router-dom";
-import { convertToFormData } from "../../../utils/helpers";
 
-const stripePromise = loadStripe(
-  "pk_live_51QUApaLX0WQuQ4Sa64hLBwBGpGHLYu0LLdzkFs6K8aZYdnkyiNv6LCIFIjjfnauzIBqctAZKqCCyh7wjHG75QJcX00IWLxFAjH"
-);
+// const stripePromise = loadStripe(
+//   "pk_live_51QUApaLX0WQuQ4Sa64hLBwBGpGHLYu0LLdzkFs6K8aZYdnkyiNv6LCIFIjjfnauzIBqctAZKqCCyh7wjHG75QJcX00IWLxFAjH"
+// );
 // const stripePromise = loadStripe(
 //   "pk_test_51QUrEfBZAGDpCST54w64nCWNe1mLcRN89XQw86WxDSIEXRfOVz1jfIVM5bklMLyMmuaUhcRcO21Vb08g6OcMeJBt00jGMnTbms"
 // );
-
-const entrySections = [
-  {
-    title: "Heaviest Fish",
-    options: [
-      {
-        label: "$500 - Level 1 - Heaviest Fish (65/25/10 Split)",
-        amount: 500,
-      },
-      {
-        label: "$1000 - Level 2 - Heaviest Fish (65/25/10 Split)",
-        amount: 1000,
-      },
-      {
-        label: "$1500 - Level 3 - Heaviest Fish Winner Take All",
-        amount: 1500,
-      },
-    ],
-  },
-  {
-    title: "Heaviest Stringer",
-    options: [
-      {
-        label: "$500 - Level 1 - Heaviest Stringer (65/25/10 Split)",
-        amount: 500,
-      },
-      {
-        label: "$1000 - Level 2 - Heaviest Stringer (65/25/10 Split)",
-        amount: 1000,
-      },
-      {
-        label: "$1000 - Level 3 - Heaviest Stringer Winner Take All",
-        amount: 1000,
-      },
-    ],
-  },
-  {
-    title: "Tuna Division",
-    options: [
-      {
-        label: "$500 - Level 1 - Heaviest Tuna (65/25/10 Split)",
-        amount: 500,
-      },
-      {
-        label: "$1000 - Level 2 - Heaviest Tuna (65/25/10 Split)",
-        amount: 1000,
-      },
-      {
-        label: "$2500 - Level 3 - Heaviest Tuna Winner Take All",
-        amount: 2500,
-      },
-      {
-        label:
-          "$1000 - Level 4 - Heaviest Stringer - Select Up to 5 Qualifying Tuna (65/25/10 Split)",
-        amount: 1000,
-      },
-    ],
-  },
-  {
-    title: "Meatfish Division",
-    options: [
-      {
-        label: "$500 - Level 1 - Heaviest Dolphin (65/25/10 Split)",
-        amount: 500,
-      },
-      {
-        label: "$500 - Level 2 - Heaviest Wahoo (65/25/10 Split)",
-        amount: 500,
-      },
-    ],
-  },
-  {
-    title: "Big Fish Daily",
-    options: [
-      {
-        label:
-          "$500 - Level 1 - Heaviest Daily Fish Weighed Each Day (Winner Each Day)",
-        amount: 500,
-      },
-    ],
-  },
-];
 
 const Registration = () => {
   const {
@@ -113,49 +32,58 @@ const Registration = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const location = useLocation();
   const userInfo = useSelector((state) => state.user?.user);
   const [loading, setLoading] = useState(false);
-  const [selectedEntries, setSelectedEntries] = useState([]);
-  const [preSelectedEvents, setPreSelectedEvents] = useState([]);
-
-
-  const [selectedEvents, setSelectedEvents] = useState([]);
-  const params = useParams();
   const dispatch = useDispatch();
   const [formStep, setFormStep] = useState(() => {
     const savedStep = localStorage.getItem("formStep");
     return savedStep ? parseInt(savedStep, 10) : 0;
   });
+  const { event_id } = useParams();
+  const [UpdateRegisterUser] = useUpdateRegisterUserMutation();
+  const [MeatFishRegister] = useMeatFishRegisterTournamentMutation()
+  const [registeredActivities, setRegisteredActivities] = useState({
+    heaviestFish: {
+      level_one_500_heaviesct_fish: false,
+      level_two_1000_heaviest_fish: false,
+      level_three_1500_heaviest_fish_winner_take_all: false,
+    },
+    heaviestStringer: {
+      level_one_500_heaviest_stringer: false,
+      level_two_1000_heaviest_stringer: false,
+      level_three_1000_heaviest_stringer_winner_take_all: false,
+    },
+    tunaDivision: {
+      level_one_500_heaviest_tuna: false,
+      level_two_1000_heaviest_tuna: false,
+      level_three_2500_heaviest_tuna_winner_take_all: false,
+      level_four_1000_heaviest_stringer_top_5: false,
+    },
+    meatFishDivision: {
+      level_one_500_heaviest_dolphin: false,
+      level_one_500_heaviest_wahoo: false,
+    },
+    bigFishDaily: {
+      level_one_500_heaviest_daily_fish: false,
+    }
+  });
+
+  const handleCheckboxChange = (category, key) => {
+    setRegisteredActivities((prev) => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [key]: !prev[category][key],
+      }
+    }));
+  };
+
   useEffect(() => {
     localStorage.setItem("formStep", formStep);
   }, [formStep]);
-  const [UpdateRegisterUser] = useUpdateRegisterUserMutation();
-  const [userRegisterForEvent] = useEventforPaymentTournamentMutation();
-  const [GetPaymentHistory] = useGetPaymentHistoryMutation();
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await GetPaymentHistory();
-        const storeData = data?.data?.data || [];
+  useEffect(() => { }, [formStep]);
 
-        if (storeData.length === 0) {
-          setSelectedEvents([]); // Ensure it's empty when there's no data
-          return;
-        }
 
-        const reversed = [...storeData].reverse();
-        const store_events = reversed[0] || {}; // Ensure it's an object
-
-        setSelectedEvents(store_events?.selected_events || []);
-        setPreSelectedEvents(store_events?.selected_events || []);
-
-      } catch (error) {
-        console.error("Error fetching payment history:", error);
-      }
-    };
-    fetchData();
-  }, []);
   const onSubmit = async (data) => {
     if (!data) {
       toast.error("Form submission failed. Required data is missing.");
@@ -163,7 +91,7 @@ const Registration = () => {
     }
     setLoading(true);
     try {
-      const res = await UpdateRegisterUser(data);
+      const res = await UpdateRegisterUser(userInfo.id, data);
       if (res?.data?.data) {
         localStorage.setItem("user", JSON.stringify(res.data.data));
         dispatch(setUser({ user: res.data.data }));
@@ -176,51 +104,51 @@ const Registration = () => {
     }
   };
 
-  useEffect(() => { }, [formStep]);
+  const steps = ["User Details", "Add Optional", "Add Payment"];
+  const getSelectedActivitiesOnly = (activities) => {
+    const result = {};
+    for (const category in activities) {
+      const selected = Object.entries(activities[category])
+        .filter(([_, value]) => value)
+        .reduce((acc, [key, val]) => {
+          acc[key] = val;
+          return acc;
+        }, {});
 
-  const handleCheckboxChange = (entry) => {
-    const value = entry.label.replace(/[()]/g, "").replace(/\s+/g, "-");
-    const amount = entry.amount;
-
-    setSelectedEvents((prev) => {
-      const isSelected = prev.includes(value);
-      const updatedEvents = isSelected
-        ? prev.filter((item) => item !== value)
-        : [...prev, value];
-
-      setSelectedEntries((prevEntries) => {
-        if (isSelected) {
-          return prevEntries.filter((a) => a !== amount);
-        } else {
-          return [...prevEntries, amount];
-        }
-      });
-
-      return updatedEvents;
-    });
+      if (Object.keys(selected).length > 0) {
+        result[category] = selected;
+      }
+    }
+    return result;
   };
 
-
-
-
-  const totalAmount = selectedEntries.reduce(
-    (sum, entry) => sum + entry,
-    0
-  );
-
-  const steps = ["User Details", "Add Optional", "Add Payment"];
-  const segments = location.pathname.split("/");
-  let firstSegment = segments[1];
-  firstSegment = firstSegment
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-  useEffect(() => {
-    if (formStep === 1) {
-      localStorage.setItem("total_amount", totalAmount);
-      localStorage.setItem("selected_entries", JSON.stringify(selectedEvents));
+  const handleNextStep = async () => {
+    const selectedOnly = getSelectedActivitiesOnly(registeredActivities);
+    const jsonData = {
+      eventId: event_id,
+      registeredActivities: selectedOnly
     }
-  }, [totalAmount]);
+    console.log(jsonData);
+    try {
+      const res = await MeatFishRegister(jsonData);
+      const total_amount = 100
+      console.log(res);
+      // if (res?.data?.data) {
+      //   localStorage.setItem('selected_entries', selectedOnly)
+      //   localStorage.setItem('total_amount', total_amount)
+      // }
+      // setFormStep((prevStep) => {
+      //   const newStep = prevStep + 1;
+      //   localStorage.setItem("formStep", newStep);
+      //   return newStep;
+      // });
+    } catch (err) {
+      toast.error("An error occurred while registering. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+
+  };
 
 
   return (
@@ -228,7 +156,7 @@ const Registration = () => {
       <ToastContainer />
       <section className="layout-space register-section">
         <div className="content-center">
-          <h1 className="text-center">{firstSegment} Registration Form</h1>
+          <h1 className="text-center">Registration Form</h1>
           <img className="responsive-line" src={Line} alt="line" />
         </div>
 
@@ -274,19 +202,19 @@ const Registration = () => {
                 <div className="row">
                   <div className="col-md-6 col-sm-12">
                     <div className="mb-3">
-                      <label className="form-label">Name</label>
+                      <label className="form-label">First Name</label>
                       <input
                         type="text"
                         className="form-control"
-                        {...register("name", {
+                        {...register("firstName", {
                           required: "First name is required",
                         })}
-                        value={userInfo?.name}
-                        disabled={userInfo?.name}
+                        value={userInfo?.firstName}
+                        disabled={userInfo?.firstName}
                       />
-                      {errors.name && (
+                      {errors.firstName && (
                         <span className="text-danger font-12">
-                          {errors.name.message}
+                          {errors.firstName.message}
                         </span>
                       )}
                     </div>
@@ -298,15 +226,15 @@ const Registration = () => {
                       <input
                         type="text"
                         className="form-control"
-                        {...register("last_name", {
+                        {...register("lastName", {
                           required: "Last name is required",
                         })}
-                        value={userInfo?.last_name}
-                        disabled={userInfo?.last_name}
+                        value={userInfo?.lastName}
+                        disabled={userInfo?.lastName}
                       />
-                      {errors.last_name && (
+                      {errors.lastName && (
                         <span className="text-danger font-12">
-                          {errors.last_name.message}
+                          {errors.lastName.message}
                         </span>
                       )}
                     </div>
@@ -318,15 +246,15 @@ const Registration = () => {
                       <input
                         type="text"
                         className="form-control"
-                        {...register("boat_name", {
+                        {...register("boatName", {
                           required: "Boat name is required",
                         })}
-                        value={userInfo?.boat_name}
-                        disabled={userInfo?.boat_name}
+                        value={userInfo?.boatName}
+                        disabled={userInfo?.boatName}
                       />
-                      {errors.boat_name && (
+                      {errors.boatName && (
                         <span className="text-danger font-12">
-                          {errors.boat_name.message}
+                          {errors.boatName.message}
                         </span>
                       )}
                     </div>
@@ -415,13 +343,13 @@ const Registration = () => {
                       <input
                         type="text"
                         className="form-control"
-                        {...register("zip", { required: "Zip is required" })}
-                        value={userInfo?.zip}
-                        disabled={userInfo?.zip}
+                        {...register("zipCode", { required: "Zip is required" })}
+                        value={userInfo?.zipCode}
+                        disabled={userInfo?.zipCode}
                       />
-                      {errors.zip && (
+                      {errors.zipCode && (
                         <span className="text-danger font-12">
-                          {errors.zip.message}
+                          {errors.zipCode.message}
                         </span>
                       )}
                     </div>
@@ -433,15 +361,15 @@ const Registration = () => {
                       <input
                         type="number"
                         className="form-control"
-                        {...register("phone", {
+                        {...register("phoneNo", {
                           required: "Phone is required",
                         })}
-                        value={userInfo?.phone}
-                        disabled={userInfo?.phone}
+                        value={userInfo?.phoneNo}
+                        disabled={userInfo?.phoneNo}
                       />
-                      {errors.phone && (
+                      {errors.phoneNo && (
                         <span className="text-danger font-12">
-                          {errors.phone.message}
+                          {errors.phoneNo.message}
                         </span>
                       )}
                     </div>
@@ -473,35 +401,175 @@ const Registration = () => {
                         </li>
                       </ul>
                     </div>
-                    {entrySections.map((section, idx) => (
-                      <div key={idx} className="rule-description">
-                        <p>
-                          <strong>{section.title}</strong>
-                        </p>
-                        <ul>
-                          {section.options.map((entry, i) => {
-                            const value = entry.label.replace(/[()]/g, "").replace(/\s+/g, "-");
-                            const isChecked = selectedEvents?.includes(value);
-                            const isDisabled = preSelectedEvents?.includes(value); 
-                            return (
-                              <li key={i}>
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    value={value}
-                                    checked={isDisabled ? true : isChecked}
-                                    disabled={isDisabled}
-                                    onChange={() => handleCheckboxChange(entry)}
-                                  />
-                                  {entry.label}
-                                </label>
-                              </li>
-                            );
-                          })}
+                    <div className="rule-description">
+                      <p>
+                        <strong>Heaviest Fish</strong>
+                      </p>
+                      <ul>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.heaviestFish.level_one_500_heaviesct_fish}
+                            onChange={() =>
+                              handleCheckboxChange("heaviestFish", "level_one_500_heaviesct_fish")
+                            }
+                          />
+                          $500 - Level 1 - Heaviest Fish (65/25/10 Split)
+                        </label>
 
-                        </ul>
-                      </div>
-                    ))}
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.heaviestFish.level_two_1000_heaviest_fish}
+                            onChange={() =>
+                              handleCheckboxChange("heaviestFish", "level_two_1000_heaviest_fish")
+                            }
+                          />
+                          $1000 - Level 2 - Heaviest Fish (65/25/10 Split)
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.heaviestFish.level_three_1500_heaviest_fish_winner_take_all}
+                            onChange={() =>
+                              handleCheckboxChange("heaviestFish", "level_three_1500_heaviest_fish_winner_take_all")
+                            }
+                          />
+                          $1500 - Level 3 - Heaviest Fish Winner Take All
+                        </label>
+                      </ul>
+                    </div>
+                    <div className="rule-description">
+                      <p>
+                        <strong>Heaviest Stringer</strong>
+                      </p>
+                      <ul>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.heaviestStringer.level_one_500_heaviest_stringer}
+                            onChange={() =>
+                              handleCheckboxChange("heaviestStringer", "level_one_500_heaviest_stringer")
+                            }
+                          />
+                          $500 - Level 1 - Heaviest Stringer (65/25/10 Split)
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.heaviestStringer.level_two_1000_heaviestFish_stringer}
+                            onChange={() =>
+                              handleCheckboxChange("heaviestStringer", "level_two_1000_heaviestFish_stringer")
+                            }
+                          />
+                          $1000 - Level 2 - Heaviest Stringer (65/25/10 Split)
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.heaviestStringer.level_three_1000_heaviestFish_stringer_winner_take_all}
+                            onChange={() =>
+                              handleCheckboxChange("heaviestStringer", "level_three_1000_heaviestFish_stringer_winner_take_all")
+                            }
+                          />
+                          $1000 - Level 3 - Heaviest Stringer Winner Take All
+                        </label>
+                      </ul>
+                    </div>
+                    <div className="rule-description">
+                      <p>
+                        <strong>Tuna Division</strong>
+                      </p>
+                      <ul>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.tunaDivision.level_one_500_heaviest_tuna}
+                            onChange={() =>
+                              handleCheckboxChange("tunaDivision", "level_one_500_heaviest_tuna")
+                            }
+                          />
+                          $500 - Level 1 - Heaviest Tuna (65/25/10 Split)
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.tunaDivision.level_two_1000_heaviest_tuna}
+                            onChange={() =>
+                              handleCheckboxChange("tunaDivision", "level_two_1000_heaviest_tuna")
+                            }
+                          />
+                          $1000 - Level 2 - Heaviest Tuna (65/25/10 Split)
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.tunaDivision.level_three_2500_heaviest_tuna_winner_take_all}
+                            onChange={() =>
+                              handleCheckboxChange("tunaDivision", "level_three_2500_heaviest_tuna_winner_take_all")
+                            }
+                          />
+                          $2500 - Level 3 - Heaviest Tuna Winner Take All
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.tunaDivision.level_four_1000_heaviest_stringer_top_5}
+                            onChange={() =>
+                              handleCheckboxChange("tunaDivision", "level_four_1000_heaviest_stringer_top_5")
+                            }
+                          />
+                          $1000 - Level 4 - Heaviest Stringer - Select Up to 5 Qualifying Tuna (65/25/10 Split)
+                        </label>
+                      </ul>
+                    </div>
+                    <div className="rule-description">
+                      <p>
+                        <strong>Meatfish Division</strong>
+                      </p>
+                      <ul>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.meatFishDivision.level_one_500_heaviest_dolphin}
+                            onChange={() =>
+                              handleCheckboxChange("meatFishDivision", "level_one_500_heaviest_dolphin")
+                            }
+                          />
+                          $500 - Level 1 - Heaviest Dolphin (65/25/10 Split)
+                        </label>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.meatFishDivision.level_one_500_heaviest_dolphin}
+                            onChange={() =>
+                              handleCheckboxChange("meatFishDivision", "level_one_500_heaviest_dolphin")
+                            }
+                          />
+                          $500 - Level 2 - Heaviest Wahoo (65/25/10 Split)
+                        </label>
+
+                      </ul>
+                    </div>
+                    <div className="rule-description">
+                      <p>
+                        <strong>Big Fish Daily</strong>
+                      </p>
+                      <ul>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={registeredActivities.bigFishDaily.level_one_500_heaviest_daily_fish}
+                            onChange={() =>
+                              handleCheckboxChange("bigFishDaily", "level_one_500_heaviest_daily_fish")
+                            }
+                          />
+                          $500 - Level 1 - Heaviest Daily Fish Weighed Each Day (Winner Each Day)
+                        </label>
+
+
+                      </ul>
+                    </div>
                   </div>
                 </div>
                 <div className="container">
@@ -512,17 +580,14 @@ const Registration = () => {
                     >
                       Back
                     </button>
-                    <button
-                      className="service-btn"
-                      onClick={() => setFormStep((prevStep) => prevStep + 1)}
-                    >
+                    <button className="service-btn" onClick={handleNextStep}>
                       Next
                     </button>
                   </div>
                 </div>
               </>
             )}
-            {formStep === 2 && (
+            {/* {formStep === 2 && (
               <div className="row">
                 <Elements stripe={stripePromise}>
                   <PaymentForm selectedEntries={selectedEntries} />
@@ -536,7 +601,7 @@ const Registration = () => {
                   </button>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </section>
       </section>
