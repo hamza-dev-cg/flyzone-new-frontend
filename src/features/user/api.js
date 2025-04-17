@@ -1,15 +1,34 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {baseQuery} from '../../utils/common'
 
 export const userApi = createApi({
   reducerPath: "userApi",
-  baseQuery,
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://172.229.220.21:8000',
+  }),
   endpoints: (builder) => ({
     LoginUser: builder.mutation({
       query: (data) => ({
         url: `/api/auth/login`,
         method: "POST",
         body: data,
+      }),
+    }),
+    GetOneUser: builder.mutation({
+      query: ({ token, id }) => ({
+        url: `/api/user/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
+    GetAllUser: builder.mutation({
+      query: ({ token }) => ({
+        url: `/api/user/all`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }),
     }),
     UpdateUser: builder.mutation({
@@ -27,6 +46,16 @@ export const userApi = createApi({
         url: `/api/auth/register`,
         method: "POST",
         body: data,
+      }),
+    }),
+    AddMemeber: builder.mutation({
+      query: ({data, token}) => ({
+        url: `api/registration/add-team-members`,
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }),
     }),
     VerifyOtp: builder.mutation({
@@ -53,5 +82,8 @@ export const {
   useRegisterUserMutation,
   useResendOtpMutation,
   useVerifyOtpMutation,
-  useUpdateUserMutation
+  useUpdateUserMutation,
+  useGetOneUserMutation,
+  useAddMemeberMutation,
+  useGetAllUserMutation
 } = userApi;

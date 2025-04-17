@@ -23,10 +23,11 @@ import {
 } from "../../features/forum/api";
 import BurunuBomaImage from "../../assets/images/BomaMain.png";
 import Avatar from "react-avatar";
+import ChatBox from "../../components/Chatbox";
 
 const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
   const navigate = useNavigate();
-  const [tournament, setTournament] = useState("Chub Cay Open");
+  const [tournament, setTournament] = useState("Chub Cay Invitational");
   const [selectedOption, setSelectedOption] = useState(null);
   const [blueMarlineCoveWahooOpen, setBlueMarlineCoveWahooOpen] = useState([]);
   const [blueMarlineCoveChampionship, setBlueMarlineCoveChampionship] =
@@ -271,20 +272,18 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
   };
 
   return (
-    <div className="container">
-      {label && <p className="text-center leaderboard-p">{tournament}</p>}
+    <div className=" ">
       <div
-        className={`row ${
-          chatSection ? "flex-column-reverse flex-lg-row " : ""
-        }`}
+        className={`row ${chatSection ? "flex-column-reverse flex-lg-row " : ""
+          }`}
       >
-        <div className={chatSection ? "col-lg-8" : "col-lg-12"}>
+        <div className="w-full">
           <section
             className={`leaderboard-page ${label ? "" : "layout-space"}`}
           >
             <div>
-              <div className="d-flex align-items-center justify-content-end filter-row ">
-                <div>
+              <div className="  d-flex align-items-center justify-content-center filter-row pb-4 ">
+                <div className=" w-25">
                   <TournamentProvider>
                     <TournamentSelect
                       value={tournament}
@@ -300,18 +299,6 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
                     </TournamentSelect>
                   </TournamentProvider>
                 </div>
-
-                <div className={chatBox ? "ms-3" : ""}>
-                  {" "}
-                  {/* Add margin left only if chatBox is true */}
-                  {chatBox ? (
-                    <Button
-                      text={!chatSection ? "Live Chat" : "Hide Chat"}
-                      height="38px"
-                      onClick={() => setChatSection(!chatSection)}
-                    />
-                  ) : null}
-                </div>
               </div>
 
               {!loading && tournament === "Blue Marline Cove Wahoo Open" && (
@@ -325,159 +312,73 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
                 />
               )}
               {!loading && tournament === "Chub Cay Classic" && (
-                <ChubClayClassicLeaderBoard chubClayClassic={chubClayClassic} />
+                <div className=" d-flex flex-row ">
+                  <div className="scoreboard">
+                    <ChubClayClassicLeaderBoard
+                      chubClayClassic={chubClayClassic}
+                    />
+                  </div>
+                  <ChatBox
+                    user={user}
+                    commentnew={commentnew}
+                    optionsData={optionsData}
+                    selectedOption={selectedOption}
+                    setSelectedOption={setSelectedOption}
+                    message={message}
+                    setMessage={setMessage}
+                    handleReplySubmit={handleReplySubmit}
+                    isSending={isSending}
+                  />
+                </div>
               )}
+
               {!loading && tournament === "Chub Cay Open" && (
-                <ChubClayOpen chubClayClassic={chubClayOpen} />
+                <div className=" d-flex ">
+                  <div className="w-75">
+                    <ChubClayOpen chubClayClassic={chubClayOpen} />
+                  </div>
+                  <ChatBox
+                    user={user}
+                    commentnew={commentnew}
+                    optionsData={optionsData}
+                    selectedOption={selectedOption}
+                    setSelectedOption={setSelectedOption}
+                    message={message}
+                    setMessage={setMessage}
+                    handleReplySubmit={handleReplySubmit}
+                    isSending={isSending}
+                  />
+                </div>
               )}
               {!loading && tournament === "Chub Cay Invitational" && (
-                <ChubClayInvitational chubClayClassic={chubClayInvitational} />
+                <div className=" d-flex flex-column flex-lg-row gap-4">
+                  <div className="left-leadberboard">
+                    <ChubClayInvitational
+                      chubClayClassic={chubClayInvitational}
+                    />
+                  </div>
+                  <ChatBox
+                    user={user}
+                    commentnew={commentnew}
+                    optionsData={optionsData}
+                    selectedOption={selectedOption}
+                    setSelectedOption={setSelectedOption}
+                    message={message}
+                    setMessage={setMessage}
+                    handleReplySubmit={handleReplySubmit}
+                    isSending={isSending}
+                  />
+                </div>
               )}
             </div>
           </section>
         </div>
-
-        {chatSection && (
-          <div className="col-lg-4">
-            <div className="chat-box">
-              <div className="chat-header">
-                <div className="d-flex justify-content-between gap-5">
-                  <div className="d-flex flex-column">
-                    <span className="fw-bold">Comments</span>
-                    <span style={{ fontSize: "0.7rem" }}>
-                      {commentnew?.length} Comments
-                    </span>
-                  </div>
-                  <div className="select-width">
-                    <Select
-                      options={optionsData}
-                      value={selectedOption}
-                      onChange={(selected) => {
-                        setSelectedOption(selected);
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="chat-body">
-                {user ? (
-                  <>
-                    {commentnew?.length > 0 ? (
-                      commentnew?.map((chat, index) => {
-                        const isCurrentUser = chat?.user?.id === user?.id;
-                        return (
-                          <div
-                            key={index}
-                            className={`d-flex flex-column ${
-                              isCurrentUser
-                                ? "align-items-end"
-                                : "align-items-start"
-                            }`}
-                          >
-                            <div
-                              className={`d-flex gap-2 align-items-center ${
-                                isCurrentUser
-                                  ? "justify-content-end"
-                                  : "justify-content-start"
-                              }`}
-                            >
-                              {!isCurrentUser && (
-                                <>
-                                  <Avatar
-                                    size="30"
-                                    name={chat?.user?.name}
-                                    src={chat?.user?.profile_image}
-                                    round={true}
-                                  />
-                                  <h4 className="m-0 chat-message">
-                                    {chat?.user?.name}
-                                  </h4>
-                                </>
-                              )}
-
-                              <span className="time">
-                                {new Date(chat?.created_at).toLocaleTimeString(
-                                  [],
-                                  { hour: "2-digit", minute: "2-digit" }
-                                )}
-                              </span>
-
-                              {isCurrentUser && (
-                                <>
-                                  <h4 className="m-0 chat-message">
-                                    {chat?.user?.name}
-                                  </h4>
-                                  <Avatar
-                                    size="30"
-                                    name={chat?.user?.name}
-                                    src={chat?.user?.profile_image}
-                                    round={true}
-                                  />
-                                </>
-                              )}
-                            </div>
-                            <p
-                              className={`chat-message p-2 rounded w-auto mt-2 bg-light text-dark ${
-                                isCurrentUser ? " text-end" : " text-start"
-                              }`}
-                            >
-                              {chat?.message}
-                            </p>
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <p className="text-center mt-3">
-                        No messages yet. Start the conversation!
-                      </p>
-                    )}
-                  </>
-                ) : (
-                  <div className="text-center mt-4">
-                    <p>You need to log in to view messages.</p>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => navigate("/login")}
-                    >
-                      Login Now
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="d-flex align-items-center mt-2">
-                <textarea
-                  placeholder="Add Message Here"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault(); // Prevents newline
-                      handleReplySubmit();
-                    }
-                  }}
-                  className="form-control me-2"
-                  disabled={isSending}
-                  rows="3"
-                  style={{ height: "40px", resize: "none" }} // Prevents resizing
-                ></textarea>
-
-                <button
-                  onClick={handleReplySubmit}
-                  className="btn btn-primary"
-                  disabled={!user || isSending}
-                >
-                  {isSending ? (
-                    <span className="spinner-border spinner-border-sm"></span>
-                  ) : (
-                    <IoSend />
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
-      {show ? (
+      {/* <p className="leaderboard_para mt-5">
+        All payouts are unofficial. Displayed payouts may change throughout
+        the tournament and may not reflect final amounts.
+      </p> */}
+      {/* {show ? (
         ""
       ) : (
         <>
@@ -503,7 +404,7 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
             </div>
           </div>
         </>
-      )}
+      )} */}
     </div>
   );
 };

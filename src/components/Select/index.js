@@ -8,8 +8,13 @@ const StyledSelect = styled(Select)`
     min-height: 42px !important; /* Increase the height of the select box */
     font-size: 14px;
     border-radius:6px;
-    max-width:200px;
-    min-width:100px
+     ${(props) =>
+      props.$disableWidth
+        ? ""
+        : `
+      max-width: 200px;
+      min-width: 100px;
+    `}
   }
 
   .react-select__menu {
@@ -22,8 +27,7 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-const App = ({options=[],onChange,value,label,loading,defaultValue,placeholder}) => {
-  const [selectedOption, setSelectedOption] = useState(null);
+const App = ({options=[],onChange,value,label,loading,defaultValue,placeholder ,  isMulti , disableWidth  }) => {
 
 
   return (
@@ -37,6 +41,8 @@ const App = ({options=[],onChange,value,label,loading,defaultValue,placeholder})
       options={options}
       isLoading={loading}
       placeholder={placeholder}
+      isMulti={isMulti} 
+      $disableWidth={disableWidth}
     />
     </>
   );

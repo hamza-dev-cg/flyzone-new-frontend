@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../Table";
 import {chubClayOpen} from '../../../utils/dummyData'
+import LeaderboardTable from "../LeaderBoardTable"; 
 
 const ChubClayOpen = () => {
  
@@ -131,55 +132,22 @@ const ChubClayOpen = () => {
   ];
 
   return (
-    <>
-      {/* Overall Leaderboard */}
-      <div className="table-section">
-        <div className="title">Overall Score</div>
-        <div className="table-row my-2">
-          <Table
-            columns={ChubCayOverScore}
-            data={tournamentData.over_all}
-            isEditable={false}
-            isDeletable={false}
-          />
-          {tournamentData.over_all.length === 0 && (
-            <div className="text-center my-3">No Data Found</div>
-          )}
-        </div>
-      </div>
-
-      {/* Day 1 */}
-      <div className="table-section">
-        <div className="title">Day 1 - 28th March 2025</div>
-        <div className="table-row my-2">
-          <Table
-            columns={ChubCayDays}
-            data={tournamentData.day_1}
-            isEditable={false}
-            isDeletable={false}
-          />
-          {tournamentData.day_1.length === 0 && (
-            <div className="text-center my-3">No Data Found</div>
-          )}
-        </div>
-      </div>
-
-      {/* Day 2 */}
-      <div className="table-section">
-        <div className="title">Day 2 - 29th March 2025</div>
-        <div className="table-row my-2">
-          <Table
-            columns={ChubCayDays}
-            data={tournamentData.day_2}
-            isEditable={false}
-            isDeletable={false}
-          />
-          {tournamentData.day_2.length === 0 && (
-            <div className="text-center my-3">No Data Found</div>
-          )}
-        </div>
-      </div>
-    </>
+    <LeaderboardTable
+    tabs={[
+      { label: "Overall Score", key: "overall" },
+      { label: "Day 1 - 28th March 2025", key: "day1" },
+      { label: "Day 2 - 29th March 2025", key: "day2" },
+    ]}
+    columnsMap={{
+      overall: ChubCayOverScore,
+      day1: ChubCayDays,
+      day2: ChubCayDays,
+    }}
+    dataMap={{
+      overall: tournamentData.over_all,
+      day1: tournamentData.day_1,
+      day2: tournamentData.day_2,
+    }}/>
   );
 };
 

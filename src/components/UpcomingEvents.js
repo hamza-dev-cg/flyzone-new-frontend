@@ -48,7 +48,7 @@ const EventItem = ({ event }) => {
         </p>
 
         <span className="d-flex justify-content-between">
-          <ul className="list-unstyled text-start d-flex flex-column gap-4">
+          <ul className="list-unstyled text-start d-flex flex-column gap-4 text-black">
             <li className="d-flex align-items-center gap-2">
               <div className="checkmark-circle">
                 <img src={Correct} alt="Checkmark" width={30} />

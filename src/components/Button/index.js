@@ -21,7 +21,7 @@ const Index = (props) => {
       variant={variant}
       type={type}
       className={className}
-      disabled={disabled || loading} // Disable button when loading
+      disabled={disabled || loading} 
       width={width}
       height={height}
     >

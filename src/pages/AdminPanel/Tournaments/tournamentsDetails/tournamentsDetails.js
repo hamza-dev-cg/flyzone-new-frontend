@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import Modal from "../../../../components/Modal";
 import {
-  useGetAllTournamentEventMutation,
+  useCreateTournamentCategoryForAdminMutation,
   useDeleteTournamentCategoryForAdminMutation,
 } from "../../../../features/tournaments/api";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ const TournamentsDetails = () => {
   const [deleteTournamentEventId, setDeleteTournamentEventId] = useState("");
   const [deleteTournamentEvent, setDeleteTournamentEvent] = useState(false);
   const [GetTournamentCategory, { isLoading: isFetching }] =
-  useGetAllTournamentEventMutation();
+    useCreateTournamentCategoryForAdminMutation();
   const [DeleteTournamentCategory] =
     useDeleteTournamentCategoryForAdminMutation();
   const [showTournamentCategory, setShowTournamentCategory] = useState([]);
@@ -33,7 +33,7 @@ const TournamentsDetails = () => {
       const response = await GetTournamentCategory(tournamentId);
       if (response) {
         console.log(response, "response");
-        setShowTournamentCategory(response.data.events);
+        setShowTournamentCategory(response.data);
       } else {
         toast.error("Failed to fetch tournaments.");
       }
@@ -98,7 +98,7 @@ const TournamentsDetails = () => {
               className="cursor-pointer"
               onClick={() => navigate(-1)}
             />{" "}
-            <h3 className="mb-0">Chub Cay Tournament</h3>
+            <h3 className="mb-0">{showTournamentCategory.name} Tournament</h3>
           </span>
           <Button
             startIcon={<FiPlus />}
@@ -112,13 +112,13 @@ const TournamentsDetails = () => {
         </div>
 
         <span className="caption">
-          See tournament event’s information from here.
+          {showTournamentCategory.description}
         </span>
         <div className="row">
           {isFetching ? (
             <Loader />
-          ) : showTournamentCategory && showTournamentCategory.length > 0 ? (
-            showTournamentCategory.map((tournament) => (
+          ) : showTournamentCategory && showTournamentCategory?.events?.length > 0 ? (
+            showTournamentCategory?.events?.map((tournament) => (
               <TournamentCard
                 key={tournament.id}
                 id={tournament.id}

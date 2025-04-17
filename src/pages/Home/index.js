@@ -10,7 +10,10 @@ import GetStartedButtonArrowImage from "../../assets/images/get-started-btn-arro
 import Start1 from "../../assets/images/start-heo-img-1.png";
 import Start2 from "../../assets/images/start-heo-img-2.png";
 import UpcomingEvents from "../../components/UpcomingEvents";
-import LeaderBoard from '../LeaderBoard/index';
+import LeaderBoard from "../LeaderBoard/index";
+import "../../assets/css/LeaderBoard.css";
+import NextEvents from "../../components/NextEvents";
+import OurPodcast from "../../components/OurPodcast";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -27,7 +30,8 @@ export default function Home() {
                   <Typewriter text="Setting New Standards" className="mb-0" />
                 </h1>
                 <h2 className="sub-title">
-                  in Sports and Entertainment <br></br> with AI-Driven Experiences
+                  in Sports and Entertainment <br></br> with AI-Driven
+                  Experiences
                 </h2>
                 <p className="des">
                   Flyzone specializes in delivering IT solutions tailored to the
@@ -120,13 +124,25 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="container text-center mt-5 pt-5">
-        <h1 className="leaderboard-h1">
-          Events<span>Leaderboard</span>
-        </h1>
-
+      <div className="my-5">
+        <UpcomingEvents />
       </div>
-      <LeaderBoard label chatBox defaultChatState = {true} />
+
+      <div>
+        <NextEvents />
+      </div>
+
+      <div className=" bg-image-section">
+        <div className="container bg-overlay ">
+          <div className="container text-center pt-5">
+            <h1 className="leaderboard-h1 text-white">
+              Events<span> Leaderboard</span>
+            </h1>
+          </div>
+          <LeaderBoard label chatBox defaultChatState={true} />
+        </div>
+      </div>
+      <OurPodcast />
       <div className="rating-section">
         <div className="container">
           <div className="d-flex justify-content-between text-center flex-column flex-lg-row">
@@ -149,9 +165,6 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </div>
-      <div className="my-5">
-        <UpcomingEvents />
       </div>
 
       <GetService />
