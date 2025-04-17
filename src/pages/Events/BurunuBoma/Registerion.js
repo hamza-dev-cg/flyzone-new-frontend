@@ -15,7 +15,8 @@ const Information = () => {
   const [error, setError] = useState(null);
   const [tournamentId, setTournamentId] = useState("");
   const eventName = location.pathname.split('/')[2];
-  
+
+
   useEffect(() => {
     const fetchTournament = async () => {
       try {
@@ -30,6 +31,7 @@ const Information = () => {
 
     fetchTournament();
   }, []);
+  
   const handleRegister = async () => {
     const token = localStorage.getItem("authToken");
     if (!token || !tournamentDataId) {
