@@ -57,6 +57,7 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
         }
       );
       if (response.data) {
+  
         const getWahooOpen = response.data?.filter(
           (record) =>
             record.tournament_category === "Blue Marline Cove Wahoo Open"

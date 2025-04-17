@@ -6,6 +6,8 @@ import Close from "../assets/images/close.png";
 
 const EventsNavbar = ({ links }) => {
   const location = useLocation();
+
+  console.log(location.state?.event,"locationsss")
   const navLinks = {
     wahoo: [
       { path: "/tournaments/blue-marlin-cove-wahoo-open", label: "Information" },
@@ -69,8 +71,9 @@ const EventsNavbar = ({ links }) => {
       { path: "/forums", label: "Forum" },
     ],
      burunuBoma: [
-      { path: "/tournaments/burunu-Boma", label: "Information" },
+      { path: `/tournaments/burunu-Boma/${location.state?.event?.id}`, label: "Information" },
       { path: "/tournaments/burunu-Boma/rules", label: "Rules" },
+      { path: `/tournaments/burunu-Boma/details/${location.state?.event?.id}`, label: "Details" },
       { path: "/forums", label: "Forum" },
     ],
   };
