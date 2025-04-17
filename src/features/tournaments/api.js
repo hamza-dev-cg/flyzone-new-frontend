@@ -89,15 +89,9 @@ export const TournamentApi = createApi({
         body:data
       }),
     }),
-    GetTournamentCategoryForAdmin: builder.mutation({
+    CreateTournamentCategoryForAdmin: builder.mutation({
       query: (id) => ({
         url: `/api/tournament/get-tournament-category/${id}`,
-        method: "GET",
-      }),
-    }),
-    GetEventsCategoryForAdmin: builder.mutation({
-      query: () => ({
-        url: `/api/tournament/get-all-tournament-events`,
         method: "GET",
       }),
     }),
@@ -105,6 +99,12 @@ export const TournamentApi = createApi({
       query: (id) => ({
         url: `/api/tournament/delete-tournament-event/${id}`,
         method: "DELETE",
+      }),
+    }),
+    GetAllTournamentEvent: builder.mutation({
+      query: (id) => ({
+        url: `/api/tournament/get-all-tournament-events`,
+        method: "GET",
       }),
     }),
   }),
@@ -121,8 +121,8 @@ export const {
   useEventforPaymentTournamentMutation,
   useGetAllTournamentForAdminMutation,
   useCreateTournamentForAdminMutation,
-  useGetTournamentCategoryForAdminMutation,
+  useCreateTournamentCategoryForAdminMutation,
   useDeleteTournamentCategoryForAdminMutation,
   useCreateTournamentEventForAdminMutation,
-  useGetEventsCategoryForAdminMutation
+  useGetAllTournamentEventMutation,
 } = TournamentApi;

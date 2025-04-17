@@ -9,6 +9,7 @@ import AddOrEditTeamModal from "./AddOrEditTeam";
 import DeleteTeamModal from "./DeleteTeam";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../assets/css/dashboard.css";
+import {tournamentData} from '../../../utils/dummyData';
 
 const WahooOpenRegistration = () => {
   const [loading, setLoading] = useState(true);
@@ -29,33 +30,33 @@ const WahooOpenRegistration = () => {
     setIsEditModalOpen(true);
   };
 
-  const getTournamentRecord = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        "https://flyzone.ai/flyzone_laravel/api/tournaments",
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response?.data) {
-        const filteredData = response.data.filter(
-          (tournament) =>
-            tournament?.tournament_category === "Blue Marline Cove Wahoo Open"
-        );
-        setShowRecords(filteredData);
-      }
-    } catch (err) {
-      toast.error("Something went wrong.");
-    }
-    setLoading(false);
-  };
+  // const getTournamentRecord = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.get(
+  //       "http://172.229.220.21:8000/api/tournaments",
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+  //     if (response?.data) {
+  //       const filteredData = response.data.filter(
+  //         (tournament) =>
+  //           tournament?.tournament_category === "Blue Marline Cove Wahoo Open"
+  //       );
+  //       setShowRecords(filteredData);
+  //     }
+  //   } catch (err) {
+  //     toast.error("Something went wrong.");
+  //   }
+  //   setLoading(false);
+  // };
 
-  useEffect(() => {
-    getTournamentRecord();
-  }, []);
+  // useEffect(() => {
+  //   getTournamentRecord();
+  // }, []);
 
   const showDeleteModalHandler = (id) => {
     return;
@@ -63,27 +64,27 @@ const WahooOpenRegistration = () => {
     setShowConfirmDeleteModal(true);
   };
 
-  const handleDeleteConfirmation = async (confirm) => {
-    if (!confirm) {
-      setShowConfirmDeleteModal(false);
-      return;
-    }
-    try {
-      const token = await localStorage.getItem("authToken");
-      await axios.delete(
-        `https://flyzone.ai/flyzone_laravel/api/tournaments/${deletingRecordId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      await getTournamentRecord();
-      toast.success("Tournament record deleted successfully");
-    } catch (error) {
-      toast.error("Something went wrong.");
-    }
-    setShowConfirmDeleteModal(false);
-    setDeletingRecordId(null);
-  };
+  // const handleDeleteConfirmation = async (confirm) => {
+  //   if (!confirm) {
+  //     setShowConfirmDeleteModal(false);
+  //     return;
+  //   }
+  //   try {
+  //     const token = await localStorage.getItem("authToken");
+  //     await axios.delete(
+  //       `https://flyzone.ai/flyzone_laravel/api/tournaments/${deletingRecordId}`,
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
+  //     await getTournamentRecord();
+  //     toast.success("Tournament record deleted successfully");
+  //   } catch (error) {
+  //     toast.error("Something went wrong.");
+  //   }
+  //   setShowConfirmDeleteModal(false);
+  //   setDeletingRecordId(null);
+  // };
   const columns=['No',"Team Name","Email","Captain Name","Boat Name","Angler Name","No. Team Members","Heaviest 10","Daily Heaviest Fish","Daily Aggregate","Overall Heaviest Fish","Actions"]
     const renderRow=(record,index)=>{
       return(
@@ -146,9 +147,9 @@ const WahooOpenRegistration = () => {
             Add
           </button>
         </div> */}
-      <Table columns={columns} isLoading={loading} data={showRecords} renderRow={renderRow} />
+      <Table columns={columns} isLoading={loading} data={tournamentData[0].filter((tournament)=>tournament.tournament_category.includes("Wahoo"))} renderRow={renderRow} />
       </div>
-      <AddOrEditTeamModal
+      {/* <AddOrEditTeamModal
         show={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         onSave={getTournamentRecord}
@@ -158,7 +159,7 @@ const WahooOpenRegistration = () => {
         show={showConfirmDeleteModal}
         onClose={() => setShowConfirmDeleteModal(false)}
         onConfirm={handleDeleteConfirmation}
-      />
+      /> */}
     </>
   );
 };

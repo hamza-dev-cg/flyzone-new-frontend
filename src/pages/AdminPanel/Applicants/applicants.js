@@ -7,6 +7,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import ReactPaginate from "react-paginate";
 import "react-toastify/dist/ReactToastify.css";
 import "../../../assets/css/pagination.css";
+import {ApplicantsData} from '../../../utils/dummyData'
 
 const Applicants = () => {
   const [showRecords, setShowRecords] = useState([]);
@@ -16,39 +17,40 @@ const Applicants = () => {
   const navigate = useNavigate();
 
   // Fetch tournament data
-  const getTournamentRecord = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        "https://flyzone.ai/flyzone_laravel/api/reg-tournaments",
-        { headers: { "Content-Type": "application/json" } }
-      );
+  // const getTournamentRecord = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.get(
+  //       "https://flyzone.ai/flyzone_laravel/api/reg-tournaments",
+  //       { headers: { "Content-Type": "application/json" } }
+  //     );
 
-      if (response?.data?.data?.tournaments) {
-        const filteredParticipants = response.data.data.tournaments.filter(
-          (p) => p.chub_cay_classic || p.chub_cay_invitational || p.chub_cay_open
-        );
-        setShowRecords(filteredParticipants);
-        setLoading(false);
+  //     if (response?.data?.data?.tournaments) {
+  //       const filteredParticipants = response.data.data.tournaments.filter(
+  //         (p) => p.chub_cay_classic || p.chub_cay_invitational || p.chub_cay_open
+  //       );
+  //       setShowRecords(filteredParticipants);
+  //       setLoading(false);
 
-        if (currentPage * recordsPerPage >= filteredParticipants.length) {
-          setCurrentPage(0);
-        }
-      }
-    } catch (err) {
-      toast.error("Something went wrong.");
-      setLoading(false);
-    }
-  };
+  //       if (currentPage * recordsPerPage >= filteredParticipants.length) {
+  //         setCurrentPage(0);
+  //       }
+  //     }
+  //   } catch (err) {
+  //     toast.error("Something went wrong.");
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    getTournamentRecord();
-  }, []);
+  // useEffect(() => {
+  //   getTournamentRecord();
+  // }, []);
 
   // Pagination Logic
+  const filteredParticipants = ApplicantsData[0]?.data?.tournaments.filter( (p) => p.chub_cay_classic || p.chub_cay_invitational || p.chub_cay_open);
   const offset = currentPage * recordsPerPage;
-  const currentRecords = showRecords.slice(offset, offset + recordsPerPage);
-  const totalPages = Math.ceil(showRecords.length / recordsPerPage);
+  const currentRecords = filteredParticipants.slice(offset, offset + recordsPerPage);
+  const totalPages = Math.ceil(filteredParticipants.length / recordsPerPage);
 
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
@@ -66,6 +68,7 @@ const Applicants = () => {
       <td>{applicant.chub_cay_invitational ? "Yes" : "No"}</td>
     </tr>
   );
+  console.log(ApplicantsData,"ApplicantsData")
 
   return (
     <>

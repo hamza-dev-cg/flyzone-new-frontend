@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../../assets/css/login.css";
 
 export default function Login() {
+  const location = useLocation();
   const schema = getValidationSchema("login");
 
   const {
@@ -23,7 +24,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
-
+  const from = location.state?.from?.pathname || "/";
   const [createUser] = useLoginUserMutation();
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
@@ -33,33 +34,47 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     setLoading(true);
+  
     try {
       const response = await createUser(data).unwrap();
+  
       if (response.success) {
-        dispatch(setUser({ user: response?.user , token : response?.token }));
-        localStorage.setItem("authToken", response?.token);
-        localStorage.setItem("user", JSON.stringify(response?.user));
+        const { user, token } = response;
+        dispatch(setUser({ user, token }));
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("user", JSON.stringify(user));
         toast.success("User is Login Successfully");
+  
         setTimeout(() => {
-          // Retrieve the last visited route before login
           const redirectPath = localStorage.getItem("redirectPath") || "/";
-          // Clear the stored path after use
           localStorage.removeItem("redirectPath");
-
-          if (response?.user?.role === "admin") {
-            navigate("/admin-dashboard/registration");
+  
+          const isBurunuRegister = from === "/tournaments/burunu-Boma/register";
+  
+          if (user?.role === "admin") {
+            if (isBurunuRegister) {
+              navigate(from, { replace: true });
+            } else {
+              navigate("/admin-dashboard/registration");
+            }
           } else {
-            navigate(redirectPath);
+            if (isBurunuRegister) {
+              navigate(from, { replace: true });
+            } else {
+              navigate(redirectPath);
+            }
           }
         }, 1000);
       } else {
-        toast.error(response?.message);
+        toast.error(response?.message || "Something went wrong.");
       }
     } catch (error) {
-      toast.error(error.data.message);
+      toast.error(error?.data?.message || "Failed to login.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
+  
 
   return (
     <>

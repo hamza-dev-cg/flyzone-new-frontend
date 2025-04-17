@@ -383,7 +383,12 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
                             >
                               {!isCurrentUser && (
                                 <>
-                                 <Avatar size="30" name={chat?.user?.name} src={chat?.user?.profile_image} round={true} />
+                                  <Avatar
+                                    size="30"
+                                    name={chat?.user?.name}
+                                    src={chat?.user?.profile_image}
+                                    round={true}
+                                  />
                                   <h4 className="m-0 chat-message">
                                     {chat?.user?.name}
                                   </h4>
@@ -402,7 +407,12 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
                                   <h4 className="m-0 chat-message">
                                     {chat?.user?.name}
                                   </h4>
-                                 <Avatar size="30" name={chat?.user?.name} src={chat?.user?.profile_image} round={true} />
+                                  <Avatar
+                                    size="30"
+                                    name={chat?.user?.name}
+                                    src={chat?.user?.profile_image}
+                                    round={true}
+                                  />
                                 </>
                               )}
                             </div>
@@ -467,10 +477,6 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
           </div>
         )}
       </div>
-      {/* <p className="leaderboard_para mt-5">
-        All payouts are unofficial. Displayed payouts may change throughout
-        the tournament and may not reflect final amounts.
-      </p> */}
       {show ? (
         ""
       ) : (

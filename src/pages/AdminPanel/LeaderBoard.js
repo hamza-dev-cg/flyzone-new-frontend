@@ -441,7 +441,7 @@ const LeaderBoard = () => {
                                     state: { record },
                                   })
                                 }
-                                className="fs-3"
+                                className={`fs-3 ${tournament.includes("Chub") ? "disabled-svg" : ""} `}
                               />
                             </td>
                           </tr>

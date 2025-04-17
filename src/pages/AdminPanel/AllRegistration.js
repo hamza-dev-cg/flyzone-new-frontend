@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {useGetAllTournamentForAdminMutation} from '../../features/tournaments/api'
 
 import { useNavigate } from "react-router-dom";
 
 import WahooOpenRegistration from "./BlueMarlineCove/WahooOpenRegistration";
 import ChubCayRegistration from "./ChubClay/ChubCayRegistration";
 import WestEndMeatRegistration from "./WestEndMeat/WestEndMeatRegistration";
+import BurunuBomaRegistration from "./BurunuBoma/BurunuBomaRegistration";
 
 import Select from '../../components/Select'
 
@@ -16,19 +18,33 @@ import "../../assets/css/dashboard.css";
 
 const TournamentRegistration = () => {
   const [tournament, setTournament] = useState("chub_cay");
+  const [showTournament, setShowTournament] = useState([]);
+  const [getTournamentAPI] = useGetAllTournamentForAdminMutation();
   const navigate = useNavigate()
+  const fetchTournaments = async () => {
+    try {
+      const response = await getTournamentAPI();
+      if (response?.data?.tournaments) {
+        setShowTournament(response.data.tournaments);
+      } else {
+      }
+    } catch (err) {
+    }
+  };
 
   useEffect(() => {
     pageInitialization();
+    fetchTournaments();
   }, []);
 
   const pageInitialization = async () => {
     await checkIsUserLoggedIn(navigate);
   };
   const tournamentComponents = {
-    wahoo_open: WahooOpenRegistration,
+    wahoo: WahooOpenRegistration,
     chub_cay: ChubCayRegistration,
     west_end_meat: WestEndMeatRegistration,
+    burunu_boma: BurunuBomaRegistration,
   };
 
   const renderTournamentComponent = () => {
@@ -36,11 +52,11 @@ const TournamentRegistration = () => {
     return Component ? <Component /> : null;
   };
 
-  const options = [
-    { label: "Chub Cay", value: "chub_cay" },
-    { label: "Wahoo Open", value: "wahoo_open" },
-    { label: "West End Meat", value: "west_end_meat" },
-  ];
+  const options = showTournament.map((x) => ({
+    value: x.name.toLowerCase().replace(/\s+/g, "_"),
+    label: x.name,
+  }));
+  
 
   return (
     <div>
