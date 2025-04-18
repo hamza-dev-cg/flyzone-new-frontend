@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { CiCamera } from "react-icons/ci";
 import { ToastContainer, toast } from "react-toastify";
 import { setUser } from "../../features/user/userSlice";
-import { useUpdateUserMutation } from "../../features/user/api";
+import { useUpdateUserMutation, useUploadImageMutation } from "../../features/user/api";
 import "../../assets/css/profile.css";
 import Avatar from "react-avatar";
 
@@ -13,6 +13,8 @@ export default function ProfileEdit() {
   const userData = useSelector((state) => state.user?.user);
   const token = useSelector((state) => state.user?.token);
   const [UpdateRegisterUser] = useUpdateUserMutation();
+  const [uploadImage] = useUploadImageMutation();
+
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
@@ -36,34 +38,42 @@ export default function ProfileEdit() {
     }
   }, [userData, reset]);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      setPreview(URL.createObjectURL(file));
+      const previewUrl = URL.createObjectURL(file);
+      setPreview(previewUrl);
+  
+      const formData = new FormData();
+      formData.append("file", file);
+  
+      try {
+        const response = await uploadImage({ data: formData, token });
+        console.log("Upload Response:", response);
+  
+        const uploadedImageUrl = response?.data?.url;
+        if (uploadedImageUrl) {
+          setImageFile(uploadedImageUrl); 
+        }
+      } catch (err) {
+        console.error("Image upload failed:", err);
+      }
     }
   };
+  
+
 
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      // const formData = new FormData();
-
-      // Object.keys(data).forEach((key) => {
-      //   formData.append(key, data[key]);
-      // });
-
-      // if (imageFile) {
-      //   formData.append("profile_image", imageFile);
-      // }
-
-      const response = await UpdateRegisterUser({ data,  userId: userData.id, token});
+      const response = await UpdateRegisterUser({ data, userId: userData.id, token });
       if (response?.data?.success) {
         toast.success("Profile updated successfully!");
         localStorage.setItem("user", JSON.stringify(response?.data?.user));
         dispatch(setUser({ user: response?.data?.user }));
         setPreview(userData.imageUrl);
-      } 
+      }
     } catch (error) {
       toast.error("An error occurred while updating profile.");
     } finally {

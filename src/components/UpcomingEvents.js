@@ -120,7 +120,7 @@ const EventItem = ({ event }) => {
               </>
             )}
             <li>
-              <Link className="text-decoration-none text-white" to={`/tournaments/${event.slug}`} state={{ event }}>
+              <Link className="text-decoration-none text-white" to={`/tournaments/${event.slug}`}>
                 <button className="contact-button mt-0">More Information</button>
               </Link>
             </li>

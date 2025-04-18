@@ -58,6 +58,22 @@ export const userApi = createApi({
         },
       }),
     }),
+    GetEventBySlug: builder.mutation({
+      query: (slug) => ({
+        url: `api/tournament/get-tournament-event/slug/${slug}`,
+        method: "GET",
+      }),
+    }),
+    uploadImage: builder.mutation({
+      query: ({data, token}) => ({
+        url: `/api/upload/image`,
+        method: "POST",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
     VerifyOtp: builder.mutation({
       query: ({ finalOtp, token }) => ({
         url: `/api/auth/verification/${finalOtp}`,
@@ -85,5 +101,7 @@ export const {
   useUpdateUserMutation,
   useGetOneUserMutation,
   useAddMemeberMutation,
-  useGetAllUserMutation
+  useGetAllUserMutation,
+  useGetEventBySlugMutation,
+  useUploadImageMutation
 } = userApi;

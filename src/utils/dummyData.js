@@ -4983,8 +4983,8 @@ export const burunuBomaDetails = {
     },
     {
       value: "bigeye_tuna",
-      name:"Bigeye Tuna",
-      catchLimit: 3,
+      name: "Bigeye Tuna",
+      catchLimit: 5,
       scoreFactor: 180,
       releasePoint: 0,
       keepLimit: null,
@@ -4994,7 +4994,7 @@ export const burunuBomaDetails = {
     },
     {
       value: "yellowfin_tuna",
-      name:'Yellowfin Tuna',
+      name: 'Yellowfin Tuna',
       catchLimit: 5,
       scoreFactor: 150,
       releasePoint: 0,
@@ -5005,7 +5005,7 @@ export const burunuBomaDetails = {
     },
     {
       value: "mahi_mahi",
-      name:"Mahi Mahi",
+      name: "Mahi Mahi",
       catchLimit: 3,
       scoreFactor: 250,
       releasePoint: 0,
@@ -5017,7 +5017,7 @@ export const burunuBomaDetails = {
     },
     {
       value: "wahoo",
-      Name:"Wahoo",
+      name: "Wahoo",
       catchLimit: 3,
       scoreFactor: 150,
       releasePoint: 0,

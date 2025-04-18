@@ -56,7 +56,7 @@ const EventsNavbar = ({ links }) => {
     ],
    
     westEndMeatFishMania: [
-      { path: `/tournaments/west-end-meatfish-mania/${location?.state?.id}`, label: "Information" },
+      { path: `/tournaments/west-end-meatfish-mania`, label: "Information" },
       { path: "/tournaments/west-end-meatfish-mania/rules", label: "Rules" },
       {
         path: "/tournaments/west-end-meatfish-mania/optional",
@@ -69,9 +69,9 @@ const EventsNavbar = ({ links }) => {
       { path: "/forums", label: "Forum" },
     ],
      burunuBoma: [
-      { path: `/tournaments/burunu-Boma/${location?.state?.id}`, label: "Information" },
-      { path: "/tournaments/burunu-Boma/rules", label: "Rules" },
-      { path: `/tournaments/burunu-Boma/details/${location?.state?.id}`, label: "Details" },
+      { path: `/tournaments/burunu-boma`, label: "Information" },
+      { path: "/tournaments/burunu-boma/rules", label: "Rules" },
+      { path: `/tournaments/burunu-boma/details`, label: "Details" },
       { path: "/forums", label: "Forum" },
     ],
   };
@@ -113,7 +113,6 @@ const EventsNavbar = ({ links }) => {
                       location.pathname === link.path ? "active-link" : ""
                     }`}
                     to={link.path}
-                    state={location.state.event ? location.state.event : location.state}
                   >
                     {link.label}
                   </Link>

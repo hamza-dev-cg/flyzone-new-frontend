@@ -1,44 +1,24 @@
-import React , {useState , useEffect} from "react";
-import ChubClayInvitationsImage from "../../../assets/images/Chub-Cay-Invitational.png";
+import React from "react";
+import EventsNavbar from "../../../components/EventsNavbar";
+import ChubClayOpenImage from "../../../assets/images/Chub-Cay-Open.png";
 import EventInformationBg from "../../../assets/images/event-informat-bg.png";
 import TournamentInfo from "../../../components/TornamentInfo";
-import EventsNavbar from "../../../components/EventsNavbar";
 import AwardLine from "../../../assets/images/award-dinner.svg";
 import DaySchedule from "../../../components/DaySchedule";
 import { useLocation } from "react-router-dom";
 import { formatDateRange } from '../../../utils/helpers'
-import { useGetEventBySlugMutation } from "../../../features/user/api";
-
-
-const Information = () => {
+const ChubClayOpen = () => {
   const location = useLocation();
-  const parts = location.pathname.split("/");
-  const slug = parts[2];
-  const [EventDetail] = useGetEventBySlugMutation();
-  const [event, setEvent] = useState(null)
-  const fetchEvents = async () => {
-    try {
-      const response = await EventDetail(slug);
-      if (response?.data?.success) {
-        setEvent(response?.data?.tournament);
-      }
-    } catch (err) {
-      console.log("Something went wrong while fetching tournaments.");
-    }
-  };
-
-  useEffect(() => {
-    fetchEvents()
-  }, [slug])
+  const event = location?.state?.event;
   return (
     <div>
       <section className="whoo-open-hero-section">
         <img className="wahoo-bg" src={EventInformationBg} alt="fish" />
-        <EventsNavbar basePath="/events" links="chubClayInvitational" />
+        <EventsNavbar basePath="/events" links="chubClayOpen" />
         <TournamentInfo
-          title= {event?.name}
-          imgSrc={ChubClayInvitationsImage}
-          altText={ChubClayInvitationsImage}
+         title= {event?.name}
+          imgSrc={ChubClayOpenImage}
+          altText={ChubClayOpenImage}
           date={formatDateRange(event?.startDate , event?.endDate)}
           description=
           {event?.description?.split("\n").map((line, idx) => (
@@ -47,14 +27,10 @@ const Information = () => {
               dangerouslySetInnerHTML={{
                 __html: line
                   .replace(/(Chub Cay Marina and Resort)/g, "<strong>$1</strong>")
-                  .replace(/(April 11 to April 13, 2025)/g, "<b>$1</b>")
+                  .replace(/(March 27 to March 29, 2025,)/g, "<b>$1</b>")
               }}
             />
           ))}
-          
-            
-           
-          
         />
       </section>
       <section className="schedule-section">
@@ -63,12 +39,12 @@ const Information = () => {
             <p id="chub-classic-para">
               <span>Secure your spot today</span> and make memories that will
               last a lifetime.{" "}
-              <b>Let's make this Chub Cay Invitational a real adventure!</b>
+              <b>Let's make this Chub Cay Open a real adventure!</b>
             </p>
 
             <DaySchedule
               title="Schedule Of Events"
-              date="April 11th to April 13th, 2025"
+              date="March 27th to March 29th, 2025"
               events={[
                 {
                   time: "4:00PM – 6:00PM",
@@ -80,7 +56,7 @@ const Information = () => {
 
             <DaySchedule
               title="Day 1 Fishing"
-              date="Saturday, April 12th 2025"
+              date="Friday, March 28th 2025"
               events={[
                 { time: "8:00AM", text: "Call for 'Lines In'" },
                 { time: "3:00PM", text: "Lines OUT" },
@@ -94,7 +70,7 @@ const Information = () => {
 
             <DaySchedule
               title="Day 2 Fishing"
-              date="Sunday, April 13th 2025"
+              date="Saturday, March 29th 2025"
               events={[
                 { time: "8:00AM", text: "Call for 'Lines In'" },
                 { time: "3:00PM", text: "Lines OUT" },
@@ -127,4 +103,4 @@ const Information = () => {
   );
 };
 
-export default Information;
+export default ChubClayOpen;
