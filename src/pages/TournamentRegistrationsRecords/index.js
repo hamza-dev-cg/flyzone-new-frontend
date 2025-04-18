@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {useGetAllTournamentEventMutation} from '../../features/tournaments/api'
+import { useGetAllTournamentEventMutation } from '../../features/tournaments/api'
 import { ToastContainer, toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
@@ -11,15 +11,16 @@ import "../../assets/css/dashboard.css";
 import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "../../components/Table";
+import { registerDummyData } from '../../utils/registerDummyData'
 
 const TournamentRegistrationsRecords = () => {
   const [loading, setLoading] = useState(true);
   const [tournament, setTournament] = useState("Chub Cay Open");
-  const [showRecords, setShowRecords] = useState([]);
+  const [showRecords, setShowRecords] = useState(registerDummyData);
   const [filteredRecords, setFilteredRecords] = useState([]);
   const [AllTournamentEvents] = useGetAllTournamentEventMutation();
-  const [optionsData,setOptionData]=useState([])
-  
+  const [optionsData, setOptionData] = useState([])
+
   const [selectedOption, setSelectedOption] = useState(optionsData[0]);
   const [pageNumber, setPageNumber] = useState(0);
   const itemsPerPage = 15;
@@ -33,28 +34,31 @@ const TournamentRegistrationsRecords = () => {
     setPageNumber(selected.selected);
   };
 
-  const getTournamentRecord = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        "https://flyzone.ai/flyzone_laravel/api/tournaments",
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
 
-      if (response?.data) {
-        setShowRecords(response?.data);
-      }
-    } catch (err) {
-      toast.error("Something went wrong.");
-    }
-    setLoading(false);
-  };
+  // const getTournamentRecord = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await axios.get(
+  //       "https://flyzone.ai/flyzone_laravel/api/tournaments",
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
+
+  //     if (response?.data) {
+  //       setShowRecords(response?.data);
+  //       console.log(response.data);
+  //     }
+  //   } catch (err) {
+  //     toast.error("Something went wrong.");
+  //   }
+  //   setLoading(false);
+  // };
 
   const AllTournamentEventsRecord = async () => {
+    setLoading(true);
     try {
       const response = await AllTournamentEvents();
       if (response) {
@@ -64,11 +68,13 @@ const TournamentRegistrationsRecords = () => {
       }
     } catch (err) {
       toast.error("Something went wrong while fetching data.");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    getTournamentRecord();
+    // getTournamentRecord();
     AllTournamentEventsRecord();
 
   }, []);
@@ -77,16 +83,16 @@ const TournamentRegistrationsRecords = () => {
     const filtered = showRecords.filter(
       (record) => record.tournament_category === tournament
     );
-
     setFilteredRecords(filtered);
     setPageNumber(0);
   }, [showRecords, tournament]);
 
+
   const handleDropdownChange = (selected) => {
     setSelectedOption(selected);
     setTournament(selected.value);
+    setShowRecords(registerDummyData)
   };
-
   const isChubCay = tournament.includes("Chub Cay");
   const RegisterTableHeader = [
     { Header: "No", accessor: "index" },
@@ -95,31 +101,31 @@ const TournamentRegistrationsRecords = () => {
     { Header: "Boat Name", accessor: "boat_name" },
     ...(!isChubCay
       ? [
-          {
-            Header: "Heaviest 10",
-            accessor: "heaviest_10",
-            Cell: ({ value }) =>
-              value ? <img src={Tick_Blue_Icon} alt="✔" /> : <>--</>,
-          },
-          {
-            Header: "Daily Heaviest Fish",
-            accessor: "daily_heaviest_fish",
-            Cell: ({ value }) =>
-              value ? <img src={Tick_Blue_Icon} alt="✔" /> : <>--</>,
-          },
-          {
-            Header: "Daily Aggregate",
-            accessor: "daily_aggregate",
-            Cell: ({ value }) =>
-              value ? <img src={Tick_Blue_Icon} alt="✔" /> : <>--</>,
-          },
-          {
-            Header: "Overall Heaviest Fish",
-            accessor: "overall_heavy_fish",
-            Cell: ({ value }) =>
-              value ? <img src={Tick_Blue_Icon} alt="✔" /> : <>--</>,
-          },
-        ]
+        {
+          Header: "Heaviest 10",
+          accessor: "heaviest_10",
+          Cell: ({ value }) =>
+            value ? <img src={Tick_Blue_Icon} alt="✔" /> : <>--</>,
+        },
+        {
+          Header: "Daily Heaviest Fish",
+          accessor: "daily_heaviest_fish",
+          Cell: ({ value }) =>
+            value ? <img src={Tick_Blue_Icon} alt="✔" /> : <>--</>,
+        },
+        {
+          Header: "Daily Aggregate",
+          accessor: "daily_aggregate",
+          Cell: ({ value }) =>
+            value ? <img src={Tick_Blue_Icon} alt="✔" /> : <>--</>,
+        },
+        {
+          Header: "Overall Heaviest Fish",
+          accessor: "overall_heavy_fish",
+          Cell: ({ value }) =>
+            value ? <img src={Tick_Blue_Icon} alt="✔" /> : <>--</>,
+        },
+      ]
       : []),
   ];
 
@@ -132,6 +138,8 @@ const TournamentRegistrationsRecords = () => {
       index: startIndex + index + 1,
     }));
 
+
+  console.log('currentItems', currentItems);
   return (
     <>
       <ToastContainer />
@@ -160,8 +168,8 @@ const TournamentRegistrationsRecords = () => {
 
             {loading ? (
               <div className="loader-container">
-                  <div className="loader"></div>
-                </div>
+                <div className="loader"></div>
+              </div>
             ) : filteredRecords?.length > 0 ? (
               <>
                 <div className="table-row my-2">
@@ -173,7 +181,7 @@ const TournamentRegistrationsRecords = () => {
                   />
                 </div>
 
-                {filteredRecords.length > itemsPerPage && (
+                {filteredRecords?.length > itemsPerPage && (
                   <ReactPaginate
                     previousLabel={<FaAngleLeft />}
                     nextLabel={<FaAngleRight />}

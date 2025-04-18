@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useTable, useSortBy } from "react-table";
-import sortIcon from "../assets/images/sorting.png";
 import { useNavigate } from "react-router-dom";
-import "../assets/css/table.css";
 import Avatar from "react-avatar";
+
+import sortIcon from "../assets/images/sorting.png";
+import "../assets/css/table.css";
 
 const Table = ({ columns, data, isEditable = false, isDeletable = false }) => {
   const [popoverRow, setPopoverRow] = useState(null);
@@ -11,30 +12,31 @@ const Table = ({ columns, data, isEditable = false, isDeletable = false }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data }, useSortBy);
 
-  const handleRowClick = (event, rowIndex) => {
-    event.stopPropagation();
-    setPopoverRow((prevRow) => (prevRow === rowIndex ? null : rowIndex));
-  };
-
   const navigate = useNavigate();
 
   const handleNavigate = (userData) => {
     navigate("/public/profile", { state: { user: userData } });
   };
 
+  const handleRowClick = (event, rowIndex) => {
+    event.stopPropagation();
+    setPopoverRow((prev) => (prev === rowIndex ? null : rowIndex));
+  };
 
   return (
-    <div className="container">
+    <div className="container-xxl p-0 bg-white custom-table-responsive">
       <div className="table-responsive">
         <table className="table custom-table text-center" {...getTableProps()}>
           <thead className="thead-dark">
-            {headerGroups.map((headerGroup, index) => (
-              <tr key={index} {...headerGroup.getHeaderGroupProps()}>
+            {headerGroups.map((headerGroup) => (
+              <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers
-                  .filter((column) => column.id !== "profile_image" && column.id !== "user_detail")
-                  .map((column, index) => (
+                  .filter(
+                    (c) => c.id !== "profile_image" && c.id !== "user_detail"
+                  )
+                  .map((column) => (
                     <th
-                      key={index}
+                      key={column.id}
                       {...column.getHeaderProps(
                         column.id === "total_weight"
                           ? column.getSortByToggleProps()
@@ -57,11 +59,13 @@ const Table = ({ columns, data, isEditable = false, isDeletable = false }) => {
               </tr>
             ))}
           </thead>
+
           <tbody {...getTableBodyProps()}>
             {rows.map((row, rowIndex) => {
               prepareRow(row);
               const { boat_name, captain_name, profile_image } = row.original;
-              const tooltipText = (
+
+              const tooltip = (
                 <div className="d-flex gap-2 align-items-stretch">
                   <Avatar
                     size="89"
@@ -75,11 +79,13 @@ const Table = ({ columns, data, isEditable = false, isDeletable = false }) => {
                   <div className="d-flex flex-column justify-content-between">
                     <div>
                       <div className="mb-1">
-                        <span className="fw-semibold">Boat Name:</span> {boat_name}
+                        <span className="fw-semibold">Boat Name:</span>{" "}
+                        {boat_name}
                       </div>
                       <hr className="m-0 p-0" />
-                      <div className="mt-2 mb-1">
-                        <span className="fw-semibold">Captain Name:</span> {captain_name}
+                      <div className="mt-2 mb-2">
+                        <span className="fw-semibold">Captain Name:</span>{" "}
+                        {captain_name}
                       </div>
                       <hr className="m-0" />
                       <button
@@ -88,9 +94,7 @@ const Table = ({ columns, data, isEditable = false, isDeletable = false }) => {
                       >
                         View Profile
                       </button>
-
                     </div>
-
                   </div>
                 </div>
               );
@@ -100,30 +104,28 @@ const Table = ({ columns, data, isEditable = false, isDeletable = false }) => {
                   key={rowIndex}
                   {...row.getRowProps()}
                   onClick={(e) => handleRowClick(e, rowIndex)}
+                  className="position-relative"
                   style={{ cursor: "pointer" }}
-                  className=" position-relative"
-
                 >
                   {row.cells
-                    .filter((cell) => cell.column.id !== "profile_image" && cell.column.id !== "user_detail")
+                    .filter(
+                      (cell) =>
+                        cell.column.id !== "profile_image" &&
+                        cell.column.id !== "user_detail"
+                    )
+                    .map((cell, cellIndex) => (
+                      <td
+                        key={cellIndex}
+                        {...cell.getCellProps()}
+                        className="position-relative align-middle p-4"
+                      >
+                        {cell.render("Cell")}
 
-                    .map((cell, cellIndex) => {
-
-                      return (
-                        <td
-                          key={cellIndex}
-                          {...cell.getCellProps()}
-                          className={`align-middle ${popoverRow === rowIndex ? "has-tooltip" : ""
-                            }`}
-                        >
-                          {popoverRow === rowIndex && (
-                            <div className="tooltip-text">{tooltipText}</div>
-                          )}
-
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
+                        {popoverRow === rowIndex && cellIndex === 0 && (
+                          <div className="tooltip-text">{tooltip}</div>
+                        )}
+                      </td>
+                    ))}
                 </tr>
               );
             })}

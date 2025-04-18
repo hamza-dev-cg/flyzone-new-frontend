@@ -2251,6 +2251,7 @@ margin-block: 0px;
 
 .leaderboard-page {
   /* min-height: calc(100vh - 300px); */
+  padding-bottom: 1rem;
 }
 
 .scoreboard{

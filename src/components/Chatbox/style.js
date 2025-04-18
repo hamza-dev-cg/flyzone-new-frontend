@@ -1,10 +1,6 @@
 import Styled from "styled-components";
 const ChatBoxWrpper = Styled.div`
  width: 40%;
-padding: 10px;
-
-
-
 @media (max-width : 1000px) {
 width: 100%;
 margin-bottom: 8px
@@ -20,6 +16,7 @@ margin-bottom: 8px
 }
 
 .chat-box {
+  min-height : 47.5vh;
   background: #FFFFFF;
   width: 100%;
   border-radius: 12px;

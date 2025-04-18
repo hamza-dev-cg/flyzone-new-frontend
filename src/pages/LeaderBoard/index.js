@@ -283,7 +283,7 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
           >
             <div>
               <div className="  d-flex align-items-center justify-content-center filter-row pb-4 ">
-                <div className=" w-25">
+                <div>
                   <TournamentProvider>
                     <TournamentSelect
                       value={tournament}
