@@ -25,7 +25,13 @@ import BurunuBomaImage from "../../assets/images/BomaMain.png";
 import Avatar from "react-avatar";
 import ChatBox from "../../components/Chatbox";
 
-const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
+const LeaderBoard = ({
+  show,
+  label,
+  chatBox,
+  defaultChatState = false,
+  pageType = "full",
+}) => {
   const navigate = useNavigate();
   const [tournament, setTournament] = useState("Chub Cay Invitational");
   const [selectedOption, setSelectedOption] = useState(null);
@@ -58,7 +64,6 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
         }
       );
       if (response.data) {
-  
         const getWahooOpen = response.data?.filter(
           (record) =>
             record.tournament_category === "Blue Marline Cove Wahoo Open"
@@ -138,7 +143,7 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
     learnMore,
   }) => {
     return (
-      <div className="tournament-card">
+      <div className="border border-danger tournament-card">
         <div
           className="d-flex first-banner"
           onClick={(e) => {
@@ -239,7 +244,6 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
     }
   };
 
-  // Fetch all comments for the selected thread
   const handleGetAllComments = async () => {
     try {
       const response = await GetComments(selectedOption?.value);
@@ -273,10 +277,11 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
   };
 
   return (
-    <div className=" ">
+    <div className="">
       <div
-        className={`row ${chatSection ? "flex-column-reverse flex-lg-row " : ""
-          }`}
+        className={`row ${
+          chatSection ? "flex-column-reverse flex-lg-row " : ""
+        }`}
       >
         <div className="w-full">
           <section
@@ -295,8 +300,6 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
                       <option value="Chub Cay Invitational">
                         Chub Cay Invitational
                       </option>
-                      {/* <option value="Blue Marline Cove Wahoo Open">Blue Marline Cove Wahoo Open</option>
-        <option value="Blue Marline Cove Championship">Blue Marline Cove Championship</option> */}
                     </TournamentSelect>
                   </TournamentProvider>
                 </div>
@@ -313,42 +316,50 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
                 />
               )}
               {!loading && tournament === "Chub Cay Classic" && (
-                <div className=" d-flex flex-row ">
-                  <div className="scoreboard">
+                <div className=" d-flex flex-column flex-lg-row gap-4">
+                  <div className="left-leadberboard">
                     <ChubClayClassicLeaderBoard
                       chubClayClassic={chubClayClassic}
+                      pageType={pageType}
                     />
                   </div>
-                  <ChatBox
-                    user={user}
-                    commentnew={commentnew}
-                    optionsData={optionsData}
-                    selectedOption={selectedOption}
-                    setSelectedOption={setSelectedOption}
-                    message={message}
-                    setMessage={setMessage}
-                    handleReplySubmit={handleReplySubmit}
-                    isSending={isSending}
-                  />
+                  {pageType === "home" && (
+                    <ChatBox
+                      user={user}
+                      commentnew={commentnew}
+                      optionsData={optionsData}
+                      selectedOption={selectedOption}
+                      setSelectedOption={setSelectedOption}
+                      message={message}
+                      setMessage={setMessage}
+                      handleReplySubmit={handleReplySubmit}
+                      isSending={isSending}
+                    />
+                  )}
                 </div>
               )}
 
               {!loading && tournament === "Chub Cay Open" && (
-                <div className=" d-flex ">
-                  <div className="w-75">
-                    <ChubClayOpen chubClayClassic={chubClayOpen} />
+                <div className=" d-flex flex-column flex-lg-row gap-4">
+                  <div className="left-leadberboard">
+                    <ChubClayOpen
+                      chubClayClassic={chubClayOpen}
+                      pageType={pageType}
+                    />
                   </div>
-                  <ChatBox
-                    user={user}
-                    commentnew={commentnew}
-                    optionsData={optionsData}
-                    selectedOption={selectedOption}
-                    setSelectedOption={setSelectedOption}
-                    message={message}
-                    setMessage={setMessage}
-                    handleReplySubmit={handleReplySubmit}
-                    isSending={isSending}
-                  />
+                  {pageType === "home" && (
+                    <ChatBox
+                      user={user}
+                      commentnew={commentnew}
+                      optionsData={optionsData}
+                      selectedOption={selectedOption}
+                      setSelectedOption={setSelectedOption}
+                      message={message}
+                      setMessage={setMessage}
+                      handleReplySubmit={handleReplySubmit}
+                      isSending={isSending}
+                    />
+                  )}
                 </div>
               )}
               {!loading && tournament === "Chub Cay Invitational" && (
@@ -356,56 +367,28 @@ const LeaderBoard = ({ show, label, chatBox, defaultChatState = false }) => {
                   <div className="left-leadberboard">
                     <ChubClayInvitational
                       chubClayClassic={chubClayInvitational}
+                      pageType={pageType}
                     />
                   </div>
-                  <ChatBox
-                    user={user}
-                    commentnew={commentnew}
-                    optionsData={optionsData}
-                    selectedOption={selectedOption}
-                    setSelectedOption={setSelectedOption}
-                    message={message}
-                    setMessage={setMessage}
-                    handleReplySubmit={handleReplySubmit}
-                    isSending={isSending}
-                  />
+                  {pageType === "home" && (
+                    <ChatBox
+                      user={user}
+                      commentnew={commentnew}
+                      optionsData={optionsData}
+                      selectedOption={selectedOption}
+                      setSelectedOption={setSelectedOption}
+                      message={message}
+                      setMessage={setMessage}
+                      handleReplySubmit={handleReplySubmit}
+                      isSending={isSending}
+                    />
+                  )}
                 </div>
               )}
             </div>
           </section>
         </div>
       </div>
-      {/* <p className="leaderboard_para mt-5">
-        All payouts are unofficial. Displayed payouts may change throughout
-        the tournament and may not reflect final amounts.
-      </p> */}
-      {/* {show ? (
-        ""
-      ) : (
-        <>
-          <div className="container mb-5" style={{ marginTop: "4rem" }}>
-            <div className="text-center mb-3">
-              <b>See what’s coming next in FlyZone Fishing world:</b>
-            </div>
-            <div className="row d-flex justify-content-center">
-              {tournaments?.map((tournament) => (
-                <div className="col-md-6 ">
-                  <TournamentCard
-                    key={tournament.id}
-                    image={tournament.image}
-                    date={tournament.date}
-                    link={tournament.link}
-                    isRegistrationOpen={tournament.isRegistrationOpen}
-                    tournamentType={tournament.id}
-                    width={tournament.width}
-                    learnMore={tournament.learnMore}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
-      )} */}
     </div>
   );
 };

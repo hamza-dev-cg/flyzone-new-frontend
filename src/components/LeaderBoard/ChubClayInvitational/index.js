@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../Table";
-import { ChubClayInvitationalData } from '../../../utils/dummyData'
+import { ChubClayInvitationalData } from "../../../utils/dummyData";
 import LeaderboardTable from "../LeaderBoardTable";
 
-const ChubClayInvitational = () => {
+const ChubClayInvitational = ({ pageType = "full" }) => {
   const [tournamentData, setTournamentData] = useState({
     day_1: [],
     day_2: [],
@@ -119,10 +119,10 @@ const ChubClayInvitational = () => {
       Cell: ({ value }) =>
         value
           ? new Date(value).toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })
           : "N/A",
     },
     {
@@ -131,10 +131,10 @@ const ChubClayInvitational = () => {
       Cell: ({ value }) =>
         value
           ? new Date(value).toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })
           : "N/A",
     },
     { Header: "Species", accessor: "species" },
@@ -166,6 +166,7 @@ const ChubClayInvitational = () => {
         day1: tournamentData.day_1,
         day2: tournamentData.day_2,
       }}
+      pageType={pageType}
     />
   );
 };

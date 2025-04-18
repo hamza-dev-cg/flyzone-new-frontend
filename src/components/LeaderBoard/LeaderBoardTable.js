@@ -1,20 +1,28 @@
 import React, { useState } from "react";
 import Table from "../Table";
 
-const LeaderboardTable = ({ tabs, columnsMap, dataMap }) => {
+const LeaderboardTable = ({ tabs, columnsMap, dataMap, pageType = "full" }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || "");
 
   const currentColumns = columnsMap[activeTab] || [];
   const currentData = dataMap[activeTab] || [];
 
   return (
-    <div className="table-section">
-      <div className=" leader-board-header d-flex flex-column flex-lg-row gap-2">
+    <div
+      className={`table-section table-body  ${
+        pageType === "home" ? " " : "container"
+      }`}
+    >
+      <div
+        className={`leader-board-header d-flex flex-column flex-lg-row gap-2 `}
+      >
         {tabs.map((tab) => (
           <button
             key={tab.key}
-            className={`leader-board-dates ${
-              activeTab === tab.key ? "active-tab" : ""
+            className={` ${activeTab === tab.key ? "active-tab" : ""} ${
+              pageType === "home"
+                ? "leader-board-dates "
+                : "leader-board-dates-full"
             }`}
             onClick={() => setActiveTab(tab.key)}
           >

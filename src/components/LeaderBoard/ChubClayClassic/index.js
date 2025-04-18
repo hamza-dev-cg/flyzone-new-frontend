@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import Table from "../../Table";
-import {chubClayClassic} from '../../../utils/dummyData';
+import { chubClayClassic } from "../../../utils/dummyData";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import LeaderboardTable from "../LeaderBoardTable"; 
+import LeaderboardTable from "../LeaderBoardTable";
 
-const ChubClayClassicLeaderBoard = () => {
+const ChubClayClassicLeaderBoard = ({ pageType = "full" }) => {
   const [tournamentData, setTournamentData] = useState({
     day_1: [],
     day_2: [],
@@ -194,24 +194,29 @@ const ChubClayClassicLeaderBoard = () => {
     { Header: "Total score", accessor: "total_score" },
   ];
 
+  useEffect(() => {
+    console.log("pageType in chub cay classic is:", pageType);
+  }, []);
+
   return (
     <LeaderboardTable
-    tabs={[
-      { label: "Overall Score", key: "over_all" },
-      { label: "Day 1 - 14th March 2025", key: "day_1" },
-      { label: "Day 2 - 15th March 2025", key: "day_2" },
-    ]}
-    columnsMap={{
-      over_all: ChubCayOverScore,
-      day_1: ChubCayDays,
-      day_2: ChubCayDays,
-    }}
-    dataMap={{
-      over_all: tournamentData.over_all,
-      day_1: tournamentData.day_1,
-      day_2: tournamentData.day_2,
-    }}
-  />
+      tabs={[
+        { label: "Overall Score", key: "over_all" },
+        { label: "Day 1 - 14th March 2025", key: "day_1" },
+        { label: "Day 2 - 15th March 2025", key: "day_2" },
+      ]}
+      columnsMap={{
+        over_all: ChubCayOverScore,
+        day_1: ChubCayDays,
+        day_2: ChubCayDays,
+      }}
+      dataMap={{
+        over_all: tournamentData.over_all,
+        day_1: tournamentData.day_1,
+        day_2: tournamentData.day_2,
+      }}
+      pageType={pageType}
+    />
   );
 };
 
