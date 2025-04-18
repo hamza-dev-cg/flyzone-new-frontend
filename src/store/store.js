@@ -11,19 +11,22 @@ import { ForumApi } from '../features/forum/api';
 import { EventUploadApi } from '../features/EventUploads/api'
 import registerMeatFishReducer from '../features/registerMeatFish/registerSlice';
 import { RegisterMeatFishApi } from '../features/registerMeatFish/api';
-
+import { RegistrationApi }   from '../features/Registration/api';
+import  RegisterReducer from '../features/Registration/registerFormSlice';
 
 const rootReducer = combineReducers({
   user: userReducer,
   tournament: TournamentReducer,
   forum: ForumReducer,
+  Register:RegisterReducer,
   registerMeatFish: registerMeatFishReducer,
   [userApi.reducerPath]: userApi.reducer,
   [TournamentApi.reducerPath]: TournamentApi.reducer,
   [ForumApi.reducerPath]: ForumApi.reducer,
   [EventUploadApi.reducerPath]: EventUploadApi.reducer,
   [RegisterMeatFishApi.reducerPath]: RegisterMeatFishApi.reducer,
-
+  [RegisterMeatFishApi.reducerPath]: RegisterMeatFishApi.reducer,
+  [RegistrationApi.reducerPath]:RegistrationApi.reducer
 });
 
 const persistConfig = {
@@ -32,11 +35,10 @@ const persistConfig = {
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(userApi.middleware).concat(TournamentApi.middleware).concat(ForumApi.middleware).concat(RegisterMeatFishApi.middleware),
+    getDefaultMiddleware({ serializableCheck: false }).concat(userApi.middleware).concat(TournamentApi.middleware).concat(ForumApi.middleware).concat(RegisterMeatFishApi.middleware).concat(RegistrationApi.middleware),
   devTools: true,
 });
 
