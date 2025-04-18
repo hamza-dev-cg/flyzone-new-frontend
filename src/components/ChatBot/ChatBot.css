@@ -46,7 +46,7 @@
   position: relative;
   text-align: left;
   color: #fff;
-  background:#0B5ED7;
+  background: #0b5ed7;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -114,7 +114,7 @@ header .sub-heading {
   display: flex;
   list-style: none;
 }
-.chatbot-toggler img{
+.chatbot-toggler img {
   width: 30px;
   height: 30px;
 }
@@ -130,16 +130,20 @@ header .sub-heading {
   width: 25px;
   height: 25px;
 }
-.chat-box-icon{
+.chat-box-icon {
   width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: default;
-    background: linear-gradient(180deg, rgba(1, 181, 255, 1) 0%, rgba(0, 43, 203, 1) 100%);
-    margin: 0 10px 7px 0;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+  background: linear-gradient(
+    180deg,
+    rgba(1, 181, 255, 1) 0%,
+    rgba(0, 43, 203, 1) 100%
+  );
+  margin: 0 10px 7px 0;
 }
 
 .chatbox .chat .message {
@@ -150,20 +154,19 @@ header .sub-heading {
   font-weight: 400;
   min-height: 40px;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   justify-content: center;
 }
 
-
 .chatbox .incoming .message {
-  color: #E3F2FD;
-  border-radius:12px;
+  color: #e3f2fd;
+  border-radius: 12px;
   background-color: #017bff;
 }
 
 .chatbox .outgoing .message {
   border: 1px solid #017bff;
-  color: #1A1A1A;
+  color: #1a1a1a;
   border-radius: 12px;
 }
 
@@ -206,15 +209,14 @@ header .sub-heading {
     rgba(0, 43, 203, 1) 100%
   );
 }
-.chat-input span.disabled-btn{
+.chat-input span.disabled-btn {
   opacity: 0.5;
   pointer-events: none;
   cursor: not-allowed;
 }
-.message ul{
+.message ul {
   padding-left: 16px;
 }
-
 
 .chat-input textarea:valid ~ span {
   visibility: visible;
@@ -345,7 +347,7 @@ header .sub-heading {
   justify-content: start;
   align-items: center;
   border-radius: 6px;
-  border:0.5px solid #017bff;
+  border: 0.5px solid #017bff;
   margin-bottom: 10px;
   padding: 5px;
   cursor: pointer;
@@ -357,7 +359,7 @@ header .sub-heading {
 }
 
 .suggstion-chat p {
-  color: #5B5B5B;
+  color: #5b5b5b;
   font-size: 12px;
   font-weight: 500;
   padding-left: 3px;

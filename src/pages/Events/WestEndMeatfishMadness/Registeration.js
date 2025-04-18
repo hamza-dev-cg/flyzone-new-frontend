@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { json, useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import { Stepper, Step } from "react-form-stepper";
@@ -11,20 +11,17 @@ import PaymentForm from "../../../components/PaymentForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { setUser } from "../../../features/user/userSlice";
-import { useLocation } from "react-router-dom";
-
 import {
   useUpdateRegisterUserMutation,
   useMeatFishRegisterTournamentMutation
 } from "../../../features/registerMeatFish/api";
-import { useEventforPaymentTournamentMutation } from "../../../features/tournaments/api";
 
 // const stripePromise = loadStripe(
 //   "pk_live_51QUApaLX0WQuQ4Sa64hLBwBGpGHLYu0LLdzkFs6K8aZYdnkyiNv6LCIFIjjfnauzIBqctAZKqCCyh7wjHG75QJcX00IWLxFAjH"
 // );
-// const stripePromise = loadStripe(
-//   "pk_test_51QUrEfBZAGDpCST54w64nCWNe1mLcRN89XQw86WxDSIEXRfOVz1jfIVM5bklMLyMmuaUhcRcO21Vb08g6OcMeJBt00jGMnTbms"
-// );
+const stripePromise = loadStripe(
+  "pk_test_51QUrEfBZAGDpCST54w64nCWNe1mLcRN89XQw86WxDSIEXRfOVz1jfIVM5bklMLyMmuaUhcRcO21Vb08g6OcMeJBt00jGMnTbms"
+);
 
 const Registration = () => {
   const {
@@ -40,6 +37,7 @@ const Registration = () => {
     return savedStep ? parseInt(savedStep, 10) : 0;
   });
   const { event_id } = useParams();
+  const steps = ["User Details", "Add Optional", "Add Payment"];
   const [UpdateRegisterUser] = useUpdateRegisterUserMutation();
   const [MeatFishRegister] = useMeatFishRegisterTournamentMutation()
   const [registeredActivities, setRegisteredActivities] = useState({
@@ -104,44 +102,40 @@ const Registration = () => {
     }
   };
 
-  const steps = ["User Details", "Add Optional", "Add Payment"];
-  const getSelectedActivitiesOnly = (activities) => {
-    const result = {};
-    for (const category in activities) {
-      const selected = Object.entries(activities[category])
-        .filter(([_, value]) => value)
-        .reduce((acc, [key, val]) => {
-          acc[key] = val;
-          return acc;
-        }, {});
 
-      if (Object.keys(selected).length > 0) {
-        result[category] = selected;
-      }
-    }
-    return result;
+  const calculateTotalAmount = (activities) => {
+    let total = 0; 
+    Object.values(activities).forEach(category => {
+      Object.entries(category).forEach(([key, value]) => {
+        if (value) {
+          const match = key.match(/(\d+)/);  
+          if (match) {
+            total += parseInt(match[0]); 
+          }
+        }
+      });
+    });
+
+    return total;
   };
 
+
   const handleNextStep = async () => {
-    const selectedOnly = getSelectedActivitiesOnly(registeredActivities);
     const jsonData = {
       eventId: event_id,
-      registeredActivities: selectedOnly
+      registeredActivities: registeredActivities
     }
-    console.log(jsonData);
     try {
       const res = await MeatFishRegister(jsonData);
-      const total_amount = 100
-      console.log(res);
-      // if (res?.data?.data) {
-      //   localStorage.setItem('selected_entries', selectedOnly)
-      //   localStorage.setItem('total_amount', total_amount)
-      // }
-      // setFormStep((prevStep) => {
-      //   const newStep = prevStep + 1;
-      //   localStorage.setItem("formStep", newStep);
-      //   return newStep;
-      // });
+      const total_amount = calculateTotalAmount(registeredActivities);
+      if (res?.data) {
+        localStorage.setItem('total_amount', total_amount)
+      }
+      setFormStep((prevStep) => {
+        const newStep = prevStep + 1;
+        localStorage.setItem("formStep", newStep);
+        return newStep;
+      });
     } catch (err) {
       toast.error("An error occurred while registering. Please try again.");
     } finally {
@@ -587,10 +581,10 @@ const Registration = () => {
                 </div>
               </>
             )}
-            {/* {formStep === 2 && (
+            {formStep === 2 && (
               <div className="row">
                 <Elements stripe={stripePromise}>
-                  <PaymentForm selectedEntries={selectedEntries} />
+                  <PaymentForm />
                 </Elements>
                 <div className="get-service d-flex space-remove mt-4">
                   <button
@@ -601,7 +595,7 @@ const Registration = () => {
                   </button>
                 </div>
               </div>
-            )} */}
+            )}
           </div>
         </section>
       </section>

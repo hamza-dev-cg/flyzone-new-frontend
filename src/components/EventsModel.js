@@ -70,7 +70,6 @@ export default function EventsModal({ event, onClose }) {
   const [isModalVisible, setModalVisible] = useState(true);
   const modalRef = useRef(null);
   const modalSize = modalSizeMap[event.slug] || "lg";
-  console.log('event Data ' , eventdata);
 
   useEffect(() => {
     const handleClickOutside = (e) => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../Table";
-import {ChubClayInvitationalData} from '../../../utils/dummyData'
+import { ChubClayInvitationalData } from '../../../utils/dummyData'
+import LeaderboardTable from "../LeaderBoardTable";
 
 const ChubClayInvitational = () => {
   const [tournamentData, setTournamentData] = useState({
@@ -118,10 +119,10 @@ const ChubClayInvitational = () => {
       Cell: ({ value }) =>
         value
           ? new Date(value).toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })
           : "N/A",
     },
     {
@@ -130,10 +131,10 @@ const ChubClayInvitational = () => {
       Cell: ({ value }) =>
         value
           ? new Date(value).toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })
           : "N/A",
     },
     { Header: "Species", accessor: "species" },
@@ -149,61 +150,23 @@ const ChubClayInvitational = () => {
   ];
 
   return (
-    <>
-      {/* Overall Chub Cay Classic */}
-      <div className="table-section">
-        <div className="title">Overall Score</div>
-        <div className="table-row my-2">
-          <Table
-            columns={ChubCayOverScore}
-            data={tournamentData?.over_all}
-            isEditable={false}
-            isDeletable={false}
-          />
-          {tournamentData?.over_all.length > 0 ? (
-            <></>
-          ) : (
-            <div className="text-center my-3">No Data Found</div>
-          )}
-        </div>
-      </div>
-
-      {/* Day 1 */}
-      <div className="table-section">
-        <div className="title">Day 1 - 12th April 2025</div>
-        <div className="table-row my-2">
-          <Table
-            columns={ChubCayDays}
-            data={tournamentData?.day_1}
-            isEditable={false}
-            isDeletable={false}
-          />
-          {tournamentData?.day_1.length > 0 ? (
-            <></>
-          ) : (
-            <div className="text-center my-3">No Data Found</div>
-          )}
-        </div>
-      </div>
-
-      {/* Day 2 */}
-      <div className="table-section">
-        <div className="title">Day 2 - 13th April 2025</div>
-        <div className="table-row my-2">
-          <Table
-            columns={ChubCayDays}
-            data={tournamentData?.day_2}
-            isEditable={false}
-            isDeletable={false}
-          />
-          {tournamentData?.day_2.length > 0 ? (
-            <></>
-          ) : (
-            <div className="text-center my-3">No Data Found</div>
-          )}
-        </div>
-      </div>
-    </>
+    <LeaderboardTable
+      tabs={[
+        { label: "Overall Score", key: "overall" },
+        { label: "Day 1 - 15th April, 2025", key: "day1" },
+        { label: "Day 2 - 16th April, 2025", key: "day2" },
+      ]}
+      columnsMap={{
+        overall: ChubCayOverScore,
+        day1: ChubCayDays,
+        day2: ChubCayDays,
+      }}
+      dataMap={{
+        overall: tournamentData.over_all,
+        day1: tournamentData.day_1,
+        day2: tournamentData.day_2,
+      }}
+    />
   );
 };
 

@@ -3,6 +3,7 @@ import ReactPaginate from "react-paginate";
 import Table from "../../Table";
 import {chubClayClassic} from '../../../utils/dummyData';
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import LeaderboardTable from "../LeaderBoardTable"; 
 
 const ChubClayClassicLeaderBoard = () => {
   const [tournamentData, setTournamentData] = useState({
@@ -194,114 +195,23 @@ const ChubClayClassicLeaderBoard = () => {
   ];
 
   return (
-    <>
-      {/* Overall */}
-      <div className="table-section">
-        <div className="title">Overall Score</div>
-        <div className="table-row my-2">
-          <Table
-            columns={ChubCayOverScore}
-            data={getPaginatedData(
-              tournamentData?.over_all,
-              pageNumber.over_all
-            )}
-            isEditable={false}
-            isDeletable={false}
-          />
-          {tournamentData?.over_all.length > itemsPerPage && (
-            <ReactPaginate
-              previousLabel={<FaAngleLeft />}
-              nextLabel={<FaAngleRight />}
-              breakLabel={"..."}
-              pageCount={Math.ceil(
-                tournamentData?.over_all.length / itemsPerPage
-              )}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={3}
-              onPageChange={(selected) => handlePageClick(selected, "over_all")}
-              containerClassName={"pagination"}
-              pageClassName={"page-item"}
-              pageLinkClassName={"page-link"}
-              previousClassName={"page-item"}
-              previousLinkClassName={"page-link"}
-              nextClassName={"page-item"}
-              nextLinkClassName={"page-link"}
-              breakClassName={"page-item"}
-              breakLinkClassName={"page-link"}
-              activeClassName={"active"}
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Day 1 */}
-      <div className="table-section">
-        <div className="title">Day 1 - 14th March 2025</div>
-        <div className="table-row my-2">
-          <Table
-            columns={ChubCayDays}
-            data={getPaginatedData(tournamentData?.day_1, pageNumber.day_1)}
-            isEditable={false}
-            isDeletable={false}
-          />
-          {tournamentData?.day_1.length > itemsPerPage && (
-            <ReactPaginate
-              previousLabel={<FaAngleLeft />}
-              nextLabel={<FaAngleRight />}
-              breakLabel={"..."}
-              pageCount={Math.ceil(tournamentData?.day_1.length / itemsPerPage)}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={3}
-              onPageChange={(selected) => handlePageClick(selected, "day_1")}
-              containerClassName={"pagination"}
-              pageClassName={"page-item"}
-              pageLinkClassName={"page-link"}
-              previousClassName={"page-item"}
-              previousLinkClassName={"page-link"}
-              nextClassName={"page-item"}
-              nextLinkClassName={"page-link"}
-              breakClassName={"page-item"}
-              breakLinkClassName={"page-link"}
-              activeClassName={"active"}
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Day 2 */}
-      <div className="table-section">
-        <div className="title">Day 2 - 15th March 2025</div>
-        <div className="table-row my-2">
-          <Table
-            columns={ChubCayDays}
-            data={getPaginatedData(tournamentData?.day_2, pageNumber.day_2)}
-            isEditable={false}
-            isDeletable={false}
-          />
-          {tournamentData?.day_2.length > itemsPerPage && (
-            <ReactPaginate
-              previousLabel={<FaAngleLeft />}
-              nextLabel={<FaAngleRight />}
-              breakLabel={"..."}
-              pageCount={Math.ceil(tournamentData?.day_2.length / itemsPerPage)}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={3}
-              onPageChange={(selected) => handlePageClick(selected, "day_2")}
-              containerClassName={"pagination"}
-              pageClassName={"page-item"}
-              pageLinkClassName={"page-link"}
-              previousClassName={"page-item"}
-              previousLinkClassName={"page-link"}
-              nextClassName={"page-item"}
-              nextLinkClassName={"page-link"}
-              breakClassName={"page-item"}
-              breakLinkClassName={"page-link"}
-              activeClassName={"active"}
-            />
-          )}
-        </div>
-      </div>
-    </>
+    <LeaderboardTable
+    tabs={[
+      { label: "Overall Score", key: "over_all" },
+      { label: "Day 1 - 14th March 2025", key: "day_1" },
+      { label: "Day 2 - 15th March 2025", key: "day_2" },
+    ]}
+    columnsMap={{
+      over_all: ChubCayOverScore,
+      day_1: ChubCayDays,
+      day_2: ChubCayDays,
+    }}
+    dataMap={{
+      over_all: tournamentData.over_all,
+      day_1: tournamentData.day_1,
+      day_2: tournamentData.day_2,
+    }}
+  />
   );
 };
 

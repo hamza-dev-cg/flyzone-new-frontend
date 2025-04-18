@@ -7,9 +7,14 @@ const StyledSelect = styled(Select)`
   .react-select__control {
     min-height: 42px !important;
     font-size: 14px;
-    border-radius: 6px;
-    max-width: ${(props) => props.$maxWidth || '200px'};
-    min-width: 100px;
+    border-radius:6px;
+     ${(props) =>
+      props.$disableWidth
+        ? ""
+        : `
+      max-width: 200px;
+      min-width: 100px;
+    `}
   }
 
   .react-select__menu {
@@ -22,29 +27,23 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-const App = ({
-  options = [],
-  onChange,
-  value,
-  label,
-  loading,
-  defaultValue,
-  placeholder,
-  maxWidth,
-}) => {
+const App = ({options=[],onChange,value,label,loading,defaultValue,placeholder ,  isMulti , disableWidth  }) => {
+
+
   return (
     <>
-      {label && <label className="mb-2">{label}</label>}
-      <StyledSelect
-        classNamePrefix="react-select"
-        value={value}
-        defaultValue={defaultValue}
-        onChange={onChange}
-        options={options}
-        isLoading={loading}
-        placeholder={placeholder}
-        $maxWidth={maxWidth} // Pass styled prop with $
-      />
+  {label && <label className="mb-2">{label}</label> }
+    <StyledSelect
+      classNamePrefix="react-select"
+      value={value}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      options={options}
+      isLoading={loading}
+      placeholder={placeholder}
+      isMulti={isMulti} 
+      $disableWidth={disableWidth}
+    />
     </>
   );
 };
