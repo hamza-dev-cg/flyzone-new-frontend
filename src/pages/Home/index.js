@@ -139,7 +139,7 @@ export default function Home() {
               Events<span> Leaderboard</span>
             </h1>
           </div>
-          <LeaderBoard label chatBox defaultChatState={true} />
+          <LeaderBoard label chatBox defaultChatState={true} pageType="home" />
         </div>
       </div>
       <OurPodcast />

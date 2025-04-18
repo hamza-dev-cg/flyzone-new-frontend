@@ -1577,7 +1577,7 @@ margin-block: 0px;
   right: 0;
   top: -300px;
   bottom: 0;
-  z-index:-1;
+  z-index: -1;
 }
 
 .rules-section .title {
@@ -2335,9 +2335,17 @@ margin-block: 0px;
 }
 
 .leader-board-header {
-  border: 1px solid #FFFFFF33;
-    border-radius: 10.99px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10.99px;
+
 }
+
+.table-body {
+  position: relative;
+}
+
+
+
 
 .leader-board-section .table th {
   font-size: 16px;
@@ -3593,4 +3601,8 @@ thead.background-row th {
 }
 .detail-checkbox .form-check .form-check-input{
   margin-top: 3px!important;
+}
+
+.table-full-style{
+  color: black !important;
 }

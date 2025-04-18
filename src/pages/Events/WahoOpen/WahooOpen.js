@@ -1,13 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import EventsNavbar from "../../../components/EventsNavbar";
 import TournamentInfo from "../../../components/TornamentInfo";
 import EventInformationBg from "../../../assets/images/event-informat-bg.png";
 import Blue_Marin from "../../../assets/images/blue-marlin.png";
 import { useLocation } from "react-router-dom";
 import { formatDateRange } from '../../../utils/helpers'
+import { useGetEventBySlugMutation } from "../../../features/user/api";
 const WahooOpen = () => {
   const location = useLocation();
-  const event = location?.state?.event;
+  const parts = location.pathname.split("/");
+  const slug = parts[2];
+  const [EventDetail] = useGetEventBySlugMutation();
+  const [event, setEvent] = useState(null)
+  const fetchEvents = async () => {
+    try {
+      const response = await EventDetail(slug);
+      if (response?.data?.success) {
+        setEvent(response?.data?.tournament);
+      }
+    } catch (err) {
+      console.log("Something went wrong while fetching tournaments.");
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents()
+  }, [slug])
   return (
     <div>
       <section className="whoo-open-hero-section">
@@ -26,7 +44,7 @@ const WahooOpen = () => {
               key={idx}
               dangerouslySetInnerHTML={{
                 __html: line
-                .replace(/(\$2,500)/g, "<strong>$1</strong>")
+                  .replace(/(\$2,500)/g, "<strong>$1</strong>")
 
                   .replace(/(January 16-18)/g, "<b>$1</b>")
               }}

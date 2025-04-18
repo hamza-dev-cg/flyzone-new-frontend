@@ -11,13 +11,12 @@ import EventInformationBg from "../../../assets/images/event-informat-bg.png";
 import { burunuBomaDetails } from "../../../utils/dummyData";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import { useDropzone } from 'react-dropzone'; // Ensure you import useDropzone
+import { useDropzone } from 'react-dropzone'; 
+import { useGetEventBySlugMutation } from "../../../features/user/api";
 
 const EventDetails = () => {
-  const location = useLocation();
   const token = localStorage.getItem("authToken");
   const user = JSON.parse(localStorage.getItem("user"));
-
   const [selectSpecies, setSelectSpecies] = useState(null);
   const [speciesLimitError, setSpeciesLimitError] = useState("");
   const [speciesData, setSpeciesData] = useState([]);
@@ -28,7 +27,7 @@ const EventDetails = () => {
   const [uploadedVideoUrl, setUploadedVideoUrl] = useState('');
   const [videoFile, setVideoFile] = useState(null);
   const [loadingVideoFile, setLoadingVideoFile] = useState(false);
-  
+
   const speciesOptions = burunuBomaDetails.species.map((x) => ({
     value: x.value,
     label: x.name,
@@ -39,11 +38,31 @@ const EventDetails = () => {
     { value: 2, label: "Day 2" },
   ];
 
+  const location = useLocation();
+  const parts = location.pathname.split("/");
+  const slug = parts[2];
+  const [EventDetail] = useGetEventBySlugMutation();
+  const [event, setEvent] = useState(null)
+  const fetchEvents = async () => {
+    try {
+      const response = await EventDetail(slug);
+      if (response?.data?.success) {
+        setEvent(response?.data?.tournament);
+      }
+    } catch (err) {
+      console.log("Something went wrong while fetching tournaments.");
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents()
+  }, [slug])
+
   useEffect(() => {
     const fetchScoreData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_DEV_URL}api/registration/burunu-buma/score/67fe5b2b91e6e50d2c28cea7`,
+          `${process.env.REACT_APP_DEV_URL}api/registration/burunu-buma/score/${event?.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (response.data.success) {
@@ -53,7 +72,6 @@ const EventDetails = () => {
         }
       } catch (error) {
         console.error("Error fetching score:", error);
-        toast.error(error.response?.data?.message || "Failed to fetch score.");
       }
     };
 
@@ -75,7 +93,7 @@ const EventDetails = () => {
 
   const handleVideoChange = async (file) => {
     setLoadingVideoFile(true);
-    setVideoFile(file.name);
+    setVideoFile(file?.name);
     let uploadedVideoUrl = null;
     const videoFormData = new FormData();
     videoFormData.append("file", file);
@@ -99,7 +117,6 @@ const EventDetails = () => {
       }
     } catch (err) {
       console.error("Video upload error:", err);
-      toast.error("Error uploading video.");
     }
   };
   const Loader = () => <span className="loader"></span>
@@ -108,32 +125,34 @@ const EventDetails = () => {
     const onDrop = useCallback((acceptedFiles) => {
       handleVideoChange(acceptedFiles[0]);
     }, []);
-  
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
       onDrop,
       accept: "video/*",  // Only accept video files
       maxSize: 5 * 1024 * 1024, // Max size 5MB
     });
-  
+
     return (
       <div className="upload-img">
         <div
           {...getRootProps()}
-          className={`w-full h-40 flex flex-col items-center justify-center cursor-pointer ${
-            isDragActive ? "bg-gray-100" : "bg-white"
-          }`}
+          className={`w-full h-40 flex flex-col items-center justify-center cursor-pointer ${isDragActive ? "bg-gray-100" : "bg-white"
+            }`}
         >
           <input {...getInputProps()} />
-          {loadingVideoFile ? <Loader /> : 
           <div className="upload-box mt-4">
-            <img src={UploadIcon} alt="upload-icon" />
-            Drag and Drop Files here or{" "}
-            <span className="choose-file">choose file</span>
-          </div> }
-        </div>
-      <div className="d-flex justify-content-between mt-2">
-            <p className="text-gray-500 text-sm">Maximum size: 5MB</p>
+            {loadingVideoFile ? <Loader /> :
+              <>
+                <img src={UploadIcon} alt="upload-icon" />
+                Drag and Drop Files here or{" "}
+                <span className="choose-file">choose file</span>
+              </>
+            }
           </div>
+        </div>
+        <div className="d-flex justify-content-between mt-2">
+          <p className="text-gray-500 text-sm">Maximum size: 5MB</p>
+        </div>
         {videoFile && !loadingVideoFile && (
           <small className="text-muted mt-1 d-block">
             Selected: {videoFile}
@@ -142,8 +161,8 @@ const EventDetails = () => {
       </div>
     );
   };
-  
-  console.log(loadingVideoFile,"setLoadingVideoFile")
+
+  console.log(loadingVideoFile, "setLoadingVideoFile")
   const resetForm = () => {
     setSelectSpecies(null);
     setSelectDays(null);
@@ -213,15 +232,12 @@ const EventDetails = () => {
           "http://172.229.220.21:8000/api/registration/burunu-buma/score/67fe5b2b91e6e50d2c28cea7",
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        if (updatedScores.data.success) {
-          setSpeciesData(updatedScores.data.scorring);
+        if (updatedScores?.data?.success) {
+          setSpeciesData(updatedScores?.data?.scorring);
         }
-      } else {
-        toast.error(response.data.message || "Registration failed.");
       }
     } catch (err) {
       console.error("Submit error:", err);
-      toast.error(err.response?.data?.message || "Something went wrong.");
     }
   };
 
@@ -279,7 +295,7 @@ const EventDetails = () => {
             <div className="mb-3">
               <label className="form-label d-block">Upload Video</label>
               <AddEventWrapper>
-              <FileUpload />
+                <FileUpload />
               </AddEventWrapper>
             </div>
 
@@ -314,9 +330,9 @@ const EventDetails = () => {
                 <label className="form-check-label">Is Kept</label>
               </div>
             </div>
-
             <div className="my-4">
               <Button
+                disabled={loadingVideoFile}
                 text="Add Event"
                 width="100%"
                 onClick={handleRegisterEvent}

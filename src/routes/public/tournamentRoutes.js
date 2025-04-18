@@ -1,7 +1,7 @@
 import React, { lazy } from "react";
 import { Route } from "react-router-dom";
 import { getTokenFromLocalStorage } from "../../utils/helpers";
-import { Navigate, Outlet, useLocation  } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 // Lazy load tournament components
 const WahooOpen = lazy(() =>
@@ -14,6 +14,10 @@ const WahooOpenRules = lazy(() =>
   import("../../pages").then(module => ({ default: module.WahooOpenRules }))
 );
 
+const WahooOpenResortAndMarina = lazy(() =>
+  import("../../pages").then(module => ({ default: module.WahooOpenResortAndMarina }))
+);
+
 const ChampionShip = lazy(() =>
   import("../../pages").then(module => ({ default: module.ChampionShip }))
 );
@@ -22,6 +26,9 @@ const ChampionShipGallery = lazy(() =>
 );
 const ChampionShipRules = lazy(() =>
   import("../../pages").then(module => ({ default: module.ChampionShipRules }))
+);
+const ChampionShipResortAndMarina = lazy(() =>
+  import("../../pages").then(module => ({ default: module.ChampionShipResortAndMarina }))
 );
 
 const ChubClayClassicInformation = lazy(() =>
@@ -80,6 +87,7 @@ const BurunuRegistration = lazy(() =>
     default: module.BurunuRegistration,
   }))
 );
+
 const PrivateRoute = () => {
 
   const token = getTokenFromLocalStorage()?.token;
@@ -98,11 +106,15 @@ const TournamentRoutes = () => (
     <Route path="/tournaments/blue-marlin-cove-wahoo-open" element={<WahooOpen />} />
     <Route path="/tournaments/blue-marlin-cove-wahoo-open/gallery" element={<WahooOpenGallery />} />
     <Route path="/tournaments/blue-marlin-cove-wahoo-open/rules" element={<WahooOpenRules />} />
+    <Route path="/tournaments/blue-marlin-cove-wahoo-open/resort-and-marina" element={<WahooOpenResortAndMarina />} />
+
 
     {/* Championship */}
     <Route path="/tournaments/blue-marlin-cove-championship" element={<ChampionShip />} />
     <Route path="/tournaments/blue-marlin-cove-championship/gallery" element={<ChampionShipGallery />} />
     <Route path="/tournaments/blue-marlin-cove-championship/rules" element={<ChampionShipRules />} />
+    <Route path="/tournaments/blue-marlin-cove-championship/resort-and-marina" element={< ChampionShipResortAndMarina />} />
+
 
     {/* Chub Cay Classic */}
     <Route path="/tournaments/chub-cay-classic-2025" element={<ChubClayClassicInformation />} />
@@ -113,25 +125,24 @@ const TournamentRoutes = () => (
     <Route path="/tournaments/chub-cay-open-2025/rules" element={<ChubClayOpenRules />} />
     <Route path="/tournaments/chub-cay-open-2025/gallery" element={<ChubClayOpenGallery />} />
 
-    
+
     <Route path="/tournaments/chub-cay-invitational-2025" element={<ChubClayInvitationalInformation />} />
     <Route path="/tournaments/chub-cay-invitational-2025/rules" element={<ChubClayInvitationalRules />} />
     <Route path="/tournaments/chub-cay-invitational-2025/gallery" element={<ChubClayInvitationalGallery />} />
 
     {/* West End Madness */}
-    <Route path="/tournaments/west-end-meatfish-mania/:id" element={<WestEndMeatFishManiaInformation/>} />
+    <Route path="/tournaments/west-end-meatfish-mania" element={<WestEndMeatFishManiaInformation />} />
     <Route path="/tournaments/west-end-meatfish-mania/rules" element={<WestEndMeatFishManiaRules />} />
     <Route path="/tournaments/west-end-meatfish-mania/gallery" element={<WestEndMeatFishManiaGallery />} />
     <Route path="/tournaments/west-end-meatfish-mania/optional" element={<WestEndMeatFishManiaOptional />} />
 
-    <Route path="/tournaments/burunu-Boma/:id" element={<BurunuBomaInformation/>} />
-    <Route path="/tournaments/burunu-Boma" element={<BurunuBomaInformation/>} />
-    
-    <Route path="/tournaments/burunu-Boma/rules" element={<BurunuBomaRules />} />
-    <Route path="/tournaments/burunu-Boma/details/:id" element={<BurunuBomaDetails/>} />
+    <Route path="/tournaments/burunu-boma" element={<BurunuBomaInformation />} />
+
+    <Route path="/tournaments/burunu-boma/rules" element={<BurunuBomaRules />} />
+    <Route path="/tournaments/burunu-boma/details" element={<BurunuBomaDetails />} />
 
     <Route element={<PrivateRoute />}>
-    <Route path="/tournaments/burunu-Boma/register" element={<BurunuRegistration/>} />
+      <Route path="/tournaments/burunu-boma/register" element={<BurunuRegistration />} />
     </Route>
 
   </>
