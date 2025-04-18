@@ -1,13 +1,34 @@
-import React from "react";
+import React, { useEffect  , useState} from "react";
 import EventsNavbar from "../../../components/EventsNavbar";
 import BurunuBomaImage from "../../../assets/images/BomaMain.png";
 import TournamentInfo from "../../../components/TornamentInfo";
 import DaySchedule from "../../../components/DaySchedule";
-import { useLocation } from "react-router-dom";
 import { formatDateRange } from '../../../utils/helpers'
+import { useGetEventBySlugMutation } from "../../../features/user/api";
+import { useLocation } from "react-router-dom";
 const Information = () => {
   const location = useLocation();
-  const event = location?.state?.event;
+  const parts = location.pathname.split("/");
+  const slug = parts[2];
+  console.log(slug);
+  const [EventDetail] = useGetEventBySlugMutation();
+  const [event, setEvent] = useState(null)
+  const fetchEvents = async () => {
+    try {
+      const response = await EventDetail(slug);
+      console.log(response);
+      if (response?.data?.success) {
+        setEvent(response?.data?.tournament);
+      }
+    } catch (err) {
+      console.log("Something went wrong while fetching tournaments.");
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents()
+  }, [slug])
+
   return (
     <div>
       <section className="whoo-open-hero-section">

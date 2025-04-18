@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TournamentInfo from "../../../components/TornamentInfo";
 import EventsNavbar from "../../../components/EventsNavbar";
 import Camp from "../../../assets/images/camp.png";
 import EventInformationBg from "../../../assets/images/event-informat-bg.png";
 import { useLocation } from "react-router-dom";
 import { formatDateRange } from '../../../utils/helpers'
+import { useGetEventBySlugMutation } from "../../../features/user/api";
 const ChampionShip = () => {
   const location = useLocation();
-  const event = location?.state?.event;
+  const parts = location.pathname.split("/");
+  const slug = parts[2];
+  const [EventDetail] = useGetEventBySlugMutation();
+  const [event, setEvent] = useState(null)
+  const fetchEvents = async () => {
+    try {
+      const response = await EventDetail(slug);
+      if (response?.data?.success) {
+        setEvent(response?.data?.tournament);
+      }
+    } catch (err) {
+      console.log("Something went wrong while fetching tournaments.");
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents()
+  }, [slug])
+
   return (
     <div>
       <section className="championship-hero-section">
