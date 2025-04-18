@@ -4984,7 +4984,7 @@ export const burunuBomaDetails = {
     {
       value: "bigeye_tuna",
       name:"Bigeye Tuna",
-      catchLimit: 5,
+      catchLimit: 3,
       scoreFactor: 180,
       releasePoint: 0,
       keepLimit: null,

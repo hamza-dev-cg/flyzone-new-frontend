@@ -12,7 +12,6 @@ const StyledSelect = styled(Select)`
       props.$disableWidth
         ? ""
         : `
-      max-width: 200px;
       min-width: 100px;
     `}
   }
