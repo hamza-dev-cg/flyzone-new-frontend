@@ -1,32 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import Select from "../../../components/Select/index";
 import Button from "../../../components/Button/index";
+import { AddEventWrapper } from '../../AdminPanel/Tournaments/AddEvent/style';
 import Input from "../../../components/Input/index";
 import EventsNavbar from "../../../components/EventsNavbar";
 import Line from "../../../assets/images/line.png";
+import UploadIcon from "../../../assets/icons/upload-file-icon.svg";
 import EventInformationBg from "../../../assets/images/event-informat-bg.png";
 import { burunuBomaDetails } from "../../../utils/dummyData";
 import axios from "axios";
-import { toast } from "react-toastify";
-
-const token = localStorage.getItem("authToken");
+import { toast, ToastContainer } from "react-toastify";
+import { useDropzone } from 'react-dropzone'; // Ensure you import useDropzone
 
 const EventDetails = () => {
   const location = useLocation();
+  const token = localStorage.getItem("authToken");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const [selectSpecies, setSelectSpecies] = useState(null);
+  const [speciesLimitError, setSpeciesLimitError] = useState("");
+  const [speciesData, setSpeciesData] = useState([]);
   const [selectDays, setSelectDays] = useState(null);
   const [size, setSize] = useState("");
-  const [speciesCountMap, setSpeciesCountMap] = useState({});
   const [isRelease, setIsRelease] = useState(false);
   const [isKept, setIsKept] = useState(false);
+  const [uploadedVideoUrl, setUploadedVideoUrl] = useState('');
   const [videoFile, setVideoFile] = useState(null);
-  const [catchLimitState, setCatchLimitState] = useState(0);
-  const [currentSpeciesCount, setCurrentSpeciesCount] = useState(0);
-
-  const userId = JSON.parse(localStorage.getItem("user"));
-
+  const [loadingVideoFile, setLoadingVideoFile] = useState(false);
+  
   const speciesOptions = burunuBomaDetails.species.map((x) => ({
     value: x.value,
     label: x.name,
@@ -37,20 +39,111 @@ const EventDetails = () => {
     { value: 2, label: "Day 2" },
   ];
 
+  useEffect(() => {
+    const fetchScoreData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_DEV_URL}api/registration/burunu-buma/score/67fe5b2b91e6e50d2c28cea7`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (response.data.success) {
+          setSpeciesData(response.data.scorring);
+        } else {
+          toast.warning(response.data.message || "Failed to fetch score.");
+        }
+      } catch (error) {
+        console.error("Error fetching score:", error);
+        toast.error(error.response?.data?.message || "Failed to fetch score.");
+      }
+    };
+
+    fetchScoreData();
+  }, [token]);
+
   const selectedSpeciesData = burunuBomaDetails.species.find(
     (x) => x.value === selectSpecies?.value
   );
 
   const catchLimit = selectedSpeciesData?.catchLimit || 0;
+  const alreadySubmitted = speciesData.filter(
+    (x) => x.species === selectSpecies?.value
+  ).length;
+
   const baseScore = selectedSpeciesData?.scoreFactor || 0;
   const releasePoint = selectedSpeciesData?.releasePoint || 0;
   const scoreData = isRelease ? baseScore + releasePoint : baseScore;
 
-  const handleVideoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) setVideoFile(file);
-  };
+  const handleVideoChange = async (file) => {
+    setLoadingVideoFile(true);
+    setVideoFile(file.name);
+    let uploadedVideoUrl = null;
+    const videoFormData = new FormData();
+    videoFormData.append("file", file);
+    try {
+      const uploadRes = await axios.post(
+        `${process.env.REACT_APP_DEV_URL}api/upload/video`,
+        videoFormData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
+      if (uploadRes) {
+        setUploadedVideoUrl(uploadRes.data.url);
+        setLoadingVideoFile(false);
+      } else {
+        toast.error("Video upload failed.");
+      }
+    } catch (err) {
+      console.error("Video upload error:", err);
+      toast.error("Error uploading video.");
+    }
+  };
+  const Loader = () => <span className="loader"></span>
+
+  const FileUpload = () => {
+    const onDrop = useCallback((acceptedFiles) => {
+      handleVideoChange(acceptedFiles[0]);
+    }, []);
+  
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({
+      onDrop,
+      accept: "video/*",  // Only accept video files
+      maxSize: 5 * 1024 * 1024, // Max size 5MB
+    });
+  
+    return (
+      <div className="upload-img">
+        <div
+          {...getRootProps()}
+          className={`w-full h-40 flex flex-col items-center justify-center cursor-pointer ${
+            isDragActive ? "bg-gray-100" : "bg-white"
+          }`}
+        >
+          <input {...getInputProps()} />
+          {loadingVideoFile ? <Loader /> : 
+          <div className="upload-box mt-4">
+            <img src={UploadIcon} alt="upload-icon" />
+            Drag and Drop Files here or{" "}
+            <span className="choose-file">choose file</span>
+          </div> }
+        </div>
+      <div className="d-flex justify-content-between mt-2">
+            <p className="text-gray-500 text-sm">Maximum size: 5MB</p>
+          </div>
+        {videoFile && !loadingVideoFile && (
+          <small className="text-muted mt-1 d-block">
+            Selected: {videoFile}
+          </small>
+        )}
+      </div>
+    );
+  };
+  
+  console.log(loadingVideoFile,"setLoadingVideoFile")
   const resetForm = () => {
     setSelectSpecies(null);
     setSelectDays(null);
@@ -58,27 +151,47 @@ const EventDetails = () => {
     setIsRelease(false);
     setIsKept(false);
     setVideoFile(null);
-    setCatchLimitState(0);
-    setCurrentSpeciesCount(0);
+    setSpeciesLimitError("");
+    setUploadedVideoUrl('');
+  };
+
+  const handleSpeciesChange = (selected) => {
+    setSelectSpecies(selected);
+    const selectedData = burunuBomaDetails.species.find(
+      (s) => s.value === selected?.value
+    );
+    const limit = selectedData?.catchLimit || 0;
+    const count = speciesData.filter((s) => s.species === selected?.value).length;
+
+    if (limit <= count) {
+      setSpeciesLimitError(
+        `Catch limit reached for ${selected.label}. You cannot submit more entries for this species.`
+      );
+    } else {
+      setSpeciesLimitError("");
+    }
   };
 
   const handleRegisterEvent = async () => {
-    const speciesValue = selectSpecies?.value;
-    const currentCount = speciesCountMap[speciesValue] || 0;
+    if (!selectSpecies || !selectDays) {
+      return toast.warning("Please fill all required fields.");
+    }
 
-    if (currentCount >= catchLimitState) {
-      toast.warning("You have exceeded the catch limit for this species.");
-      return;
+    if (catchLimit <= alreadySubmitted) {
+      return toast.warning(
+        `Catch limit reached for ${selectSpecies.label}. You cannot submit more entries.`
+      );
     }
 
     const formData = {
-      species: speciesValue,
+      species: selectSpecies.value,
       score: scoreData,
-      day: selectDays?.value,
+      day: selectDays.value,
       size,
       isRelease,
       isKept,
-      userId: userId.id,
+      userId: user?.id,
+      video: uploadedVideoUrl,
     };
 
     try {
@@ -96,21 +209,25 @@ const EventDetails = () => {
       if (response.data.success) {
         toast.success("Successfully registered for the tournament!");
         resetForm();
-        setSpeciesCountMap((prev) => ({
-          ...prev,
-          [speciesValue]: (prev[speciesValue] || 0) + 1,
-        }));
+        const updatedScores = await axios.get(
+          "http://172.229.220.21:8000/api/registration/burunu-buma/score/67fe5b2b91e6e50d2c28cea7",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (updatedScores.data.success) {
+          setSpeciesData(updatedScores.data.scorring);
+        }
       } else {
         toast.error(response.data.message || "Registration failed.");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Submit error:", err);
       toast.error(err.response?.data?.message || "Something went wrong.");
     }
   };
 
   return (
     <div>
+      <ToastContainer />
       <section className="rules-section">
         <img className="rules-bg" src={EventInformationBg} alt="fish" />
         <EventsNavbar basePath="/events" links="burunuBoma" />
@@ -127,25 +244,13 @@ const EventDetails = () => {
               <Select
                 options={speciesOptions}
                 value={selectSpecies}
-                onChange={(x) => {
-                  setSelectSpecies(x);
-                  const found = burunuBomaDetails.species.find(
-                    (s) => s.value === x.value
-                  );
-                  setCatchLimitState(found?.catchLimit || 0);
-                  setCurrentSpeciesCount(speciesCountMap[x.value] || 0);
-                }}
+                onChange={handleSpeciesChange}
                 label="Select Species"
                 maxWidth="100%"
               />
-              {catchLimitState > 0 && (
-                <small className="text-muted">
-                  Catch Limit: {catchLimitState} | Caught: {currentSpeciesCount}
-                </small>
-              )}
-              {currentSpeciesCount >= catchLimitState && (
-                <div className="text-danger mt-1">
-                  You have reached the catch limit.
+              {speciesLimitError && (
+                <div className="text-danger mt-1" style={{ fontSize: "0.9rem" }}>
+                  {speciesLimitError}
                 </div>
               )}
             </div>
@@ -154,7 +259,7 @@ const EventDetails = () => {
               <Select
                 options={dayOptions}
                 value={selectDays}
-                onChange={(x) => setSelectDays(x)}
+                onChange={setSelectDays}
                 label="Select Day"
                 maxWidth="100%"
               />
@@ -173,17 +278,9 @@ const EventDetails = () => {
 
             <div className="mb-3">
               <label className="form-label d-block">Upload Video</label>
-              <input
-                type="file"
-                accept="video/*"
-                onChange={handleVideoChange}
-                className="form-control"
-              />
-              {videoFile && (
-                <small className="text-muted mt-1 d-block">
-                  Selected: {videoFile.name}
-                </small>
-              )}
+              <AddEventWrapper>
+              <FileUpload />
+              </AddEventWrapper>
             </div>
 
             <div className="d-flex gap-5">
