@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Select from "react-select";
 import styled from "styled-components";
 
-// Styled component for custom styles
+// Styled component outside the component
 const StyledSelect = styled(Select)`
   .react-select__control {
-    min-height: 42px !important; /* Increase the height of the select box */
+    min-height: 42px !important;
     font-size: 14px;
     border-radius:6px;
      ${(props) =>
@@ -19,11 +19,11 @@ const StyledSelect = styled(Select)`
 
   .react-select__menu {
     font-size: 14px;
-    z-index:9999;
+    z-index: 9999;
   }
 
   .react-select__option {
-    padding: 15px !important; /* Increase the height of each option */
+    padding: 15px !important;
   }
 `;
 

@@ -122,7 +122,7 @@ export default function EventsModal({ event, onClose }) {
                     </a>
                   )}
                   <Link
-                    to={`/tournaments/${event.slug}`}
+                    to={`/tournaments/${event.slug}/${event.id}`}
                     state={{ event }}
                     className="btn-learn-more"
                   >

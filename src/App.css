@@ -3585,3 +3585,12 @@ thead.background-row th {
   pointer-events: none;
   cursor: none;
 }
+
+.event-details-box{
+  background-color: #f3f3f3;
+  border-radius: 8px;
+  padding: 16px;
+}
+.detail-checkbox .form-check .form-check-input{
+  margin-top: 3px!important;
+}
