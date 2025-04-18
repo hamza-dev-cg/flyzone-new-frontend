@@ -26,8 +26,8 @@ const Table = ({ columns, data, isEditable = false, isDeletable = false }) => {
   return (
     <div className="container-xxl p-0 bg-white custom-table-responsive">
       <div className="table-responsive">
-        <table className="table custom-table text-center" {...getTableProps()}>
-          <thead className="thead-dark">
+        <table className="table custom-table text-center " {...getTableProps()}>
+          <thead className="thead-dark  ">
             {headerGroups.map((headerGroup) => (
               <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers
@@ -42,9 +42,9 @@ const Table = ({ columns, data, isEditable = false, isDeletable = false }) => {
                           ? column.getSortByToggleProps()
                           : {}
                       )}
-                      className="align-middle"
+                      className=" sticky-header  align-middle"
                     >
-                      <div className="d-flex align-items-center justify-content-center">
+                      <div className=" d-flex align-items-center justify-content-center">
                         {column.render("Header")}
                         {column.id === "total_weight" && (
                           <img
@@ -117,7 +117,7 @@ const Table = ({ columns, data, isEditable = false, isDeletable = false }) => {
                       <td
                         key={cellIndex}
                         {...cell.getCellProps()}
-                        className="position-relative align-middle p-4"
+                        className="  position-relative align-middle p-4"
                       >
                         {cell.render("Cell")}
 

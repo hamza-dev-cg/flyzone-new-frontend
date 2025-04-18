@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import Table from "../../Table";
-import {chubClayOpen} from '../../../utils/dummyData'
-import LeaderboardTable from "../LeaderBoardTable"; 
+import React from "react";
+import { chubClayOpen } from "../../../utils/dummyData";
+import LeaderboardTable from "../LeaderBoardTable";
 
-const ChubClayOpen = () => {
- 
-
+const ChubClayOpen = ({ pageType = "full" }) => {
   const getFishPoints = (type) => {
     switch (type) {
       case "Blue Marlin":
@@ -133,21 +130,23 @@ const ChubClayOpen = () => {
 
   return (
     <LeaderboardTable
-    tabs={[
-      { label: "Overall Score", key: "overall" },
-      { label: "Day 1 - 28th March 2025", key: "day1" },
-      { label: "Day 2 - 29th March 2025", key: "day2" },
-    ]}
-    columnsMap={{
-      overall: ChubCayOverScore,
-      day1: ChubCayDays,
-      day2: ChubCayDays,
-    }}
-    dataMap={{
-      overall: tournamentData.over_all,
-      day1: tournamentData.day_1,
-      day2: tournamentData.day_2,
-    }}/>
+      tabs={[
+        { label: "Overall Score", key: "overall" },
+        { label: "Day 1 - 28th March 2025", key: "day1" },
+        { label: "Day 2 - 29th March 2025", key: "day2" },
+      ]}
+      columnsMap={{
+        overall: ChubCayOverScore,
+        day1: ChubCayDays,
+        day2: ChubCayDays,
+      }}
+      dataMap={{
+        overall: tournamentData.over_all,
+        day1: tournamentData.day_1,
+        day2: tournamentData.day_2,
+      }}
+      pageType={pageType}
+    />
   );
 };
 
